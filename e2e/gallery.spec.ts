@@ -24,7 +24,10 @@ test.describe("gallery page", () => {
   test("clicking a style filter chip narrows results and clear resets them", async ({
     page,
   }) => {
-    const watercolorChip = page.getByRole("button", { name: "watercolor" });
+    const watercolorChip = page.getByRole("button", {
+      name: "watercolor",
+      exact: true,
+    });
 
     await watercolorChip.click();
 
@@ -36,7 +39,7 @@ test.describe("gallery page", () => {
       })
     ).toHaveCount(3);
 
-    await page.getByRole("button", { name: /clear/i }).click();
+    await page.getByRole("button", { name: "clear", exact: true }).click();
 
     await expect(watercolorChip).toHaveAttribute("aria-pressed", "false");
     await expect(page.getByTestId("asset-card")).toHaveCount(TOTAL_ASSETS);

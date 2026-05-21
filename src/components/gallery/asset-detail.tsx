@@ -26,7 +26,7 @@ export function AssetDetail() {
   const asset = selectedAssetId ? findAssetById(selectedAssetId) : null;
   const closeDetail = () => {
     const trigger = selectedAssetId
-      ? document.querySelector<HTMLButtonElement>(
+      ? document.querySelector<HTMLElement>(
           `[data-asset-trigger="${selectedAssetId}"]`
         )
       : null;

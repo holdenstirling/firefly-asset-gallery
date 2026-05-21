@@ -16,6 +16,7 @@ export function AssetCard({ asset }: AssetCardProps) {
   const isFavorited = useFavoritesStore((s) => s.favoritedIds.has(asset.id));
   const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
   const setSelectedAssetId = useGalleryStore((s) => s.setSelectedAssetId);
+  const openDetail = () => setSelectedAssetId(asset.id);
 
   const aspectClass =
     asset.parameters.aspectRatio === "16:9"
@@ -29,13 +30,21 @@ export function AssetCard({ asset }: AssetCardProps) {
             : "aspect-square";
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       aria-label={`Open details for ${asset.prompt}`}
       data-testid="asset-card"
       data-asset-trigger={asset.id}
-      onClick={() => setSelectedAssetId(asset.id)}
+      onClick={openDetail}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openDetail();
+        }
+      }}
       className={cn(
+        "cursor-pointer",
         "group relative w-full overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         aspectClass
       )}
@@ -89,6 +98,6 @@ export function AssetCard({ asset }: AssetCardProps) {
           </span>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
