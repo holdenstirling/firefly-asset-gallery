@@ -276,13 +276,13 @@ function tagsFromPrompt(
   prompt: string,
   parameters: GenerationParameters
 ): string[] {
+  const baseTags = new Set<string>([parameters.stylePreset, parameters.contentType]);
   const words = prompt
     .toLowerCase()
     .split(/[^a-z0-9]+/)
     .filter((word) => word.length > 3)
+    .filter((word) => !baseTags.has(word))
     .slice(0, 2);
 
-  return Array.from(
-    new Set([parameters.stylePreset, parameters.contentType, ...words])
-  );
+  return [...baseTags, ...words];
 }
