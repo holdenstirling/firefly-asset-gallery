@@ -36,8 +36,8 @@ export default function PaletteExtractorPage() {
 
   const extractPalette = useCallback(
     async (
-      nextUrl = url,
-      nextSwatchCount: (typeof SWATCH_COUNTS)[number] = swatchCount
+      nextUrl: string,
+      nextSwatchCount: (typeof SWATCH_COUNTS)[number]
     ) => {
       const trimmedUrl = nextUrl.trim();
       if (!trimmedUrl) {
@@ -110,7 +110,7 @@ export default function PaletteExtractorPage() {
         image.src = trimmedUrl;
       });
     },
-    [swatchCount, url]
+    []
   );
 
   useEffect(() => {
@@ -219,7 +219,7 @@ export default function PaletteExtractorPage() {
               </div>
             </Field>
 
-            <Button variant="gradient" onClick={() => void extractPalette()}>
+            <Button variant="gradient" onClick={() => void extractPalette(url, swatchCount)}>
               Extract palette
             </Button>
 

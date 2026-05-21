@@ -91,7 +91,7 @@ interface StyleStudioState {
 
 export const useStyleStudioStore = create<StyleStudioState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       styles: [...INITIAL_STUDIO_STYLES],
       activeStyleId: INITIAL_STUDIO_STYLES[0]?.id ?? null,
       saveStyle: (style) =>
@@ -120,21 +120,7 @@ export const useStyleStudioStore = create<StyleStudioState>()(
           customPalette: { swatches },
         });
 
-        set((state) => {
-          const existing = state.styles.find((item) => item.id === style.id);
-          const nextStyle = existing
-            ? { ...style, createdAt: existing.createdAt }
-            : style;
-
-          return {
-            styles: existing
-              ? state.styles.map((item) =>
-                  item.id === style.id ? nextStyle : item
-                )
-              : [nextStyle, ...state.styles],
-            activeStyleId: nextStyle.id,
-          };
-        });
+        get().saveStyle(style);
 
         return style;
       },
