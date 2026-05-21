@@ -14,7 +14,8 @@ This folder holds two kinds of artifacts:
 | `main` branch | Style Studio (HOL-5) shipped, prompt bar wired, 18 Vitest tests passing |
 | Linear HOL-6 | Playwright e2e tests (PR #3 OPEN — keep open as the async demo asset) |
 | Linear HOL-7 | **Brand Palette Extractor** — the live-build target |
-| Bugbot | Reviewed PR #3, flagged a real a11y/keyboard bug on `asset-card.tsx:44` — leave the comment unresolved for the demo |
+| Bugbot | Reviewed PR #3, flagged a real a11y/keyboard bug on `asset-card.tsx:44` — leave unresolved |
+| PR #4 | Bugbot autofix (draft) — Cloud Agent's 2-line fix for the a11y bug. Demo kicker |
 | `plan.md` | Empty placeholder, ready for Plan-mode output |
 
 ## Live-demo build target: HOL-7
@@ -81,7 +82,11 @@ Cut to the pre-recorded video of the HOL-6 Playwright run, OR open PR #3 and wal
 
 Open PR #3, scroll to the inline comment on `src/components/gallery/asset-card.tsx` line 44.
 
-> *"The agent ran clean, but Bugbot — Cursor's automated reviewer — caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite button accidentally opens the detail modal too. That's an a11y bug. It's the kind of thing that fails an Adobe accessibility review. Bugbot caught it, gave me a one-click 'Fix in Cursor' button, and the loop is closed: Linear → Slack → Cloud Agent → PR → Bugbot → fix in IDE."*
+> *"The Cloud Agent ran clean, but Bugbot — Cursor's automated reviewer — caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite button accidentally opens the detail modal too. That's an a11y bug. It's the kind of thing that fails an Adobe accessibility review."*
+
+**Optional kicker — open PR #4 in a second tab:**
+
+> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. So the entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the SDLC."*
 
 ### 5. Build mode → switch model to Composer (~4 min)
 Switch model on screen. Narrate:
