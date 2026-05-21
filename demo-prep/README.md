@@ -14,7 +14,7 @@ This folder holds two kinds of artifacts:
 | `main` branch | Style Studio (HOL-5) shipped, prompt bar wired, 18 Vitest tests passing |
 | Linear HOL-6 | Playwright e2e tests (PR #3 OPEN — keep open as the async demo asset) |
 | Linear HOL-7 | **Brand Palette Extractor** — the live-build target |
-| Bugbot | Installed; trigger with `bugbot run` comment if it doesn't auto-fire |
+| Bugbot | Reviewed PR #3, flagged a real a11y/keyboard bug on `asset-card.tsx:44` — leave the comment unresolved for the demo |
 | `plan.md` | Empty placeholder, ready for Plan-mode output |
 
 ## Live-demo build target: HOL-7
@@ -73,9 +73,15 @@ Open `plan.md`. Read it briefly out loud. Then add ONE constraint by hand:
 Narrate:
 > *"This is the moment. The plan is a file. I edit it like code. The agent doesn't get autonomy until I sign off."*
 
-### 4. Fan out async work — Cloud Agent recap (~1 min)
+### 4. Fan out async work — Cloud Agent recap (~90 sec)
 Cut to the pre-recorded video of the HOL-6 Playwright run, OR open PR #3 and walk through what the async agent built.
-> *"While I plan locally, work that has clear scope can fan out to Cloud Agents. Here's one I ran earlier — Playwright e2e tests, opened a PR, ran the test suite green."*
+> *"While I plan locally, work that has clear scope can fan out to Cloud Agents. Here's one I ran earlier — fired it from Slack with `@Cursor`, it picked up HOL-6, opened PR #3 with Playwright e2e tests."*
+
+**Then pivot to the Bugbot finding — this is the under-appreciated beat:**
+
+Open PR #3, scroll to the inline comment on `src/components/gallery/asset-card.tsx` line 44.
+
+> *"The agent ran clean, but Bugbot — Cursor's automated reviewer — caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite button accidentally opens the detail modal too. That's an a11y bug. It's the kind of thing that fails an Adobe accessibility review. Bugbot caught it, gave me a one-click 'Fix in Cursor' button, and the loop is closed: Linear → Slack → Cloud Agent → PR → Bugbot → fix in IDE."*
 
 ### 5. Build mode → switch model to Composer (~4 min)
 Switch model on screen. Narrate:
