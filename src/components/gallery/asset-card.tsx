@@ -31,6 +31,9 @@ export function AssetCard({ asset }: AssetCardProps) {
   return (
     <button
       type="button"
+      aria-label={`Open details for ${asset.prompt}`}
+      data-testid="asset-card"
+      data-asset-trigger={asset.id}
       onClick={() => setSelectedAssetId(asset.id)}
       className={cn(
         "group relative w-full overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

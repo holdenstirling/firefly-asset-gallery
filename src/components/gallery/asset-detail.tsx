@@ -24,11 +24,21 @@ export function AssetDetail() {
   const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
 
   const asset = selectedAssetId ? findAssetById(selectedAssetId) : null;
+  const closeDetail = () => {
+    const trigger = selectedAssetId
+      ? document.querySelector<HTMLButtonElement>(
+          `[data-asset-trigger="${selectedAssetId}"]`
+        )
+      : null;
+
+    setSelectedAssetId(null);
+    window.requestAnimationFrame(() => trigger?.focus());
+  };
 
   return (
     <Dialog
       open={!!asset}
-      onOpenChange={(open) => !open && setSelectedAssetId(null)}
+      onOpenChange={(open) => !open && closeDetail()}
     >
       <DialogContent className="max-h-[90vh] max-w-6xl overflow-hidden p-0 sm:rounded-xl">
         {asset && (
