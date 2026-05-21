@@ -1,0 +1,35 @@
+---
+description: Patterns for Vitest test files in the Firefly Asset Gallery
+globs: **/*.test.{ts,tsx}
+alwaysApply: false
+---
+
+# Vitest test patterns
+
+- Import test primitives from `vitest` (`describe`, `it`, `expect`). Never import from `@jest/globals`.
+- Use `vi` for mocks and spies. Do not use `jest`.
+- One `describe` block per exported symbol. Nest `describe` blocks for variants.
+- Test names are imperative — "returns X when Y", not "should return X".
+- For React components, use `@testing-library/react` and assert on accessible names with `getByRole`.
+- For deterministic tests against time-relative output, pass an explicit `now` reference instead of relying on `Date.now()`.
+
+## Example
+
+```ts
+import { describe, it, expect } from "vitest";
+import { picsumUrl } from "../picsum";
+
+describe("picsumUrl", () => {
+  it("returns a deterministic URL for a given seed", () => {
+    expect(picsumUrl({ seed: "x", width: 100, height: 100 })).toBe(
+      "https://picsum.photos/seed/x/100/100"
+    );
+  });
+
+  it("URL-encodes seeds with special characters", () => {
+    expect(picsumUrl({ seed: "spring campaign", width: 50, height: 50 })).toBe(
+      "https://picsum.photos/seed/spring%20campaign/50/50"
+    );
+  });
+});
+```

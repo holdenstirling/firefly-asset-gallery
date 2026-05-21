@@ -1,0 +1,15 @@
+---
+description: Testing conventions for the Firefly Asset Gallery
+alwaysApply: true
+---
+
+# Testing conventions
+
+- Tests live in `__tests__/` directories next to the code they cover.
+- Vitest covers unit and component tests; Playwright covers end-to-end tests.
+- Every new utility in `src/lib/` ships with a matching test file in `src/lib/__tests__/`.
+- Component tests are named `<component>.test.tsx` and live next to the component.
+- After modifying any file under `src/lib/`, run `npm test` and fix failures before declaring the task done.
+- After modifying any page or component, run `npm run build` to confirm the production build still passes.
+- Prefer `getByRole` and `getByLabel` selectors. Add `data-testid` only when accessible roles are not unique.
+- Test names are imperative — "returns X when Y", not "should return X".
