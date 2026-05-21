@@ -1,0 +1,27 @@
+%%{init: {"theme": "dark", "themeVariables": {"fontFamily": "Inter, system-ui, sans-serif", "fontSize": "16px"}, "flowchart": {"htmlLabels": true, "curve": "basis", "padding": 20}}}%%
+flowchart LR
+    ENG(("Engineer")):::person
+
+    subgraph SURFACES["Cursor — one engineer, four surfaces"]
+        direction TB
+        IDE["Cursor IDE<br/><span style='font-size:12px;opacity:0.7'>Ask · Plan · Build</span>"]:::surface
+        SLACK["Slack<br/><span style='font-size:12px;opacity:0.7'>@Cursor mention</span>"]:::surface
+        WEB["cursor.com/agents<br/><span style='font-size:12px;opacity:0.7'>dashboard</span>"]:::surface
+        BB["GitHub PRs<br/><span style='font-size:12px;opacity:0.7'>Bugbot review</span>"]:::surface
+    end
+
+    REPO[("Your codebase")]:::repo
+
+    ENG --> IDE
+    ENG --> SLACK
+    ENG --> WEB
+    ENG --> BB
+
+    IDE --> REPO
+    SLACK --> REPO
+    WEB --> REPO
+    BB --> REPO
+
+    classDef person fill:#1e1e2e,stroke:#cba6f7,color:#cdd6f4,stroke-width:2px;
+    classDef surface fill:#181825,stroke:#89b4fa,color:#cdd6f4,stroke-width:1.5px;
+    classDef repo fill:#1e1e2e,stroke:#f9e2af,color:#f9e2af,stroke-width:2px;

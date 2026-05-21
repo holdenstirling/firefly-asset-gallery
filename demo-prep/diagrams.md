@@ -1,6 +1,20 @@
 # Demo diagrams
 
-Two Mermaid diagrams sized for slide capture. Both render natively on GitHub — screenshot the rendered version (light or dark) and drop into Keynote / Google Slides.
+Two Mermaid diagrams sized for slide capture. **Pre-rendered files live in this folder** — just drop them into Keynote:
+
+| Diagram | PNG (1920×1080, transparent) | SVG (vector) | Source |
+|---|---|---|---|
+| 1 — Surface area | [`diagram-1.png`](./diagram-1.png) | [`diagram-1.svg`](./diagram-1.svg) | [`diagram-1.mmd`](./diagram-1.mmd) |
+| 2 — Two-track workflow | [`diagram-2.png`](./diagram-2.png) | [`diagram-2.svg`](./diagram-2.svg) | [`diagram-2.mmd`](./diagram-2.mmd) |
+
+Re-render after editing the `.mmd` source:
+
+```bash
+npx -y -p @mermaid-js/mermaid-cli mmdc -i diagram-1.mmd -o diagram-1.png -w 1920 -H 1080 -b transparent
+npx -y -p @mermaid-js/mermaid-cli mmdc -i diagram-1.mmd -o diagram-1.svg -b transparent
+```
+
+The Mermaid source is also embedded below for reference — both render natively on GitHub.
 
 ---
 
@@ -51,40 +65,35 @@ The story you just demoed, compressed into one image. Local Ask → Plan → Bui
 
 ```mermaid
 flowchart LR
-    L["Linear ticket"]
-    M(["main shipped"])
-
-    L --> A
-    L --> S
+    L["Linear ticket"]:::anchor
 
     subgraph LOCAL["Local — ride shotgun"]
         direction TB
-        A["Ask mode<br/>scope the work"]
-        P["Plan mode + Opus<br/>edit plan.md by hand"]
-        B["Build mode + Composer<br/>execute the plan"]
+        A["Ask<br/>scope the work"]:::local
+        P["Plan + Opus<br/>edit plan.md by hand"]:::local
+        B["Build + Composer<br/>execute the plan"]:::local
         A --> P --> B
     end
 
-    subgraph ASYNC["Async — fan out to Cloud Agents"]
+    subgraph ASYNC["Async — Cloud Agents"]
         direction TB
-        S["Slack · @Cursor"]
-        C["Cloud Agent<br/>writes the code"]
-        R["PR opened"]
-        BB["Bugbot review<br/>catches a11y bug"]
-        F["Autofix Cloud Agent"]
-        R2["PR with fix"]
-        S --> C --> R --> BB --> F --> R2
+        S["Slack · @Cursor"]:::async
+        C["Cloud Agent<br/>writes code → PR opened"]:::async
+        BB["Bugbot review<br/>catches a11y bug"]:::async
+        F["Autofix Cloud Agent<br/>PR with fix"]:::async
+        S --> C --> BB --> F
     end
 
+    M(["main shipped"]):::anchor
+
+    L --> A
+    L --> S
     B --> M
-    R2 --> M
+    F --> M
 
     classDef local fill:#dcfce7,stroke:#15803d,color:#14532d,stroke-width:1px;
     classDef async fill:#e0e7ff,stroke:#4338ca,color:#312e81,stroke-width:1px;
     classDef anchor fill:#fef3c7,stroke:#92400e,color:#78350f,stroke-width:2px;
-    class A,P,B local
-    class S,C,R,BB,F,R2 async
-    class L,M anchor
 ```
 
 **Narration cue (~25 sec):**
