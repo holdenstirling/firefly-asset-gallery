@@ -22,6 +22,37 @@ export interface GenerationParameters {
   steps: number;
 }
 
+export type StylePaletteId = "firefly" | "earth" | "mono" | "candy";
+
+export type TypographyPairId = "editorial" | "product" | "playful" | "technical";
+
+export interface StylePalette {
+  id: StylePaletteId;
+  name: string;
+  description: string;
+  swatchClasses: [string, string, string];
+  tokenValues: [string, string, string];
+}
+
+export interface TypographyPair {
+  id: TypographyPairId;
+  name: string;
+  heading: string;
+  body: string;
+  description: string;
+}
+
+export interface StudioStyle {
+  id: string;
+  name: string;
+  description: string;
+  paletteId: StylePaletteId;
+  typographyId: TypographyPairId;
+  parameters: GenerationParameters;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Asset {
   id: string;
   prompt: string;

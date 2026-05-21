@@ -14,12 +14,11 @@ const QUICK_PROMPTS = [
 export function PromptBar() {
   const [value, setValue] = useState("");
   const parameters = useGalleryStore((s) => s.parameters);
+  const addGeneratedAsset = useGalleryStore((s) => s.addGeneratedAsset);
 
   const handleGenerate = () => {
     if (!value.trim()) return;
-    // INTENTIONAL ROUGH EDGE: this is not yet wired to actually create an asset.
-    // Live demo task: connect prompt + parameters -> generated asset, push to top of grid.
-    console.log("[generate]", { prompt: value, parameters });
+    addGeneratedAsset(value);
     setValue("");
   };
 

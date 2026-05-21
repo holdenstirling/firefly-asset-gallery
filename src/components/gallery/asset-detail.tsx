@@ -11,11 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useGalleryStore, useFavoritesStore } from "@/lib/store";
-import { findAssetById, MOCK_NOW } from "@/lib/mock-data";
+import { MOCK_NOW } from "@/lib/mock-data";
 import { picsumUrl, avatarUrl } from "@/lib/picsum";
 import { cn, formatRelativeTime } from "@/lib/utils";
+import type { Asset } from "@/lib/types";
 
-export function AssetDetail() {
+interface AssetDetailProps {
+  assets: Asset[];
+}
+
+export function AssetDetail({ assets }: AssetDetailProps) {
   const selectedAssetId = useGalleryStore((s) => s.selectedAssetId);
   const setSelectedAssetId = useGalleryStore((s) => s.setSelectedAssetId);
   const isFavorited = useFavoritesStore((s) =>
@@ -23,7 +28,9 @@ export function AssetDetail() {
   );
   const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
 
-  const asset = selectedAssetId ? findAssetById(selectedAssetId) : null;
+  const asset = selectedAssetId
+    ? assets.find((item) => item.id === selectedAssetId)
+    : null;
 
   return (
     <Dialog

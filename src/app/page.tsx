@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { MOCK_ASSETS, MOCK_PROMPT_HISTORY } from "@/lib/mock-data";
 import { PromptBar } from "@/components/prompt/prompt-bar";
@@ -9,9 +9,15 @@ import { AssetGrid } from "@/components/gallery/asset-grid";
 import { AssetDetail } from "@/components/gallery/asset-detail";
 import { ParameterPanel } from "@/components/parameters/parameter-panel";
 import { PromptHistory } from "@/components/prompt/prompt-history";
+import { useGalleryStore } from "@/lib/store";
 
 export default function GalleryPage() {
   const [parametersOpen, setParametersOpen] = useState(false);
+  const generatedAssets = useGalleryStore((s) => s.generatedAssets);
+  const assets = useMemo(
+    () => [...generatedAssets, ...MOCK_ASSETS],
+    [generatedAssets]
+  );
 
   return (
     <div className="flex h-screen flex-col">
@@ -27,7 +33,7 @@ export default function GalleryPage() {
         <div className="hidden items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-xs sm:flex">
           <Sparkles className="h-3.5 w-3.5 text-primary" />
           <span className="text-muted-foreground">
-            {MOCK_ASSETS.length} assets · {MOCK_PROMPT_HISTORY.length} prompts
+            {assets.length} assets · {MOCK_PROMPT_HISTORY.length} prompts
           </span>
         </div>
       </header>
@@ -41,7 +47,7 @@ export default function GalleryPage() {
           />
           <div className="flex gap-4">
             <div className="flex-1 min-w-0">
-              <AssetGrid assets={MOCK_ASSETS} />
+              <AssetGrid assets={assets} />
             </div>
             {parametersOpen && (
               <div className="hidden lg:block">
@@ -63,7 +69,7 @@ export default function GalleryPage() {
         </aside>
       </div>
 
-      <AssetDetail />
+      <AssetDetail assets={assets} />
     </div>
   );
 }
