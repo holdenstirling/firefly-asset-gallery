@@ -76,19 +76,31 @@ Open `plan.md`. Read it briefly out loud. Then add ONE constraint by hand:
 Narrate:
 > *"This is the moment. The plan is a file. I edit it like code. The agent doesn't get autonomy until I sign off."*
 
-### 4. Fan out async work — Cloud Agent recap (~90 sec)
-Cut to the pre-recorded video of the HOL-6 Playwright run, OR open PR #3 and walk through what the async agent built.
-> *"While I plan locally, work that has clear scope can fan out to Cloud Agents. Here's one I ran earlier — fired it from Slack with `@Cursor`, it picked up HOL-6, opened PR #3 with Playwright e2e tests."*
+### 4. Fan out async work — Cloud Agent recap (~80 sec, ALL LIVE)
 
-**Then pivot to the Bugbot finding — this is the under-appreciated beat:**
+**No pre-recorded video.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play.
 
-Open PR #3, scroll to the inline comment on `src/components/gallery/asset-card.tsx` line 44.
+**Tab 1 — Slack thread (~10 sec):**
+Open the holdenstirling Slack workspace, navigate to the channel with the original `@Cursor pick up HOL-6` ping.
+> *"While I plan locally, work with clear scope fans out. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
 
-> *"The Cloud Agent ran clean, but Bugbot — Cursor's automated reviewer — caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite button accidentally opens the detail modal too. That's an a11y bug. It's the kind of thing that fails an Adobe accessibility review."*
+**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~20 sec):**
+> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
 
-**Optional kicker — open PR #4 in a second tab:**
+**Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
+> *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
 
-> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. So the entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the SDLC."*
+**Tab 4 — PR #4, show the 2-line diff and the `cursoragent@cursor.com` author (~20 sec):**
+> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the SDLC."*
+
+**Pre-demo tab order (left to right in the browser):**
+1. https://cursor.com/agents — dashboard, HOL-6 run open
+2. Slack workspace `holdenstirling`, channel with the `@Cursor` thread
+3. https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971 — auto-scrolls to Bugbot's comment
+4. https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files — PR #4 Files Changed view
+
+**Friday morning sanity check (2 min):**
+- Open all 4 tabs cold, in order, and click through them once with the narration cues. If any tab fails to load or scroll to the right place, you'll catch it before the meeting starts, not during.
 
 ### 5. Build mode → switch model to Composer (~4 min)
 Switch model on screen. Narrate:
