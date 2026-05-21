@@ -32,10 +32,12 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 ## Live-demo runbook (15–17 min target)
 
 ### 0. Opening agenda slide (~30 sec)
-One slide. Single bulleted list:
-- Where Cursor lives
-- The Ask → Plan → Build workflow
-- How this scales: rules, skills, Bugbot
+Two slides:
+1. **"Where Cursor lives"** diagram (see [diagrams.md](./diagrams.md) — Diagram 1). One image, three seconds of recognition.
+2. Agenda — bullets:
+   - Where Cursor lives
+   - The Ask → Plan → Build workflow
+   - How this scales: rules, skills, Bugbot
 
 Spoken intro:
 > *"Hi, I'm Holden. Over the next 17 minutes I'll walk you through three things: where Cursor lives — it's not just an editor anymore; the workflow engineering teams run today — read a ticket, plan with Opus, build with Composer, fan out async work to Cloud Agents; and how this scales beyond one engineer with rules, skills, and Bugbot. I'll keep slides minimal — most of this is in a real codebase. Jump in with questions any time."*
@@ -107,11 +109,13 @@ Let it work. Show file tree updating, tests running. If anything fails, let Comp
 See "Live-demo creation beats" below.
 
 ### 8. Trial success plan + Q&A (~1.5 min)
-One closing slide:
-- Week 1: install + 5 power-user pilots + `.cursor/rules` setup
-- Week 2: Bugbot wired on 2–3 active repos + first Cloud Agent migrations
-- Weeks 3–4: measure (Tab acceptance, time-to-first-PR for new starters, PR cycle time, NPS)
-- Throughout: weekly office hours + shared Slack channel
+Two closing slides:
+1. **"Two-track workflow"** diagram (see [diagrams.md](./diagrams.md) — Diagram 2). "Here's what you just saw."
+2. Trial plan:
+   - Week 1: install + 5 power-user pilots + `.cursor/rules` setup
+   - Week 2: Bugbot wired on 2–3 active repos + first Cloud Agent migrations
+   - Weeks 3–4: measure (Tab acceptance, time-to-first-PR for new starters, PR cycle time, NPS)
+   - Throughout: weekly office hours + shared Slack channel
 
 ---
 
@@ -144,5 +148,6 @@ Optional follow-up beat: *"And that's the Cursor Team Kit story — there are 17
 
 ## Files in this folder
 
+- `diagrams.md` — Mermaid diagrams for the opening (surface area) and closing (two-track) slides
 - `test-files.mdc` — file-pattern rule for Vitest test files
 - `pr-summary.md` — personal skill for generating PR descriptions
