@@ -29,7 +29,41 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 
 ---
 
-## Live-demo runbook (15–17 min target)
+## Live-demo runbook (15-18 min target, ~14 min script + Q&A buffer)
+
+**Time budget** (revised after 0a + 7.5 inserts):
+
+| Section | Time | Cumulative |
+|---|---|---|
+| 0a · Adobe problem framing | 25s | 0:25 |
+| 0 · Opening + surface area diagram | 30s | 0:55 |
+| 1 · cursor.com/agents | 60s | 1:55 |
+| 2 · Linear ticket | 30s | 2:25 |
+| 3 · Ask → Plan → hand-edit | 5:00 | 7:25 |
+| 4 · Cloud Agent + Bugbot 4-tab walkthrough (incl. 15-20s screencast) | 90s | 8:55 |
+| 5 · Build mode | 3:30 | 12:25 |
+| 6 · Review the result | 60s | 13:25 |
+| 7 · Rules + Skills live creation | 2:00 | 15:25 |
+| 7.5 · Enterprise controls | 25s | 15:50 |
+| 8 · Two-track recap + trial plan | 60s | 16:50 |
+| Q&A buffer | 1-3 min | within 20 min |
+
+Total script: ~17 min. Allows 3 min for organic Q&A inside a 20-min slot. Tight but achievable.
+
+### 0a. Adobe problem framing (~25 sec)
+
+Spoken over the title slide — no separate slide needed. This is the Problem-Solution Alignment beat that the interview rubric grades on.
+
+> *"Quick frame before we dive in. Adobe ships across Creative Cloud — Photoshop, Firefly, Acrobat — with thousands of engineers across hundreds of repos, hard accessibility requirements, and IP that can't leak. The bar for any AI tool here is: does it move work forward without giving up code review, governance, or security? Everything in the next 17 minutes is aimed at that bar."*
+
+**Why this beat exists:** The interview prompt explicitly grades on "Problem-Solution Alignment — present a simple, realistic challenge a team like Adobe might face." Without this, the demo shows what Cursor can do but never names what Adobe is trying to solve. 25 seconds closes that gap.
+
+**Delivery notes:**
+- Say it before any product is on screen. Title slide only.
+- The three Adobe constraints (engineers/a11y/IP) are not invented — they map to the three later beats: a11y -> Bugbot finds keyboard bug, IP -> enterprise security beat, engineers -> rules and skills scaling.
+- Do NOT name Claude Code here. It comes up in Q&A.
+
+---
 
 ### 0. Opening agenda slide (~30 sec)
 Two slides:
@@ -147,6 +181,27 @@ Let it work. Show file tree updating, tests running. If anything fails, let Comp
 
 ### 7. Rules + Skills wrap (~2 min)
 See "Live-demo creation beats" below.
+
+### 7.5. Enterprise controls beat (~25 sec)
+
+One slide. Title: **"Enterprise controls"**. Bullets:
+- Zero data retention. No training on your code by Cursor or any LLM provider.
+- SOC 2 Type 2 · SAML SSO · SCIM · AES-256 at rest · TLS 1.2+ in transit
+- Model + MCP + agent rule allowlists, all configurable from one admin panel
+- 64% of Fortune 500 already on Cursor: NVIDIA, Stripe, Coinbase, Rippling
+
+Narrate:
+> *"Last thing before we close. Rules and skills govern individuals and teams. At org level, Cursor adds the controls Adobe needs — zero data retention, SOC 2 Type 2, SAML SSO, SCIM, model and MCP allowlists, and Privacy Mode that prevents any customer code from being used for training, by Cursor or any LLM provider. It's how 64% of the Fortune 500 runs Cursor today — NVIDIA, Stripe, Coinbase, Rippling. Same controls available to Adobe on day one of the trial."*
+
+**Why this beat exists:** Adobe is famously security-conscious. The interview prompt and your original notes both call out security explicitly. Without this beat, every audience member is doing the math privately on whether the demo can survive their legal review. This says it out loud and closes the door.
+
+**Delivery notes:**
+- Read the bullets quickly. The slide does the heavy lifting; you only need ~25 seconds of voice.
+- The "no training on customer code, by Cursor OR any LLM provider" phrasing matters. Adobe will hear it.
+- The Fortune 500 names are borrowed credibility. Don't overuse — one beat, then move on.
+- If asked in Q&A about a name not on that list (e.g., "Are any other media/creative companies on Cursor?"), the safe answer is *"I'd need to confirm with our customer success team, but the Cursor enterprise page lists 50,000+ enterprises and 100M+ lines of code shipped per day."*
+
+---
 
 ### 8. Trial success plan + Q&A (~1.5 min)
 Two closing slides:
