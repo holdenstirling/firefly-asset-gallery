@@ -84,10 +84,28 @@ Pre-stage 1–2 completed runs (HOL-5 already shipped, HOL-6 PR #3 still open). 
 Open Linear, show HOL-7.
 > *"Real engineering work starts with a ticket. Watch what happens when Cursor reads one."*
 
-### 3. THE PLAN MOMENT — switch to IDE on `firefly-asset-gallery`, branch `main`
+### 3. THE PLAN MOMENT — switch to IDE on `firefly-asset-gallery`
 
-**3a. Ask mode (~90 sec) — quick context set:**
-> "Read HOL-7 from Linear. Walk me through what's being asked and which files in this codebase will need to change."
+**3.0. Create the feature branch first (~10 sec, silent):**
+
+In the IDE terminal, before opening Ask mode:
+
+```bash
+git checkout main && git pull && git checkout -b feat/hol-7
+```
+
+Don't narrate this — it's silent setup. The point is to avoid Composer pushing commits to `main` later.
+
+**3a. Ask mode (~90 sec) — quick context set. Paste verbatim:**
+
+```
+Read HOL-7 from Linear. Walk me through:
+1. What's being asked (one paragraph)
+2. What's already in this codebase that supports it
+3. Which files will likely need to change
+
+Don't write code or open the plan file. I want to scope first.
+```
 
 The agent will discover Style Studio just shipped and surface that HOL-7 builds on it. *Don't dwell here* — Ask is the prelude, not the headline.
 
@@ -96,8 +114,16 @@ The agent will discover Style Studio just shipped and surface that HOL-7 builds 
 Switch model on screen. Narrate:
 > *"Now I'm switching to Plan mode and to Opus. Plan mode is read-only — it reasons about my codebase, it doesn't touch it. Opus is what I reach for when the planning surface is wide. And this — this is one of the biggest differences from Claude Code. Cursor isn't locked to one lab. Opus for planning, Composer for execution, GPT-5.5 for spec writing. Same agent, your choice of model."*
 
+Paste verbatim (this is the dry-run-validated prompt — the two baked-in decisions save ~60s of on-stage architectural relitigation):
+
 ```
-Use HOL-7 as the brief. Read AGENTS.md, the rules in .cursor/rules, and src/lib/store.ts (the Style Studio store) before planning. Generate a structured implementation plan into plan.md.
+Implement HOL-7 using the linear-feature-flow workflow. Read AGENTS.md, the rules in .cursor/rules/, src/lib/store.ts, and src/lib/style-studio.ts before planning. Generate a structured implementation plan into plan.md following the skill's Phase 3 template.
+
+Two decisions are already made — bake them into the plan:
+1. Type extension: add an optional customPalette: { swatches: string[] } field on StudioStyle. StyleCard branches on its presence to render inline-style hex swatches.
+2. Out of scope for HOL-7: Style picker in PromptBar. Saved palettes apply through the existing Style Studio "Apply" path only. Note this in the plan's "Out of scope" section.
+
+Stop after writing plan.md — do not start implementation.
 ```
 
 **3c. Edit `plan.md` live (~30 sec) — the human-in-the-loop moment:**
@@ -121,7 +147,14 @@ Open `plan.md`. Read the Goal aloud. Add ONE constraint in a NEW "Constraints" s
 Narrate:
 > *"This is the moment. The plan is a file. I edit it like code. One line — extraction has to run in under 100ms on a 1024×1024 image. The agent doesn't get autonomy until I sign off."*
 
-### 4. Fan out async work — Cloud Agent recap (~80 sec, ALL LIVE)
+**Sequencing note — do NOT paste the Build prompt yet.** The async story (Section 4) goes BEFORE Build. The order on stage is:
+1. Finish hand-edit, deliver the "sign off" line above
+2. Pivot to browser tabs for the 4-tab async story (Section 4, ~90 sec)
+3. Return to IDE, switch model to Composer, paste the Build prompt (Section 5)
+
+This is the sequential path — safer narratively. If you want to overlap Build and async (saves ~90 sec wall-clock), see "Concurrent variant" at the end of this file.
+
+### 4. Fan out async work — Cloud Agent recap (~90 sec, ALL LIVE)
 
 **No pre-recorded video.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play.
 
@@ -164,20 +197,23 @@ Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen 
 **Friday morning sanity check (2 min):**
 - Open all 4 tabs cold, in order, and click through them once with the narration cues. If any tab fails to load or scroll to the right place, you'll catch it before the meeting starts, not during.
 
-### 5. Build mode → switch model to Composer (~4 min)
+### 5. Build mode → switch model to Composer (~3:30 min)
+
 Switch model on screen. Narrate:
 > *"For Build, I'm switching to Composer-1 — Cursor's own model, optimized for tool-using speed inside the IDE. Plan mode used Opus for breadth. Build phase wants speed."*
 
+Paste verbatim (this is the dry-run-validated prompt — the explicit Phase 5 reference is what triggers the testing-conventions rule to run tests after each step):
+
 ```
-Execute plan.md.
+Execute plan.md. Follow the linear-feature-flow Phase 5 protocol: run lint and tests after each meaningful step. Open the result as a draft PR when done.
 ```
 
-Let it work. Show file tree updating, tests running. If anything fails, let Composer self-correct once.
+Let it work. Show file tree updating, tests running automatically (call this out — *"watch — tests fire on their own because of the testing-conventions rule"*). If anything fails, let Composer self-correct once.
 
 ### 6. Review the result (~1 min)
-- Open the new `/palette-extractor` page in the browser
-- Run `npm test` to show tests still pass
-- (If Bugbot is wired up by Friday, open the PR and show Bugbot's comments)
+- Open the new `/palette-extractor` page in the browser. Paste a `picsum.photos/seed/firefly-cover/1280/400` URL and show colors extracted.
+- Run `npm test` in a terminal to show tests still pass (expect 23/23 based on dry-run).
+- Optional: switch to the GitHub PR Composer just opened and show the linked Linear AC checklist updates.
 
 ### 7. Rules + Skills wrap (~2 min)
 See "Live-demo creation beats" below.
@@ -249,3 +285,21 @@ Optional follow-up beat: *"And that's the Cursor Team Kit story — 17 official 
 - `qa-cards.md` — 10 prepared Q&A cards for the question block at the end. Includes universal curveball recovery moves and 10 facts to recite cold.
 - `test-files.mdc` — file-pattern rule for Vitest test files (paste live during demo)
 - `pr-summary.md` — personal skill for generating PR descriptions (paste live during demo)
+
+---
+
+## Concurrent variant (advanced, optional)
+
+If you want to recover ~90 seconds of wall-clock and you're feeling confident, run Sections 3-5 concurrently instead of sequentially:
+
+1. Finish hand-editing `plan.md`
+2. Switch to Composer, paste the Build prompt **immediately** (don't wait)
+3. While Composer runs in the background, pivot tabs to the async story (Section 4)
+4. Narrate the 4 tabs while Composer works — by the time you return to the IDE, Composer should be 80-90 sec into its 3:30 min run
+5. Continue narrating Section 5 over the remaining Composer work
+
+**Why this is harder:** The audience sees Composer working out of the corner of their eye and may get distracted. If Composer fails silently while you're in Slack/GitHub tabs, you don't notice until you're back. Higher cognitive load on you, the presenter.
+
+**Why this saves time:** Section 4 (90 sec) overlaps with Composer's first 90 sec instead of adding to wall-clock. Total drops from ~16:50 to ~15:20.
+
+**Recommendation:** Default to sequential. Switch to concurrent only if you've rehearsed it twice and the dry-run timing left you under-budget.

@@ -67,7 +67,7 @@ Standalone audit of the demo against your original notes. Read this Friday morni
 | Note | Status | Where |
 |---|---|---|
 | Never show 'tab' | DONE | Excluded |
-| Security stuff for Adobe | PENDING insert | Section 7.5 enterprise beat (in plan, not yet baked) |
+| Security stuff for Adobe | DONE | Section 7.5 enterprise beat (baked) |
 | Cloud Agents | DONE | Section 4 / PR #3 |
 | Fire from Slack | DONE | Tab 1 / Slack thread |
 | cursor.com/agents window | DONE | Tab 2 / dashboard run |
@@ -133,13 +133,20 @@ These are now live in the runbook. If you want the verbatim source-of-truth in o
 
 ## What still has to happen between now and Friday
 
-From your notes that aren't yet covered by structural artifacts:
+Updated after the May 21 audit. All structural prep is DONE. What's left is your time:
 
-1. **Security beat (Section 7.5)** — still pending in the plan. Covers SOC 2, zero data retention, SSO/SCIM, model controls. ~20 seconds.
-2. **Adobe problem framing (Section 0a)** — still pending in the plan. Names Adobe's constraints (Creative Cloud scale, a11y, IP) before the surface-area diagram. ~30 seconds.
-3. **Cursor employee homework** — watch [cursor.com/learn](https://cursor.com/learn) videos, skim a recent customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). 30 minutes total. Look for: language they use, what they emphasize, any new feature you can name-drop.
-4. **15-20s screencast capture** — see Section 4 Tab 2 instructions in the runbook. ~10 minutes.
-5. **IDE dry-run on HOL-7** — single highest-priority remaining task.
+1. **Cursor employee homework** — watch [cursor.com/learn](https://cursor.com/learn) videos, skim a recent customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). 30 minutes total. Look for: language they use, what they emphasize, any new feature you can name-drop. *"Extra points for using a new feature"* came directly from the Cursor employee feedback.
+2. **15-20s screencast capture** — see Section 4 Tab 2 instructions in the runbook. ~10 minutes.
+3. **Full timed read-through of the runbook end-to-end** — out loud, against a stopwatch. Confirm 16:50 wall-clock with sequential Section 4.
+4. **Four high-leverage moments rehearsed twice each** — Adobe framing (Section 0a), plan-mode hand-edit narration, enterprise controls beat (Section 7.5), closing recap.
+
+Already done (don't re-do):
+- IDE dry-run on HOL-7 — completed, fallback branch `dry-run/hol-7-prebuilt` captured
+- Section 0a Adobe problem framing — baked in
+- Section 7.5 enterprise controls beat — baked in
+- `demo-prep/qa-cards.md` — 10 prepared Q&A cards
+- Runbook prompts sync'd to dry-run-validated versions
+- `feat/hol-7` branch creation step added to Section 3
 
 ---
 

@@ -248,10 +248,16 @@ The `linear-feature-flow` Phase 5 instruction "Open a draft PR" worked first try
 
 ## What's still pending
 
-1. **Timing template** — user didn't capture exact phase times. If desired, run a quick second dry-run on a fresh branch with a stopwatch.
-2. **Friday rehearsal** — full timed read-through of the runbook end-to-end (now with the perf-constraint hand-edit instead of icon).
-3. **Adobe problem framing (Section 0a)** — still pending insert.
-4. **Enterprise security beat (Section 7.5)** — still pending insert.
-5. **`demo-prep/qa-cards.md`** — five prepared Q&A answers.
-6. **Screencast capture** — 15-20s of cursor.com/agents streaming a Cloud Agent run.
-7. **cursor.com/learn homework** — watch a few videos and skim a customer story.
+Updated after the May 21 audit + P1 runbook fixes:
+
+1. **Screencast capture** — 15-20s of cursor.com/agents streaming a Cloud Agent run. See Section 4 Tab 2 in the runbook for capture instructions. ~10 min.
+2. **cursor.com/learn homework** — watch a few videos and skim one customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). Look for a new feature you can name-drop. ~25 min.
+3. **Friday rehearsal** — full timed read-through of the runbook end-to-end (now with sync'd dry-run prompts and the perf-constraint hand-edit).
+4. **Optional: timed dry-run** — run Ask → Plan → Build on a fresh branch against a stopwatch. Only useful if you suspect Plan-mode Opus is faster or slower than 3 min in practice.
+
+Completed since the dry-run:
+- Adobe problem framing (Section 0a) — baked in
+- Enterprise controls beat (Section 7.5) — baked in
+- `demo-prep/qa-cards.md` — 10 cards (up from 5 originally scoped)
+- P1 runbook prompts sync'd to dry-run-validated versions
+- AGENTS.md and top-level README aligned to the Brand Palette Extractor live-build target
