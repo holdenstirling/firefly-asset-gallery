@@ -138,6 +138,7 @@ interface BuildStudioStyleInput {
   paletteId: StylePaletteId;
   typographyId: TypographyPairId;
   parameters: GenerationParameters;
+  customPalette?: { swatches: string[] };
   existingId?: string;
   now?: string;
 }
@@ -173,6 +174,7 @@ export function buildStudioStyle({
   paletteId,
   typographyId,
   parameters,
+  customPalette,
   existingId,
   now = new Date().toISOString(),
 }: BuildStudioStyleInput): StudioStyle {
@@ -185,6 +187,7 @@ export function buildStudioStyle({
     paletteId,
     typographyId,
     parameters,
+    ...(customPalette ? { customPalette } : {}),
     createdAt: now,
     updatedAt: now,
   };
@@ -193,12 +196,13 @@ export function buildStudioStyle({
 export function styleToJsonTokens(style: StudioStyle): string {
   const palette = getStylePalette(style.paletteId);
   const typography = getTypographyPair(style.typographyId);
+  const swatches = style.customPalette?.swatches;
   const tokens = {
     name: style.name,
     palette: {
-      primary: palette.tokenValues[0],
-      secondary: palette.tokenValues[1],
-      accent: palette.tokenValues[2],
+      primary: swatches?.[0] ?? palette.tokenValues[0],
+      secondary: swatches?.[1] ?? palette.tokenValues[1],
+      accent: swatches?.[2] ?? palette.tokenValues[2],
     },
     typography: {
       heading: typography.heading,
@@ -214,12 +218,13 @@ export function styleToCssTokens(style: StudioStyle): string {
   const palette = getStylePalette(style.paletteId);
   const typography = getTypographyPair(style.typographyId);
   const tokenPrefix = slugify(style.name);
+  const swatches = style.customPalette?.swatches;
 
   return [
     `:root {`,
-    `  --style-${tokenPrefix}-color-primary: ${palette.tokenValues[0]};`,
-    `  --style-${tokenPrefix}-color-secondary: ${palette.tokenValues[1]};`,
-    `  --style-${tokenPrefix}-color-accent: ${palette.tokenValues[2]};`,
+    `  --style-${tokenPrefix}-color-primary: ${swatches?.[0] ?? palette.tokenValues[0]};`,
+    `  --style-${tokenPrefix}-color-secondary: ${swatches?.[1] ?? palette.tokenValues[1]};`,
+    `  --style-${tokenPrefix}-color-accent: ${swatches?.[2] ?? palette.tokenValues[2]};`,
     `  --style-${tokenPrefix}-font-heading: ${typography.heading};`,
     `  --style-${tokenPrefix}-font-body: ${typography.body};`,
     `}`,

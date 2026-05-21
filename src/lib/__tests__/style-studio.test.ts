@@ -43,6 +43,32 @@ describe("style studio helpers", () => {
     );
   });
 
+  it("round-trips customPalette and prefers swatches in token export", () => {
+    const swatches = ["#112233", "#445566", "#778899"];
+    const style = buildStudioStyle({
+      name: "Extracted Palette",
+      description: "From image",
+      paletteId: "firefly",
+      typographyId: "product",
+      parameters: DEFAULT_GENERATION_PARAMETERS,
+      customPalette: { swatches },
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(style.customPalette).toEqual({ swatches });
+
+    expect(JSON.parse(styleToJsonTokens(style)).palette).toEqual({
+      primary: "#112233",
+      secondary: "#445566",
+      accent: "#778899",
+    });
+
+    const css = styleToCssTokens(style);
+    expect(css).toContain("--style-extracted-palette-color-primary: #112233;");
+    expect(css).toContain("--style-extracted-palette-color-secondary: #445566;");
+    expect(css).toContain("--style-extracted-palette-color-accent: #778899;");
+  });
+
   it("creates generated assets from prompt and parameters", () => {
     const asset = createGeneratedAsset({
       prompt: "Cinematic launch hero with glowing product",
