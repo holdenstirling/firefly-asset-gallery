@@ -245,6 +245,7 @@ Optional follow-up beat: *"And that's the Cursor Team Kit story — 17 official 
 
 - `diagrams.md` — Mermaid diagrams for the opening (surface area) and closing (two-track) slides
 - `notes-alignment.md` — Friday-morning standalone reference: original notes + alignment table + the five narration tweaks verbatim
-- `dry-run-protocol.md` — full IDE dry-run rehearsal protocol with pre-flight checks, the three prompts verbatim, timing template, success criteria, and fallback procedure
+- `dry-run-protocol.md` — full IDE dry-run rehearsal protocol with pre-flight checks, prompts verbatim, success criteria, and fallback procedure. Includes dry-run results + 6 lessons learned.
+- `qa-cards.md` — 10 prepared Q&A cards for the question block at the end. Includes universal curveball recovery moves and 10 facts to recite cold.
 - `test-files.mdc` — file-pattern rule for Vitest test files (paste live during demo)
 - `pr-summary.md` — personal skill for generating PR descriptions (paste live during demo)
