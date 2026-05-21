@@ -47,7 +47,7 @@ src/
 
 ## Known intentional rough edges
 
-These exist on purpose so they can be addressed during a live demo:
+This exists on purpose so it can be addressed during a live demo:
 
 1. **Parameter panel does not feed into generation.** The panel updates the
    Zustand store, but `PromptBar.handleGenerate()` only logs the values.
