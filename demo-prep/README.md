@@ -60,7 +60,7 @@ The agent will discover Style Studio just shipped and surface that HOL-7 builds 
 **3b. Plan mode → switch model to Opus (~3 min) — THE headline beat:**
 
 Switch model on screen. Narrate:
-> *"Now I'm switching to Plan mode and to Opus. Plan mode is read-only — it reasons about my codebase, it doesn't touch it. Opus is what I reach for when the planning surface is wide. Costs more, plans better."*
+> *"Now I'm switching to Plan mode and to Opus. Plan mode is read-only — it reasons about my codebase, it doesn't touch it. Opus is what I reach for when the planning surface is wide. And this — this is one of the biggest differences from Claude Code. Cursor isn't locked to one lab. Opus for planning, Composer for execution, GPT-5.5 for spec writing. Same agent, your choice of model."*
 
 ```
 Use HOL-7 as the brief. Read AGENTS.md, the rules in .cursor/rules, and src/lib/store.ts (the Style Studio store) before planning. Generate a structured implementation plan into plan.md.
@@ -80,18 +80,35 @@ Narrate:
 
 **No pre-recorded video.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play.
 
-**Tab 1 — Slack thread (~10 sec):**
+**Tab 1 — Slack thread (~15 sec):**
 Open the holdenstirling Slack workspace, navigate to the channel with the original `@Cursor pick up HOL-6` ping.
-> *"While I plan locally, work with clear scope fans out. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
+> *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
 
-**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~20 sec):**
-> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
+**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25 sec, includes 15-20s screencast):**
+
+Open the dashboard for HOL-6. Play the pre-recorded screencast inline (see capture instructions below).
+
+> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Here's what it looked like when it ran [play 15-20s screencast]. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
+
+**Screencast capture — DO THIS BEFORE FRIDAY (~10 min, Option B from plan):**
+
+1. In Slack `holdenstirling`, fire a small new Cloud Agent task in `firefly-asset-gallery`:
+   ```
+   @Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
+   ```
+2. Open `cursor.com/agents`, click into the new run as soon as it shows up.
+3. Start macOS Screen Recording (`Cmd+Shift+5` -> "Record Selected Portion") on the dashboard's activity stream.
+4. Capture 15-20 seconds of the agent streaming its work (file reads, tool calls, edits).
+5. Save the clip to `~/Movies/cloud-agent-stream.mov` (or wherever you keep demo assets).
+6. Close the disposable PR without merging — it was just for the capture.
+
+Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen via QuickTime during the demo.
 
 **Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
 > *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
 
-**Tab 4 — PR #4, show the 2-line diff and the `cursoragent@cursor.com` author (~20 sec):**
-> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the SDLC."*
+**Tab 4 — PR #4, show the 2-line diff and the `cursoragent@cursor.com` author (~25 sec):**
+> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. This is one of Cursor's newer capabilities — Bugbot doesn't just review, it can dispatch the fix to a Cloud Agent in one click. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams."*
 
 **Pre-demo tab order (left to right in the browser):**
 1. https://cursor.com/agents — dashboard, HOL-6 run open
@@ -148,7 +165,7 @@ These files are **not** loaded by Cursor automatically. They live here so you ca
 
 ### Beat 2 — Encode the workflow you just demonstrated as a personal skill (~45 seconds)
 
-> *"That whole Ask → Plan → Build flow we just walked through — I'm going to capture it as a Skill so the next engineer on my team can run the same flow with one slash command."*
+> *"I just walked you through Ask → Plan → Build with hand-editing `plan.md`. I'm going to capture that entire flow as a personal Skill. The next engineer on my team doesn't have to learn this from scratch — they just type the slash command. This is how Cursor turns institutional knowledge into infrastructure."*
 
 1. Open the command palette → **`/Cursor create skill`**.
 2. Choose **Personal** (`~/.cursor/skills/`).
@@ -156,7 +173,7 @@ These files are **not** loaded by Cursor automatically. They live here so you ca
 4. Paste the contents of `pr-summary.md` from this folder into the resulting `SKILL.md`.
 5. Show that it's now usable across all projects, not just this one.
 
-Optional follow-up beat: *"And that's the Cursor Team Kit story — there are 17 official skills published already, plus everything any team has shared internally. Skills are how Cursor goes from a single-engineer tool to a team multiplier."*
+Optional follow-up beat: *"And that's the Cursor Team Kit story — 17 official skills published, plus everything any team has shared internally. Skills are how Cursor goes from a single-engineer tool to a team multiplier."*
 
 ## Files in this folder
 
