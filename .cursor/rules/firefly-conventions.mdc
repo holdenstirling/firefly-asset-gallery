@@ -1,0 +1,36 @@
+---
+description: Firefly Asset Gallery component and styling conventions
+alwaysApply: true
+---
+
+# Firefly Asset Gallery conventions
+
+## UI primitives
+- Use the shadcn-style primitives in `@/components/ui/*`. Do not introduce
+  alternative button, input, or dialog libraries.
+- For icons, use `lucide-react` only.
+- For client-side animations, use `motion` (the `motion` package), not
+  `framer-motion`.
+
+## Styling
+- All colors must come from CSS custom properties defined in
+  `src/app/globals.css`. Never hardcode hex values in components.
+- The `firefly-gradient` class (or `firefly-gradient-text`) is the brand
+  treatment — reach for it on hero CTAs and hero typography sparingly so it
+  remains a moment of emphasis.
+- Use the `cn()` helper from `@/lib/utils` for composing class lists.
+- Prefer Tailwind utility classes over inline `style` props.
+
+## Images
+- Build all image URLs through `picsumUrl()` in `@/lib/picsum.ts`. Never
+  inline `picsum.photos` URLs in components.
+- Always provide an `alt` value. For decorative images, use `alt=""`.
+
+## State
+- Local UI state: `useState`.
+- Cross-component client state: extend the Zustand stores in
+  `@/lib/store.ts`. Do not create parallel context providers.
+
+## TypeScript
+- Strict mode is on. Avoid `any` — use `unknown` and narrow.
+- Imports use the `@/` alias mapped to `./src` from `tsconfig.json`.

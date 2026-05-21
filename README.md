@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Firefly Asset Gallery
 
-## Getting Started
+A team-internal tool for browsing, organizing, and remixing generative assets —
+inspired by Adobe Firefly. Built with Next.js 16, TypeScript, Tailwind v4, and
+shadcn-style UI primitives.
 
-First, run the development server:
+This repo doubles as a live-demo vehicle for showcasing Cursor's
+**Ask → Plan → Build** workflow plus Cloud Agents and Bugbot.
+
+![Firefly Asset Gallery](https://picsum.photos/seed/firefly-cover/1280/400)
+
+## What's in here
+
+| Page | Status | Purpose |
+|------|--------|---------|
+| `/` (Gallery) | working | Masonry asset grid, prompt bar, style filters, asset detail modal |
+| `/collections` | working | Curated asset boards |
+| `/prompts` | working | Recent prompt history |
+| `/style-studio` | **skeleton** | Live-demo target — define reusable Style presets |
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+npm test             # vitest run
+npm run build        # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+No environment variables are required. All "generated" imagery is mocked via
+[Lorem Picsum](https://picsum.photos) — seeded URLs make the gallery
+deterministic across reloads.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js 16** (App Router, Turbopack, React 19)
+- **TypeScript** strict mode
+- **Tailwind CSS v4** with HSL-token theme
+- **Radix UI** primitives wrapped in shadcn-style components
+- **Zustand** for client state
+- **Vitest** + Testing Library
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                Routes (App Router)
+├── components/         Feature components + UI primitives
+└── lib/                Types, mock data, utils, picsum URL builder, stores
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+See `AGENTS.md` for full conventions and `.cursor/rules/` for the rules every
+agent run picks up automatically.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Live-demo flow
 
-## Deploy on Vercel
+This repo is staged for a Cursor kickoff demo:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Ask mode** — explore the codebase: "How does the gallery render assets?
+   Where do parameters get stored?"
+2. **Plan mode (Opus)** — generate a structured `plan.md` for the Style Studio
+   feature.
+3. **Edit `plan.md`** — add constraints, change scope, sign off.
+4. **Build mode (Composer)** — execute the plan in the IDE.
+5. **Cloud Agent (from Slack)** — fan out a separate task in parallel
+   (e.g. "add Playwright e2e tests for the colors page").
+6. **Bugbot** — review the resulting PR.
+7. **Rules + Skills** — capture the workflow as a reusable Skill for the team.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Intentional rough edges
+
+A few things are deliberately unfinished so they can be fixed live:
+
+- The parameter panel updates state but doesn't feed into the generate flow.
+- Favorites don't persist across reloads.
+- Style Studio is a marketing skeleton — the real feature is the live-build target.
+
+These are documented in `AGENTS.md`.
