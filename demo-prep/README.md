@@ -68,13 +68,24 @@ Use HOL-7 as the brief. Read AGENTS.md, the rules in .cursor/rules, and src/lib/
 
 **3c. Edit `plan.md` live (~30 sec) — the human-in-the-loop moment:**
 
-Open `plan.md`. Read it briefly out loud. Then add ONE constraint by hand:
-> "Must work for any Picsum URL"
-> or "No new runtime dependencies — Web APIs only"
-> or "Algorithm must run in under 100ms on a 1024×1024 image"
+Open `plan.md`. Read the Goal aloud. Add ONE constraint in a NEW "Constraints" section near the top (NOT mixed into the file lists — Composer may rewrite those sections when checking AC boxes).
+
+**Recommended (validated by dry-run):**
+
+```
+## Constraints
+- Color extraction must run in under 100ms on a 1024×1024 image. Downsample to a max of 96×96 with offscreen canvas before histogram bucketing.
+```
+
+**Why this constraint:**
+- ADDS to the ticket (perf budget), doesn't contradict it. The Linear ticket says nothing about extraction speed, so Composer has no source-of-truth conflict to rationalize around.
+- Demonstrable on stage: audience can verify Composer adds the downsampling step in the generated `palette-extraction.ts`.
+- Adobe-flavored: implies "must work for high-res Firefly outputs."
+
+**Avoid:** Constraints that contradict the Linear ticket text. Example anti-pattern from the dry-run: the ticket specified `Palette` Lucide icon, so adding "use Droplet icon instead" gets ignored because Opus correctly trusts the ticket.
 
 Narrate:
-> *"This is the moment. The plan is a file. I edit it like code. The agent doesn't get autonomy until I sign off."*
+> *"This is the moment. The plan is a file. I edit it like code. One line — extraction has to run in under 100ms on a 1024×1024 image. The agent doesn't get autonomy until I sign off."*
 
 ### 4. Fan out async work — Cloud Agent recap (~80 sec, ALL LIVE)
 

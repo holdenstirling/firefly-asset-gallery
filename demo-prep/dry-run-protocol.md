@@ -1,8 +1,12 @@
 # Dry-run protocol — HOL-7 (Brand Palette Extractor)
 
+**STATUS: Dry-run completed Thursday afternoon. Fallback branch captured. See "Dry-run results" section at bottom.**
+
 The single highest-leverage pre-Friday task. Goal: rehearse the IDE block end-to-end on a clean branch, time each phase against a clock, surface failure modes, and capture the resulting state as a `dry-run/hol-7-prebuilt` fallback branch.
 
-**Target:** `dry-run/hol-7` branch (already pushed, identical to `main`).
+**Target:** `dry-run/hol-7` branch (pushed, has the merged dry-run work).
+
+**Fallback:** `dry-run/hol-7-prebuilt` (pushed, identical to `dry-run/hol-7`, reserved as the emergency Build-mode-failed swap).
 
 **Time required:** 45-60 minutes for the dry-run itself plus 10 min for the prebuilt-fallback capture.
 
@@ -186,13 +190,68 @@ The audience will not notice — and if they do, you say *"that's the dry-run I 
 
 ---
 
-## What I (the agent) can do during the dry-run
+## Dry-run results (Thursday, May 21)
 
-I'm not going to run the dry-run for you — the whole point is for you to feel the cadence. But I can:
+**Outcome: success.** Feature shipped end-to-end. 23/23 tests passing. Draft PR opened ([PR #5](https://github.com/holdenstirling/firefly-asset-gallery/pull/5)). Fallback branch `dry-run/hol-7-prebuilt` captured.
 
-- Watch a live shell as you run it and time-stamp the phases
-- Review the populated `plan.md` for quality issues before you hit Build
-- Spot-check Composer's output and flag anything that looks off
-- After the dry-run, push the `dry-run/hol-7-prebuilt` branch and update the runbook with any timing-driven changes
+**Ask phase:** Agent correctly identified Style Studio as the dependency, surfaced the right files, flagged a real type-system question (`StudioStyle.paletteId` is a closed union but extracted palettes are arbitrary hex), and stopped without writing code. The `linear-feature-flow` skill fired correctly on "Implement HOL-7."
 
-If you want any of that, just ping me when you start the relevant phase.
+**Plan phase:** Opus produced a structured plan with both pre-decided architectural choices baked in (`customPalette` field + prompt-bar out of scope). The plan's "Out of scope" section explicitly narrowed the original AC line about prompt-bar selection. Plan included tests for hex format, frequency ordering, empty pixel data.
+
+**Hand-edit phase:** Tried the Droplet icon constraint. **It didn't bite** — Opus rationalized around it because the Linear ticket explicitly specifies the `Palette` icon. The agent correctly trusted the source-of-truth ticket text over a conflicting hand-edit. This is a critical learning.
+
+**Build phase:** Composer executed the plan in 10 steps. Ran `npm test` after each `src/lib/` change (testing-conventions rule firing visibly). Wrote 23 tests total (up from 18). Updated Linear AC checkboxes via MCP (so Linear MCP write IS authenticated — no need to neuter the skill). Opened draft PR #5 from `dry-run/hol-7`.
+
+**Files delivered (10 changed, 699 additions):**
+- New: `src/lib/palette-extraction.ts` (71 lines)
+- New: `src/lib/__tests__/palette-extraction.test.ts` (111 lines)
+- New: `src/app/palette-extractor/page.tsx` (347 lines)
+- Modified: `src/lib/types.ts`, `src/lib/style-studio.ts`, `src/lib/store.ts`, `src/app/style-studio/page.tsx`, `src/components/layout/sidebar.tsx`, `src/lib/__tests__/style-studio.test.ts`, `plan.md`
+
+---
+
+## Lessons learned — apply before Friday
+
+### Lesson 1 — Hand-edit must ADD to the plan, not CONTRADICT the Linear ticket
+
+The Droplet icon constraint failed because the Linear ticket explicitly specified the `Palette` icon. Opus correctly trusted the ticket. For Friday, the hand-edit should add a constraint the ticket doesn't speak to.
+
+**Friday hand-edit (updated in [runbook section 3c](README.md)):**
+```
+## Constraints
+- Color extraction must run in under 100ms on a 1024×1024 image. Downsample to a max of 96×96 with offscreen canvas before histogram bucketing.
+```
+
+This adds a perf budget the ticket doesn't specify. Verifiable on stage when Composer adds a downsampling step.
+
+### Lesson 2 — Hand-edit goes in its own section, near the top
+
+The dry-run hand-edit may have been wiped when Composer rewrote `plan.md` during Build to check the AC boxes. Putting the constraint in a clearly-labeled `## Constraints` section near the top makes it harder for Composer to inadvertently overwrite.
+
+### Lesson 3 — Linear MCP write works
+
+The skill's Phase 5 successfully updated HOL-7's AC checkboxes. No need to neuter the skill. Phase 5 stays as-written.
+
+### Lesson 4 — Composer runs tests automatically without prompting
+
+The `testing-conventions.mdc` rule worked exactly as intended — `npm test` ran after every `src/lib/` change. That's a visible wow moment for Friday's audience: tests fire on their own, the agent self-corrects when they fail.
+
+### Lesson 5 — Plan mode finds real architectural questions
+
+The Ask phase surfaced the `StudioStyle.paletteId` closed-union vs arbitrary-hex tension. The Plan phase honored the baked-in resolution without relitigating. For Friday: be ready to articulate this kind of decision IN THE MOMENT if the audience asks "what was the call there?"
+
+### Lesson 6 — Composer is happy to open a draft PR
+
+The `linear-feature-flow` Phase 5 instruction "Open a draft PR" worked first try. No additional configuration needed.
+
+---
+
+## What's still pending
+
+1. **Timing template** — user didn't capture exact phase times. If desired, run a quick second dry-run on a fresh branch with a stopwatch.
+2. **Friday rehearsal** — full timed read-through of the runbook end-to-end (now with the perf-constraint hand-edit instead of icon).
+3. **Adobe problem framing (Section 0a)** — still pending insert.
+4. **Enterprise security beat (Section 7.5)** — still pending insert.
+5. **`demo-prep/qa-cards.md`** — five prepared Q&A answers.
+6. **Screencast capture** — 15-20s of cursor.com/agents streaming a Cloud Agent run.
+7. **cursor.com/learn homework** — watch a few videos and skim a customer story.
