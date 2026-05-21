@@ -1,6 +1,5 @@
 # Plan
 
-> This file is intentionally empty. During the live demo, Plan mode (Opus) will
-> generate a structured plan here for the Style Studio feature. The presenter
-> will then edit the plan in this file before handing it off to Composer in
-> Build mode.
+> Intentionally empty. Plan mode (Opus) will populate this with a structured
+> implementation plan for the active Linear ticket. The presenter edits the plan
+> here before Build mode (Composer) executes it.
