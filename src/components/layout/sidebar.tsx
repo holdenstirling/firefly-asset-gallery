@@ -17,6 +17,7 @@ const NAV = [
   { href: "/", label: "Gallery", icon: LayoutGrid },
   { href: "/collections", label: "Collections", icon: Layers },
   { href: "/style-studio", label: "Style Studio", icon: Palette, badge: "New" },
+  { href: "/palette-extractor", label: "Palette Extractor", icon: Palette, badge: "New" },
   { href: "/prompts", label: "Prompt History", icon: History },
 ];
 
