@@ -133,7 +133,27 @@ Open the holdenstirling Slack workspace, navigate to the channel with the origin
 
 Open the dashboard for the agent you pre-fired ~5 min before the demo (see pre-fire steps below). It should be mid-flight by now, actively streaming tool calls.
 
-> *"Cursor's web dashboard. This is a Cloud Agent that's running right now — in Cursor's infrastructure, not on my laptop. You can watch it stream as it goes [pause 15-20s, point at the live tool calls / file reads / edits as they land]. Engineer goes to a meeting, comes back, the PR is open."*
+**Speaking notes**
+
+*Opening line as you switch to the tab (~3 sec):*
+> *"Cursor's web dashboard. This is a Cloud Agent that's running **right now** — in Cursor's infrastructure, not on my laptop."*
+
+*Patter beats for the 15-20s live stream — pick 2-3 based on what's actually on screen. Do NOT try to deliver all five; the goal is to never have dead air, not to lecture.*
+
+- **If the agent is reading a file:** *"Watch this — it's reading `src/lib/picsum.ts` to understand the existing shape before it edits. Same pattern Composer uses locally; this one's just remote."*
+- **If an edit is landing:** *"There — that's the edit. JSDoc block, generated and inserted in the right spot. No context switch, no IDE on my machine."*
+- **If a tool-call panel is expanding:** *"Every tool call is visible. Read, edit, terminal — all auditable. This is what 'governance' actually looks like in practice."*
+- **If the agent is opening a PR:** *"And there's the PR opening — that's the handoff back to humans."*
+- **Generic filler if nothing photogenic is on screen this second:** *"Same primitives as Composer in the IDE — read, edit, run, commit — just running on Cursor's machines instead of mine. I could close my laptop right now and this would still finish."*
+
+*Closing line as you switch to Tab 3 (~3 sec):*
+> *"Engineer kicks it off, goes to a meeting, comes back, the PR is open. Speaking of PRs — here's a real one from yesterday."* [switch to Tab 3]
+
+**Stage tips while the stream is running:**
+
+- Stand still. Don't click around in the dashboard. The activity stream *is* the demo; let it be the moving thing on screen.
+- If the activity log is showing a quiet moment, scroll up a few entries to surface a denser tool-call section before resuming patter. The audience reads that as "reviewing recent work" — totally natural.
+- If an audience question lands mid-stream, **answer it**. The stream keeps running on screen behind your voice, which is a better demo of "asynchronous" than the scripted version. Resume the close when the question is done.
 
 **Pre-fire BEFORE you start the demo (~5 min before kickoff):**
 
@@ -145,13 +165,32 @@ Cloud Agents take a couple of minutes to spin up. The agent needs to be actively
    ```
    Intentionally small but visibly multi-step (reads `src/lib/picsum.ts`, edits it, opens a PR) so the activity stream has something interesting to watch for ~15-20 sec.
 2. Open `cursor.com/agents` in a browser tab and click into the new run as soon as it appears. Keep this tab open as **Tab 2** in your pre-staged tab order — it *is* the live demo asset.
-3. Verify the run is actively streaming (tool calls landing every few seconds). If it's already finished by the time you check, fire a second one with a slightly different prompt and use that run instead.
+3. Verify the run is actively streaming (tool calls landing every few seconds). If it's already finished by the time you check, fire a second one with a slightly different prompt (e.g. swap `picsumUrl` for `cn` in `src/lib/utils.ts`) and use that run instead.
 4. After the demo, close the disposable PR without merging — it was just for the live stream.
 
-**Fallback if the agent finishes early or fails:**
+**Pre-fire timing cheat sheet:**
 
-- **Finished early:** scroll the activity stream back to a section with dense tool calls and walk through it as a completed run. Tweak the narration: drop "right now," and say *"Here's what it looked like as it ran"* — same beat, no panic.
-- **Failed to start / errored:** switch to Tab 3 a beat early and bridge with *"Cloud Agent runs in Cursor's infrastructure — same surface area as the dashboard you just saw — and here's what it produced on a real run yesterday: PR #3."* The PR #3 narration already covers the "agent did real work" point.
+| T-minus | Action |
+|---|---|
+| ~7 min | Send the `@Cursor` Slack prompt. Switch back to setting up other demo tabs. |
+| ~5 min | Open `cursor.com/agents`, click into the run, confirm it's streaming. Park it as Tab 2. |
+| ~2 min | Glance: still running? If already finished, fire a second prompt with a different file. |
+| 0 (kickoff) | Begin Section 0a. Tab 2 should still be mid-flight when you hit it ~8 min in. |
+
+**Fallback narration (use verbatim — don't improvise under pressure):**
+
+- **Agent finished early (PR is already open by the time you reach Tab 2):** Scroll the activity log back to a dense tool-call section. Replace the opening line with:
+  > *"This one actually wrapped already — Cloud Agents are fast on small tasks. Same stream though, just rewound. Look at the tool calls — file read, edit, PR open. Engineer kicks it off, goes to a meeting, comes back, the PR is open."*
+
+  Then jump straight to the Tab 3 transition. You lose ~10 sec; absorb it into the buffer.
+
+- **Agent failed to start or errored out:** Don't dwell on the failure or open the error. Pivot to Tab 3 a beat early. Replace the opening line with:
+  > *"Cloud Agent runs in Cursor's infrastructure — same surface area as this dashboard. Here's what one of them produced on a real run yesterday: PR #3."*
+
+  Continue with the existing Tab 3 narration as written.
+
+- **Audience interrupts with a question while the stream is running:** Answer it directly. Do **not** apologize for "the demo running in the background" — that's the demo working. When the question is done:
+  > *"…and as you can see, that whole exchange — the agent kept going. That's the point. Anyway — PR #3."* [switch to Tab 3]
 
 **Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
 > *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
