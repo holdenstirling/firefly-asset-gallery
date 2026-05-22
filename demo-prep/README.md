@@ -582,9 +582,10 @@ These files are **not** loaded by Cursor automatically. They live here so you ca
 
 ## Files in this folder
 
+- **`friday-morning-prep.md`** — single-page day-of prep checklist. Read this with coffee 10 min before the call. Consolidates environment checks, tab staging, headline lines to read aloud, verbatim prompts cheat sheet, red-flag recovery moves, time budget, and Adobe-framing reminders into one scannable document.
 - `diagrams.md` — Mermaid diagrams for the opening (surface area) and closing (two-track) slides
-- `notes-alignment.md` — Friday-morning standalone reference: original notes + alignment table + the five narration tweaks verbatim
-- `dry-run-protocol.md` — full IDE dry-run rehearsal protocol with pre-flight checks, prompts verbatim, success criteria, and fallback procedure. Includes dry-run results + 6 lessons learned.
+- `notes-alignment.md` — audit of original notes against the final runbook coverage
+- `dry-run-protocol.md` — full IDE dry-run rehearsal protocol with pre-flight checks, prompts verbatim, success criteria, and fallback procedure. Includes Thursday's dry-run results + 6 lessons learned.
 - `qa-cards.md` — 10 prepared Q&A cards for the question block at the end. Includes universal curveball recovery moves and 10 facts to recite cold.
 - `test-files.mdc` — file-pattern rule for Vitest test files (paste live during demo)
 - `pr-summary.md` — personal skill for generating PR descriptions (paste live during demo)
