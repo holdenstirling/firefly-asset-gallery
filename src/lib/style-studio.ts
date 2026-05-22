@@ -140,6 +140,7 @@ interface BuildStudioStyleInput {
   parameters: GenerationParameters;
   existingId?: string;
   now?: string;
+  customPalette?: string[];
 }
 
 export function getStylePalette(id: StylePaletteId): StylePalette {
@@ -175,6 +176,7 @@ export function buildStudioStyle({
   parameters,
   existingId,
   now = new Date().toISOString(),
+  customPalette,
 }: BuildStudioStyleInput): StudioStyle {
   const trimmedName = name.trim() || "Untitled Style";
 
@@ -187,7 +189,36 @@ export function buildStudioStyle({
     parameters,
     createdAt: now,
     updatedAt: now,
+    ...(customPalette && customPalette.length > 0
+      ? { customPalette: [...customPalette] }
+      : {}),
   };
+}
+
+/**
+ * Builds a `StudioStyle` from an extracted palette. The legacy `paletteId`
+ * field defaults to `firefly` so the swatch-card chrome stays consistent, and
+ * the raw hex palette is stored on `customPalette` so it can be surfaced
+ * elsewhere in Style Studio.
+ */
+export function buildStudioStyleFromPalette({
+  name,
+  palette,
+  now = new Date().toISOString(),
+}: {
+  name: string;
+  palette: string[];
+  now?: string;
+}): StudioStyle {
+  return buildStudioStyle({
+    name,
+    description: `Extracted palette — ${palette.length} swatches`,
+    paletteId: "firefly",
+    typographyId: "product",
+    parameters: DEFAULT_GENERATION_PARAMETERS,
+    customPalette: palette,
+    now,
+  });
 }
 
 export function styleToJsonTokens(style: StudioStyle): string {
