@@ -67,6 +67,14 @@ npm run test:watch
 npm run lint
 ```
 
+## Cursor Cloud specific instructions
+
+- **Single service:** Only the Next.js dev server needs to run (`npm run dev` on port 3000). No database, Docker, or external services required.
+- **All data is mocked:** Assets, collections, and prompts use in-memory mock data from `@/lib/mock-data.ts`. Images come from the public Lorem Picsum CDN (`picsum.photos`), which requires internet access.
+- **Commands reference:** See the Commands section above for lint/test/build/dev. All use `npm run <script>`.
+- **Turbopack:** The dev server uses Turbopack by default (Next.js 16). Hot reload is fast and reliable.
+- **No environment variables or secrets:** The app has no `.env` file and requires no credentials.
+
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
