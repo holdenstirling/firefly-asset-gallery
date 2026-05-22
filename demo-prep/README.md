@@ -40,15 +40,15 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 | 1 · cursor.com/agents | 60s | 1:55 |
 | 2 · Linear ticket | 30s | 2:25 |
 | 3 · Ask → Plan → hand-edit | 5:00 | 7:25 |
-| 4 · Cloud Agent + Bugbot 4-tab walkthrough (incl. 15-20s screencast) | 90s | 8:55 |
-| 5 · Build mode | 3:30 | 12:25 |
-| 6 · Review the result | 60s | 13:25 |
-| 7 · Rules + Skills live creation | 2:00 | 15:25 |
-| 7.5 · Enterprise controls | 25s | 15:50 |
-| 8 · Two-track recap + trial plan | 60s | 16:50 |
+| 4 · ALL LIVE — Slack fire + Cloud Agent + Bugbot 4-tab walkthrough | 110s | 9:15 |
+| 5 · Build mode | 3:30 | 12:45 |
+| 6 · Review the result | 60s | 13:45 |
+| 7 · Rules + Skills live creation | 2:00 | 15:45 |
+| 7.5 · Enterprise controls | 25s | 16:10 |
+| 8 · Two-track recap + trial plan | 60s | 17:10 |
 | Q&A buffer | 1-3 min | within 20 min |
 
-Total script: ~17 min. Allows 3 min for organic Q&A inside a 20-min slot. Tight but achievable.
+Total script: ~17:10. Allows ~3 min for organic Q&A inside a 20-min slot. Tight but achievable.
 
 ### 0a. Adobe problem framing (~25 sec)
 
@@ -154,48 +154,67 @@ Narrate:
 
 This is the sequential path — safer narratively. If you want to overlap Build and async (saves ~90 sec wall-clock), see "Concurrent variant" at the end of this file.
 
-### 4. Fan out async work — Cloud Agent recap (~90 sec, ALL LIVE)
+### 4. Fan out async work — ALL LIVE Cloud Agent demonstration (~110 sec)
 
-**No pre-recorded video.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play.
+**All four tabs are live. No pre-recorded video. No pre-staged scrolling to old threads.** You fire a fresh `@Cursor` mention in Slack on stage — `@Cursor` acknowledges in <15 sec (smoke-tested) — and you walk through the visible activity in real time. Tabs 3 and 4 still show yesterday's PR #3 and PR #4 as evidence of what happens when the loop completes (Bugbot takes 5-15 min to review a fresh PR, which is why those two stay as historical artifacts).
 
-**Tab 1 — Slack thread (~15 sec):**
-Open the holdenstirling Slack workspace, navigate to the channel with the original `@Cursor pick up HOL-6` ping.
-> *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
+**Tab 1 — Slack: live-fire `@Cursor` (~30 sec):**
 
-**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25 sec, includes 15-20s screencast):**
+Switch to the Slack tab — your DM with `@Cursor` is already open.
 
-Open the dashboard for HOL-6. Play the pre-recorded screencast inline (see capture instructions below).
+> *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents. Watch this."*
 
-> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Here's what it looked like when it ran [play 15-20s screencast]. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
+Paste this message and hit Enter:
 
-**Screencast capture — DO THIS BEFORE FRIDAY (~10 min, Option B from plan):**
+```
+@Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
+```
 
-1. In Slack `holdenstirling`, fire a small new Cloud Agent task in `firefly-asset-gallery`:
-   ```
-   @Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
-   ```
-2. Open `cursor.com/agents`, click into the new run as soon as it shows up.
-3. Start macOS Screen Recording (`Cmd+Shift+5` -> "Record Selected Portion") on the dashboard's activity stream.
-4. Capture 15-20 seconds of the agent streaming its work (file reads, tool calls, edits).
-5. Save the clip to `~/Movies/cloud-agent-stream.mov` (or wherever you keep demo assets).
-6. Close the disposable PR without merging — it was just for the capture.
+@Cursor acknowledges within ~15 sec. Narrate over the acknowledgment:
 
-Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen via QuickTime during the demo.
+> *"Same surface area, real-time. Three sentences in Slack. The agent picks it up, clones the repo, gets to work — all in Cursor's infrastructure, not on my laptop. Let me show you what that looks like on the dashboard."*
 
-**Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
-> *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
+**Tab 2 — `cursor.com/agents`: live run streaming (~25 sec):**
 
-**Tab 4 — PR #4, show the 2-line diff and the `cursoragent@cursor.com` author (~25 sec):**
-> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. This is one of Cursor's newer capabilities — Bugbot doesn't just review, it can dispatch the fix to a Cloud Agent in one click. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams."*
+Switch to the `cursor.com/agents` tab. Refresh if needed. Click into the brand-new run that just appeared at the top.
 
-**Pre-demo tab order (left to right in the browser):**
-1. https://cursor.com/agents — dashboard, HOL-6 run open
-2. Slack workspace `holdenstirling`, channel with the `@Cursor` thread
+> *"Cursor's web dashboard. There's the run I just fired — happening live right now. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open.*
+>
+> *Now — here's where this gets interesting. The same loop ran yesterday for a different ticket. Let me show you what happens once Cursor's done."*
+
+**Tab 3 — PR #3 with Bugbot review (~30 sec):**
+
+Switch to PR #3, anchored to Bugbot's comment on `asset-card.tsx:44`.
+
+> *"PR #3. Cloud Agent opened it yesterday after the same Slack-fired flow. Playwright tests for the gallery — exactly what was asked for. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped. Keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
+
+**Tab 4 — PR #4 with Bugbot autofix (~25 sec):**
+
+Switch to PR #4 Files Changed view. Point at the 2-line diff and the `cursoragent@cursor.com` author.
+
+> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams. Now — back to my local work."*
+
+**Pre-demo tab order (left to right in the browser, all open BEFORE the demo starts):**
+1. https://cursor.com/agents — dashboard, signed in, scrolled to top
+2. Slack workspace `holdenstirling`, DM with `@Cursor` open, scrolled to bottom, ready to paste
 3. https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971 — auto-scrolls to Bugbot's comment
 4. https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files — PR #4 Files Changed view
 
-**Friday morning sanity check (2 min):**
-- Open all 4 tabs cold, in order, and click through them once with the narration cues. If any tab fails to load or scroll to the right place, you'll catch it before the meeting starts, not during.
+**Friday morning sanity check (3 min):**
+1. Open all 4 tabs cold, in order, and click through them once with the narration cues
+2. **Slack smoke test** — fire this exact message in your `@Cursor` DM and time the response:
+   ```
+   @Cursor what version of Next.js does firefly-asset-gallery use?
+   ```
+   Expected: acknowledgment within 15 seconds. If response is consistently slower, see "Recovery if @Cursor is slow" below.
+
+**Recovery if @Cursor is slow on the day:**
+
+If @Cursor takes >20 sec to respond when you fire the live mention in Section 4 Tab 1, say:
+
+> *"Sometimes the agent takes a moment — let me show you a run from yesterday while we wait."*
+
+Then pivot directly to Tab 3 (PR #3). When @Cursor's acknowledgment comes through later in the demo, you can briefly return to Tab 1 to point at it: *"And there it is — same loop just kicked off."*
 
 ### 5. Build mode → switch model to Composer (~3:30 min)
 

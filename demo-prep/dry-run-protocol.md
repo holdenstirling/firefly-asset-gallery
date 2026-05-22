@@ -248,12 +248,11 @@ The `linear-feature-flow` Phase 5 instruction "Open a draft PR" worked first try
 
 ## What's still pending
 
-Updated after the May 21 audit + P1 runbook fixes:
+Updated after Section 4 was switched to all-live:
 
-1. **Screencast capture** — 15-20s of cursor.com/agents streaming a Cloud Agent run. See Section 4 Tab 2 in the runbook for capture instructions. ~10 min.
-2. **cursor.com/learn homework** — watch a few videos and skim one customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). Look for a new feature you can name-drop. ~25 min.
-3. **Friday rehearsal** — full timed read-through of the runbook end-to-end (now with sync'd dry-run prompts and the perf-constraint hand-edit).
-4. **Optional: timed dry-run** — run Ask → Plan → Build on a fresh branch against a stopwatch. Only useful if you suspect Plan-mode Opus is faster or slower than 3 min in practice.
+1. **cursor.com/learn homework** — watch a few videos and skim one customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). Look for a new feature you can name-drop. ~25 min.
+2. **Friday rehearsal** — full timed read-through of the runbook end-to-end (now with sync'd dry-run prompts and the perf-constraint hand-edit, plus the all-live Section 4).
+3. **Friday-morning Slack smoke test** — fire one test `@Cursor` mention in your DM and time the response. Expected: <15 sec. See Section 4 in the runbook for the exact message and recovery procedure if slow.
 
 Completed since the dry-run:
 - Adobe problem framing (Section 0a) — baked in
@@ -261,3 +260,6 @@ Completed since the dry-run:
 - `demo-prep/qa-cards.md` — 10 cards (up from 5 originally scoped)
 - P1 runbook prompts sync'd to dry-run-validated versions
 - AGENTS.md and top-level README aligned to the Brand Palette Extractor live-build target
+- Section 4 switched to ALL LIVE (no pre-recorded screencast); live-fire `@Cursor` in Slack on stage
+- Mermaid diagrams re-rendered (Diagram 2 phantom-node bug fixed); PNG + SVG saved to `demo-prep/`
+- Slide deck prompt finalized for Google Slides; 4-slide deck built by user

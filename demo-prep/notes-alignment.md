@@ -80,7 +80,7 @@ Standalone audit of the demo against your original notes. Read this Friday morni
 | Build mode w/ Composer | DONE | Section 5 |
 | Model agnostic | **NOW IN NARRATION** | Section 3b at model switch |
 | 10 minutes total | TIGHT | IDE block ~10 min nominal |
-| Video of agent reviewing | RESHAPED + screencast | Tab 2 has 15-20s screencast (production TODO); Tab 4 has Bugbot review of PR #3 |
+| Video of agent reviewing | RESHAPED + ALL LIVE | Tab 1 fires `@Cursor` live on stage; Tab 2 shows the live run streaming on `cursor.com/agents`; Tabs 3 + 4 use PR #3 and PR #4 as completed-loop evidence (because Bugbot takes 5-15 min to review a fresh PR, which the live demo can't wait for) |
 | Kick off and step away | DONE | Tab 2 screencast captures the "step away" feel |
 | Riding shotgun | DONE | Section 3 + Diagram 2 |
 | Places to use Cursor | DONE | Diagram 1 |
@@ -133,12 +133,12 @@ These are now live in the runbook. If you want the verbatim source-of-truth in o
 
 ## What still has to happen between now and Friday
 
-Updated after the May 21 audit. All structural prep is DONE. What's left is your time:
+Updated after the all-live Section 4 decision. All structural prep is DONE. What's left is your time:
 
 1. **Cursor employee homework** — watch [cursor.com/learn](https://cursor.com/learn) videos, skim a recent customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). 30 minutes total. Look for: language they use, what they emphasize, any new feature you can name-drop. *"Extra points for using a new feature"* came directly from the Cursor employee feedback.
-2. **15-20s screencast capture** — see Section 4 Tab 2 instructions in the runbook. ~10 minutes.
-3. **Full timed read-through of the runbook end-to-end** — out loud, against a stopwatch. Confirm 16:50 wall-clock with sequential Section 4.
-4. **Four high-leverage moments rehearsed twice each** — Adobe framing (Section 0a), plan-mode hand-edit narration, enterprise controls beat (Section 7.5), closing recap.
+2. **Full timed read-through of the runbook end-to-end** — out loud, against a stopwatch. Confirm 17:10 wall-clock with all-live Section 4.
+3. **Four high-leverage moments rehearsed twice each** — Adobe framing (Section 0a), plan-mode hand-edit narration, enterprise controls beat (Section 7.5), closing recap.
+4. **Friday-morning Slack smoke test** — fire one `@Cursor` mention to confirm response time is still <15 sec.
 
 Already done (don't re-do):
 - IDE dry-run on HOL-7 — completed, fallback branch `dry-run/hol-7-prebuilt` captured
@@ -147,6 +147,11 @@ Already done (don't re-do):
 - `demo-prep/qa-cards.md` — 10 prepared Q&A cards
 - Runbook prompts sync'd to dry-run-validated versions
 - `feat/hol-7` branch creation step added to Section 3
+- Section 4 switched to all-live (no screencast capture needed)
+- Mermaid diagrams re-rendered (PNG + SVG in `demo-prep/`)
+- Slide deck built by user in Google Slides
+
+Note: the **screencast capture task** that previously sat in pending lists has been REMOVED. With the all-live approach, the dashboard view of a streaming run is captured in real time during the demo itself.
 
 ---
 
