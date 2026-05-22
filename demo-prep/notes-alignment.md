@@ -80,8 +80,8 @@ Standalone audit of the demo against your original notes. Read this Friday morni
 | Build mode w/ Composer | DONE | Section 5 |
 | Model agnostic | **NOW IN NARRATION** | Section 3b at model switch |
 | 10 minutes total | TIGHT | IDE block ~10 min nominal |
-| Video of agent reviewing | RESHAPED + screencast | Tab 2 has 15-20s screencast (production TODO); Tab 4 has Bugbot review of PR #3 |
-| Kick off and step away | DONE | Tab 2 screencast captures the "step away" feel |
+| Video of agent reviewing | RESHAPED + live stream | Tab 2 shows a live Cloud Agent streaming (pre-fired ~5 min before demo); Tab 4 has Bugbot review of PR #3 |
+| Kick off and step away | DONE | Tab 2 live stream captures the "step away" feel |
 | Riding shotgun | DONE | Section 3 + Diagram 2 |
 | Places to use Cursor | DONE | Diagram 1 |
 | Models so good to run async | **NOW IN NARRATION** | Section 4 Tab 1 opening line |
@@ -138,7 +138,7 @@ From your notes that aren't yet covered by structural artifacts:
 1. **Security beat (Section 7.5)** — still pending in the plan. Covers SOC 2, zero data retention, SSO/SCIM, model controls. ~20 seconds.
 2. **Adobe problem framing (Section 0a)** — still pending in the plan. Names Adobe's constraints (Creative Cloud scale, a11y, IP) before the surface-area diagram. ~30 seconds.
 3. **Cursor employee homework** — watch [cursor.com/learn](https://cursor.com/learn) videos, skim a recent customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). 30 minutes total. Look for: language they use, what they emphasize, any new feature you can name-drop.
-4. **15-20s screencast capture** — see Section 4 Tab 2 instructions in the runbook. ~10 minutes.
+4. **Live pre-fire dry-run** — practice the Section 4 Tab 2 pre-fire flow once end-to-end (fire from Slack, click into the run on `cursor.com/agents`, confirm streaming starts within ~2 min). ~5 minutes. The demo itself runs this live, no recording needed.
 5. **IDE dry-run on HOL-7** — single highest-priority remaining task.
 
 ---

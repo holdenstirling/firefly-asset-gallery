@@ -40,7 +40,7 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 | 1 · cursor.com/agents | 60s | 1:55 |
 | 2 · Linear ticket | 30s | 2:25 |
 | 3 · Ask → Plan → hand-edit | 5:00 | 7:25 |
-| 4 · Cloud Agent + Bugbot 4-tab walkthrough (incl. 15-20s screencast) | 90s | 8:55 |
+| 4 · Cloud Agent + Bugbot 4-tab walkthrough (incl. 15-20s live stream) | 90s | 8:55 |
 | 5 · Build mode | 3:30 | 12:25 |
 | 6 · Review the result | 60s | 13:25 |
 | 7 · Rules + Skills live creation | 2:00 | 15:25 |
@@ -129,25 +129,29 @@ Narrate:
 Open the holdenstirling Slack workspace, navigate to the channel with the original `@Cursor pick up HOL-6` ping.
 > *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
 
-**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25 sec, includes 15-20s screencast):**
+**Tab 2 — `cursor.com/agents` run detail for the live pre-fire agent (~25 sec, 15-20s of live streaming):**
 
-Open the dashboard for HOL-6. Play the pre-recorded screencast inline (see capture instructions below).
+Open the dashboard for the agent you pre-fired ~5 min before the demo (see pre-fire steps below). It should be mid-flight by now, actively streaming tool calls.
 
-> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Here's what it looked like when it ran [play 15-20s screencast]. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
+> *"Cursor's web dashboard. This is a Cloud Agent that's running right now — in Cursor's infrastructure, not on my laptop. You can watch it stream as it goes [pause 15-20s, point at the live tool calls / file reads / edits as they land]. Engineer goes to a meeting, comes back, the PR is open."*
 
-**Screencast capture — DO THIS BEFORE FRIDAY (~10 min, Option B from plan):**
+**Pre-fire BEFORE you start the demo (~5 min before kickoff):**
+
+Cloud Agents take a couple of minutes to spin up. The agent needs to be actively streaming when you reach Tab 2 (~8 min into the script), so fire it ~5 min before you start narrating.
 
 1. In Slack `holdenstirling`, fire a small new Cloud Agent task in `firefly-asset-gallery`:
    ```
    @Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
    ```
-2. Open `cursor.com/agents`, click into the new run as soon as it shows up.
-3. Start macOS Screen Recording (`Cmd+Shift+5` -> "Record Selected Portion") on the dashboard's activity stream.
-4. Capture 15-20 seconds of the agent streaming its work (file reads, tool calls, edits).
-5. Save the clip to `~/Movies/cloud-agent-stream.mov` (or wherever you keep demo assets).
-6. Close the disposable PR without merging — it was just for the capture.
+   Intentionally small but visibly multi-step (reads `src/lib/picsum.ts`, edits it, opens a PR) so the activity stream has something interesting to watch for ~15-20 sec.
+2. Open `cursor.com/agents` in a browser tab and click into the new run as soon as it appears. Keep this tab open as **Tab 2** in your pre-staged tab order — it *is* the live demo asset.
+3. Verify the run is actively streaming (tool calls landing every few seconds). If it's already finished by the time you check, fire a second one with a slightly different prompt and use that run instead.
+4. After the demo, close the disposable PR without merging — it was just for the live stream.
 
-Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen via QuickTime during the demo.
+**Fallback if the agent finishes early or fails:**
+
+- **Finished early:** scroll the activity stream back to a section with dense tool calls and walk through it as a completed run. Tweak the narration: drop "right now," and say *"Here's what it looked like as it ran"* — same beat, no panic.
+- **Failed to start / errored:** switch to Tab 3 a beat early and bridge with *"Cloud Agent runs in Cursor's infrastructure — same surface area as the dashboard you just saw — and here's what it produced on a real run yesterday: PR #3."* The PR #3 narration already covers the "agent did real work" point.
 
 **Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
 > *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
@@ -156,7 +160,7 @@ Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen 
 > *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. This is one of Cursor's newer capabilities — Bugbot doesn't just review, it can dispatch the fix to a Cloud Agent in one click. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams."*
 
 **Pre-demo tab order (left to right in the browser):**
-1. https://cursor.com/agents — dashboard, HOL-6 run open
+1. https://cursor.com/agents — dashboard, the pre-fired picsum JSDoc run open and actively streaming
 2. Slack workspace `holdenstirling`, channel with the `@Cursor` thread
 3. https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971 — auto-scrolls to Bugbot's comment
 4. https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files — PR #4 Files Changed view
