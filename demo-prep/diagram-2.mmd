@@ -1,0 +1,31 @@
+%%{init: {"theme": "dark", "themeVariables": {"fontFamily": "Inter, system-ui, sans-serif", "fontSize": "15px"}, "flowchart": {"htmlLabels": true, "curve": "basis", "padding": 18}}}%%
+flowchart LR
+    L["Linear ticket"]:::anchor
+
+    subgraph LOCAL["Local — ride shotgun"]
+        direction TB
+        A["Ask<br/><span style='font-size:11px;opacity:0.7'>scope the work</span>"]:::local
+        P["Plan + Opus<br/><span style='font-size:11px;opacity:0.7'>edit plan.md by hand</span>"]:::local
+        B["Build + Composer<br/><span style='font-size:11px;opacity:0.7'>execute the plan</span>"]:::local
+        A --> P --> B
+    end
+
+    subgraph ASYNC["Async — Cloud Agents"]
+        direction TB
+        S["Slack · @Cursor"]:::async
+        C["Cloud Agent<br/><span style='font-size:11px;opacity:0.7'>writes code → PR opened</span>"]:::async
+        BB["Bugbot review<br/><span style='font-size:11px;opacity:0.7'>catches a11y bug</span>"]:::async
+        F["Autofix Cloud Agent<br/><span style='font-size:11px;opacity:0.7'>PR with fix</span>"]:::async
+        S --> C --> BB --> F
+    end
+
+    M(["main shipped"]):::anchor
+
+    L --> A
+    L --> S
+    B --> M
+    F --> M
+
+    classDef local fill:#1e2a1e,stroke:#a6e3a1,color:#cdd6f4,stroke-width:1.5px;
+    classDef async fill:#1e1e2e,stroke:#89b4fa,color:#cdd6f4,stroke-width:1.5px;
+    classDef anchor fill:#2a221e,stroke:#f9e2af,color:#f9e2af,stroke-width:2px;

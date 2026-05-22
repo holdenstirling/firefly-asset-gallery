@@ -40,15 +40,15 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 | 1 · cursor.com/agents | 60s | 1:55 |
 | 2 · Linear ticket | 30s | 2:25 |
 | 3 · Ask → Plan → hand-edit | 5:00 | 7:25 |
-| 4 · Cloud Agent + Bugbot 4-tab walkthrough (incl. 15-20s screencast) | 90s | 8:55 |
-| 5 · Build mode | 3:30 | 12:25 |
-| 6 · Review the result | 60s | 13:25 |
-| 7 · Rules + Skills live creation | 2:00 | 15:25 |
-| 7.5 · Enterprise controls | 25s | 15:50 |
-| 8 · Two-track recap + trial plan | 60s | 16:50 |
+| 4 · ALL LIVE — Slack fire + Cloud Agent + Bugbot 4-tab walkthrough | 110s | 9:15 |
+| 5 · Build mode | 3:30 | 12:45 |
+| 6 · Review the result | 60s | 13:45 |
+| 7 · Rules + Skills live creation | 2:00 | 15:45 |
+| 7.5 · Enterprise controls | 25s | 16:10 |
+| 8 · Two-track recap + trial plan | 60s | 17:10 |
 | Q&A buffer | 1-3 min | within 20 min |
 
-Total script: ~17 min. Allows 3 min for organic Q&A inside a 20-min slot. Tight but achievable.
+Total script: ~17:10. Allows ~3 min for organic Q&A inside a 20-min slot. Tight but achievable.
 
 ### 0a. Adobe problem framing (~25 sec)
 
@@ -77,17 +77,45 @@ Spoken intro:
 > *"Hi, I'm Holden. Over the next 17 minutes I'll walk you through three things: where Cursor lives — it's not just an editor anymore; the workflow engineering teams run today — read a ticket, plan with Opus, build with Composer, fan out async work to Cloud Agents; and how this scales beyond one engineer with rules, skills, and Bugbot. I'll keep slides minimal — most of this is in a real codebase. Jump in with questions any time."*
 
 ### 1. Where Cursor lives — cursor.com/agents (~1 min)
-Pre-stage 1–2 completed runs (HOL-5 already shipped, HOL-6 PR #3 still open). Show the dashboard.
-> *"This is cursor.com/agents — Cursor isn't just an editor, it's a surface area. Same agents from anywhere: web, Slack, IDE."*
+
+The dashboard already has visible Cloud Agent activity from this repo:
+- PR #7 (Slack-fired JSDoc smoke test, merged)
+- PR #4 (Bugbot autofix Cloud Agent, open)
+- PR #3 (HOL-6 Playwright tests, open)
+- PR #2 (HOL-5 Style Studio, merged — may be below the fold)
+
+Show the dashboard. Narrate (this version is agnostic to which specific runs are at the top of the list):
+
+> *"This is cursor.com/agents — Cursor isn't just an editor, it's a surface area. Same agents from anywhere: web, Slack, IDE. You can see runs from this repo — features shipped, tests in flight, autofixes from Bugbot. We'll come back to this dashboard later."*
+
+**Optional pre-show staging (90 sec, only if you want a guaranteed-fresh run at the top of the dashboard):** fire `@Cursor in firefly-asset-gallery add a JSDoc comment to the cn helper in src/lib/utils.ts` in Slack ~5 minutes before showtime. The completed/streaming run will sit at the top of the dashboard during Section 1.
 
 ### 2. Where work actually starts: a Linear ticket (~30 sec)
 Open Linear, show HOL-7.
 > *"Real engineering work starts with a ticket. Watch what happens when Cursor reads one."*
 
-### 3. THE PLAN MOMENT — switch to IDE on `firefly-asset-gallery`, branch `main`
+### 3. THE PLAN MOMENT — switch to IDE on `firefly-asset-gallery`
 
-**3a. Ask mode (~90 sec) — quick context set:**
-> "Read HOL-7 from Linear. Walk me through what's being asked and which files in this codebase will need to change."
+**3.0. Create the feature branch first (~10 sec, silent):**
+
+In the IDE terminal, before opening Ask mode:
+
+```bash
+git checkout main && git pull && git checkout -b feat/hol-7
+```
+
+Don't narrate this — it's silent setup. The point is to avoid Composer pushing commits to `main` later.
+
+**3a. Ask mode (~90 sec) — quick context set. Paste verbatim:**
+
+```
+Read HOL-7 from Linear. Walk me through:
+1. What's being asked (one paragraph)
+2. What's already in this codebase that supports it
+3. Which files will likely need to change
+
+Don't write code or open the plan file. I want to scope first.
+```
 
 The agent will discover Style Studio just shipped and surface that HOL-7 builds on it. *Don't dwell here* — Ask is the prelude, not the headline.
 
@@ -96,8 +124,16 @@ The agent will discover Style Studio just shipped and surface that HOL-7 builds 
 Switch model on screen. Narrate:
 > *"Now I'm switching to Plan mode and to Opus. Plan mode is read-only — it reasons about my codebase, it doesn't touch it. Opus is what I reach for when the planning surface is wide. And this — this is one of the biggest differences from Claude Code. Cursor isn't locked to one lab. Opus for planning, Composer for execution, GPT-5.5 for spec writing. Same agent, your choice of model."*
 
+Paste verbatim (this is the dry-run-validated prompt — the two baked-in decisions save ~60s of on-stage architectural relitigation):
+
 ```
-Use HOL-7 as the brief. Read AGENTS.md, the rules in .cursor/rules, and src/lib/store.ts (the Style Studio store) before planning. Generate a structured implementation plan into plan.md.
+Implement HOL-7 using the linear-feature-flow workflow. Read AGENTS.md, the rules in .cursor/rules/, src/lib/store.ts, and src/lib/style-studio.ts before planning. Generate a structured implementation plan into plan.md following the skill's Phase 3 template.
+
+Two decisions are already made — bake them into the plan:
+1. Type extension: add an optional customPalette: { swatches: string[] } field on StudioStyle. StyleCard branches on its presence to render inline-style hex swatches.
+2. Out of scope for HOL-7: Style picker in PromptBar. Saved palettes apply through the existing Style Studio "Apply" path only. Note this in the plan's "Out of scope" section.
+
+Stop after writing plan.md — do not start implementation.
 ```
 
 **3c. Edit `plan.md` live (~30 sec) — the human-in-the-loop moment:**
@@ -121,63 +157,92 @@ Open `plan.md`. Read the Goal aloud. Add ONE constraint in a NEW "Constraints" s
 Narrate:
 > *"This is the moment. The plan is a file. I edit it like code. One line — extraction has to run in under 100ms on a 1024×1024 image. The agent doesn't get autonomy until I sign off."*
 
-### 4. Fan out async work — Cloud Agent recap (~80 sec, ALL LIVE)
+**Sequencing note — do NOT paste the Build prompt yet.** The async story (Section 4) goes BEFORE Build. The order on stage is:
+1. Finish hand-edit, deliver the "sign off" line above
+2. Pivot to browser tabs for the 4-tab async story (Section 4, ~90 sec)
+3. Return to IDE, switch model to Composer, paste the Build prompt (Section 5)
 
-**No pre-recorded video.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play.
+This is the sequential path — safer narratively. If you want to overlap Build and async (saves ~90 sec wall-clock), see "Concurrent variant" at the end of this file.
 
-**Tab 1 — Slack thread (~15 sec):**
-Open the holdenstirling Slack workspace, navigate to the channel with the original `@Cursor pick up HOL-6` ping.
-> *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
+### 4. Fan out async work — ALL LIVE Cloud Agent demonstration (~110 sec)
 
-**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25 sec, includes 15-20s screencast):**
+**All four tabs are live. No pre-recorded video. No pre-staged scrolling to old threads.** You fire a fresh `@Cursor` mention in Slack on stage — `@Cursor` acknowledges in <15 sec (smoke-tested) — and you walk through the visible activity in real time. Tabs 3 and 4 still show yesterday's PR #3 and PR #4 as evidence of what happens when the loop completes (Bugbot takes 5-15 min to review a fresh PR, which is why those two stay as historical artifacts).
 
-Open the dashboard for HOL-6. Play the pre-recorded screencast inline (see capture instructions below).
+**Tab 1 — Slack: live-fire `@Cursor` (~30 sec):**
 
-> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Here's what it looked like when it ran [play 15-20s screencast]. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
+Switch to the Slack tab — your DM with `@Cursor` is already open.
 
-**Screencast capture — DO THIS BEFORE FRIDAY (~10 min, Option B from plan):**
+> *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents. Watch this."*
 
-1. In Slack `holdenstirling`, fire a small new Cloud Agent task in `firefly-asset-gallery`:
-   ```
-   @Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
-   ```
-2. Open `cursor.com/agents`, click into the new run as soon as it shows up.
-3. Start macOS Screen Recording (`Cmd+Shift+5` -> "Record Selected Portion") on the dashboard's activity stream.
-4. Capture 15-20 seconds of the agent streaming its work (file reads, tool calls, edits).
-5. Save the clip to `~/Movies/cloud-agent-stream.mov` (or wherever you keep demo assets).
-6. Close the disposable PR without merging — it was just for the capture.
+Paste this message and hit Enter:
 
-Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen via QuickTime during the demo.
+```
+@Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
+```
 
-**Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
-> *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
+@Cursor acknowledges within ~15 sec. Narrate over the acknowledgment:
 
-**Tab 4 — PR #4, show the 2-line diff and the `cursoragent@cursor.com` author (~25 sec):**
-> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. This is one of Cursor's newer capabilities — Bugbot doesn't just review, it can dispatch the fix to a Cloud Agent in one click. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams."*
+> *"Same surface area, real-time. Three sentences in Slack. The agent picks it up, clones the repo, gets to work — all in Cursor's infrastructure, not on my laptop. Let me show you what that looks like on the dashboard."*
 
-**Pre-demo tab order (left to right in the browser):**
-1. https://cursor.com/agents — dashboard, HOL-6 run open
-2. Slack workspace `holdenstirling`, channel with the `@Cursor` thread
+**Tab 2 — `cursor.com/agents`: live run streaming (~25 sec):**
+
+Switch to the `cursor.com/agents` tab. Refresh if needed. Click into the brand-new run that just appeared at the top.
+
+> *"Cursor's web dashboard. There's the run I just fired — happening live right now. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open.*
+>
+> *Now — here's where this gets interesting. The same loop ran yesterday for a different ticket. Let me show you what happens once Cursor's done."*
+
+**Tab 3 — PR #3 with Bugbot review (~30 sec):**
+
+Switch to PR #3, anchored to Bugbot's comment on `asset-card.tsx:44`.
+
+> *"PR #3. Cloud Agent opened it yesterday after the same Slack-fired flow. Playwright tests for the gallery — exactly what was asked for. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped. Keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
+
+**Tab 4 — PR #4 with Bugbot autofix (~25 sec):**
+
+Switch to PR #4 Files Changed view. Point at the 2-line diff and the `cursoragent@cursor.com` author.
+
+> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams. Now — back to my local work."*
+
+**Pre-demo tab order (left to right in the browser, all open BEFORE the demo starts):**
+1. https://cursor.com/agents — dashboard, signed in, scrolled to top
+2. Slack workspace `holdenstirling`, DM with `@Cursor` open, scrolled to bottom, ready to paste
 3. https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971 — auto-scrolls to Bugbot's comment
 4. https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files — PR #4 Files Changed view
 
-**Friday morning sanity check (2 min):**
-- Open all 4 tabs cold, in order, and click through them once with the narration cues. If any tab fails to load or scroll to the right place, you'll catch it before the meeting starts, not during.
+**Friday morning sanity check (3 min):**
+1. Open all 4 tabs cold, in order, and click through them once with the narration cues
+2. **Slack smoke test** — fire this exact message in your `@Cursor` DM and time the response:
+   ```
+   @Cursor what version of Next.js does firefly-asset-gallery use?
+   ```
+   Expected: acknowledgment within 15 seconds. If response is consistently slower, see "Recovery if @Cursor is slow" below.
 
-### 5. Build mode → switch model to Composer (~4 min)
+**Recovery if @Cursor is slow on the day:**
+
+If @Cursor takes >20 sec to respond when you fire the live mention in Section 4 Tab 1, say:
+
+> *"Sometimes the agent takes a moment — let me show you a run from yesterday while we wait."*
+
+Then pivot directly to Tab 3 (PR #3). When @Cursor's acknowledgment comes through later in the demo, you can briefly return to Tab 1 to point at it: *"And there it is — same loop just kicked off."*
+
+### 5. Build mode → switch model to Composer (~3:30 min)
+
 Switch model on screen. Narrate:
 > *"For Build, I'm switching to Composer-1 — Cursor's own model, optimized for tool-using speed inside the IDE. Plan mode used Opus for breadth. Build phase wants speed."*
 
+Paste verbatim (this is the dry-run-validated prompt — the explicit Phase 5 reference is what triggers the testing-conventions rule to run tests after each step):
+
 ```
-Execute plan.md.
+Execute plan.md. Follow the linear-feature-flow Phase 5 protocol: run lint and tests after each meaningful step. Open the result as a draft PR when done.
 ```
 
-Let it work. Show file tree updating, tests running. If anything fails, let Composer self-correct once.
+Let it work. Show file tree updating, tests running automatically (call this out — *"watch — tests fire on their own because of the testing-conventions rule"*). If anything fails, let Composer self-correct once.
 
 ### 6. Review the result (~1 min)
-- Open the new `/palette-extractor` page in the browser
-- Run `npm test` to show tests still pass
-- (If Bugbot is wired up by Friday, open the PR and show Bugbot's comments)
+- Open the new `/palette-extractor` page in the browser. Paste a `picsum.photos/seed/firefly-cover/1280/400` URL and show colors extracted.
+- Run `npm test` in a terminal to show tests still pass (expect 23/23 based on dry-run).
+- Optional: switch to the GitHub PR Composer just opened and show the linked Linear AC checklist updates.
 
 ### 7. Rules + Skills wrap (~2 min)
 See "Live-demo creation beats" below.
@@ -249,3 +314,80 @@ Optional follow-up beat: *"And that's the Cursor Team Kit story — 17 official 
 - `qa-cards.md` — 10 prepared Q&A cards for the question block at the end. Includes universal curveball recovery moves and 10 facts to recite cold.
 - `test-files.mdc` — file-pattern rule for Vitest test files (paste live during demo)
 - `pr-summary.md` — personal skill for generating PR descriptions (paste live during demo)
+
+---
+
+## Concurrent variant (advanced, optional)
+
+If you want to recover ~90 seconds of wall-clock and you're feeling confident, run Sections 3-5 concurrently instead of sequentially:
+
+1. Finish hand-editing `plan.md`
+2. Switch to Composer, paste the Build prompt **immediately** (don't wait)
+3. While Composer runs in the background, pivot tabs to the async story (Section 4)
+4. Narrate the 4 tabs while Composer works — by the time you return to the IDE, Composer should be 80-90 sec into its 3:30 min run
+5. Continue narrating Section 5 over the remaining Composer work
+
+**Why this is harder:** The audience sees Composer working out of the corner of their eye and may get distracted. If Composer fails silently while you're in Slack/GitHub tabs, you don't notice until you're back. Higher cognitive load on you, the presenter.
+
+**Why this saves time:** Section 4 (90 sec) overlaps with Composer's first 90 sec instead of adding to wall-clock. Total drops from ~16:50 to ~15:20.
+
+**Recommendation:** Default to sequential. Switch to concurrent only if you've rehearsed it twice and the dry-run timing left you under-budget.
+
+---
+
+## Friday cheat sheet (read this on stage)
+
+The runbook above is the canonical script. This appendix is the at-a-glance setup, checklist, and recovery sheet you can keep open in a side window during the demo.
+
+### Pre-show setup — T-30 min
+
+**Browser tabs (left to right, in this order):**
+1. `https://cursor.com/agents` — dashboard, signed in, scrolled to top
+2. Slack `holdenstirling` — DM with `@Cursor`, scrolled to bottom, cursor in the input box
+3. `https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971` — auto-anchored to Bugbot's a11y comment
+4. `https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files` — PR #4 Files Changed
+5. Linear HOL-7 — for Section 2
+
+**IDE state:**
+- Cursor open on `firefly-asset-gallery`
+- Branch: `main`, clean working tree
+- One terminal pane open in the project root
+- Dev server **off** (you'll start it during Section 6, not before)
+- `plan.md` is the empty placeholder
+
+**Slides 1–4** open in presenter mode on the second monitor.
+
+### Friday-morning checklist — T-30 min
+
+- [ ] `git status` on `firefly-asset-gallery` clean, on `main`
+- [ ] `plan.md` is the empty placeholder
+- [ ] All 5 browser tabs loaded in order, scroll positions verified
+- [ ] **Slack smoke test:** fire `@Cursor what version of Next.js does firefly-asset-gallery use?` — acknowledgment <15 sec
+- [ ] Linear HOL-7 ACs all unchecked (Cmd+K → `HOL-7` to verify)
+- [ ] Slides 1–4 open on second monitor
+- [ ] Dev server **not** running yet
+- [ ] One terminal open in project root
+- [ ] Cursor signed in, Opus (`claude-opus-4-7-thinking-xhigh`) + Composer (`composer-1`) both available in model picker
+- [ ] Phone on Do Not Disturb, Slack notifications muted on the main monitor
+- [ ] Water, deep breath, go
+
+### Universal recovery moves
+
+| What goes wrong | Verbal cover | Action |
+|---|---|---|
+| `@Cursor` slow in Section 4 (>20s) | *"Sometimes the agent takes a moment — let me show you a run from yesterday while we wait."* | Skip to Tab 3 (PR #3) immediately. Return to Tab 1 if ack arrives later. |
+| Composer stalls or self-corrects badly in Section 5 | *"This is the kind of thing rules normally catch — let me show you what the finished diff looks like."* | `git checkout dry-run/hol-7-prebuilt` and walk the diff |
+| Dev server won't start in Section 6 | *"Port conflict — happens."* | `lsof -ti:3030 \| xargs kill -9 && PORT=3030 npm run dev` |
+| Plan-mode Opus drifts from the skill's Phase 3 template | *"Let me edit this directly — the plan is a file."* | Hand-edit `plan.md` yourself. The hand-edit beat (3c) already covers this. |
+| Bugbot's PR #3 comment won't load (GitHub flake) | *"Refresh."* | If GitHub is down, narrate from memory using qa-cards.md as backup |
+| Network drops entirely | *"Looks like the network just dropped — let me switch to local."* | IDE + dev server work offline. Skip Section 4 entirely, lean into Section 7 (rules/skills) which is offline-safe. |
+| Question you can't answer | *"I'd want to confirm that with the customer success team before I commit to a number."* | Don't fabricate. See qa-cards.md "Universal curveball recovery" for more language. |
+| Linear MCP fails inside Cursor | *"MCP server hiccup — let me paste the ticket text directly."* | Have HOL-7's description copied to clipboard as fallback |
+| Slack workspace logged out | n/a — silent pivot | Same `@Cursor` mention works from the web UI; or skip Section 4 Tab 1, narrate from Tab 2 |
+
+### Pre-Friday rehearsal targets
+
+1. **Full timed read-through end-to-end** — out loud, against a stopwatch. Confirm 17:10 wall-clock.
+2. **Four high-leverage moments rehearsed twice each:** Adobe framing (0a), plan-mode hand-edit narration (3c), enterprise controls beat (7.5), closing recap (8).
+3. **Skim a recent Cursor customer story** for a name-drop ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)).
+4. **Skim `qa-cards.md`** for the 10 prepared answers + universal curveball moves.

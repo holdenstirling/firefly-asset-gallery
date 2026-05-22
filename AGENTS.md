@@ -30,7 +30,7 @@ src/
 │   ├── page.tsx         # Gallery (home)
 │   ├── collections/
 │   ├── prompts/
-│   └── style-studio/    # SKELETON — feature target for live demo
+│   └── style-studio/    # Style preset definition + token export (shipped HOL-5)
 ├── components/
 │   ├── layout/          # Sidebar, top nav
 │   ├── gallery/         # AssetCard, AssetGrid, AssetDetail, GalleryToolbar
@@ -47,15 +47,12 @@ src/
 
 ## Known intentional rough edges
 
-This exists on purpose so it can be addressed during a live demo:
+These exist on purpose so they can be addressed during a live demo:
 
 1. **Parameter panel does not feed into generation.** The panel updates the
    Zustand store, but `PromptBar.handleGenerate()` only logs the values.
 2. **Favorites are not persisted.** `useFavoritesStore` is in-memory only;
    reload resets state.
-3. **Style Studio page is a marketing skeleton.** The real feature (define a
-   reusable Style preset that bundles palette + typography + parameters)
-   doesn't exist yet. See `plan.md` for the planned implementation.
 
 ## Commands
 

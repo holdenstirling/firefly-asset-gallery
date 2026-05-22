@@ -54,23 +54,32 @@ agent run picks up automatically.
 
 ## Live-demo flow
 
-This repo is staged for a Cursor kickoff demo:
+This repo is staged for a Cursor kickoff demo. The live-build target is the
+**Brand Palette Extractor** (HOL-7): extract dominant colors from any image URL
+via `<canvas>` and save the result as a Style preset.
 
-1. **Ask mode** — explore the codebase: "How does the gallery render assets?
-   Where do parameters get stored?"
-2. **Plan mode (Opus)** — generate a structured `plan.md` for the Style Studio
-   feature.
-3. **Edit `plan.md`** — add constraints, change scope, sign off.
+1. **Ask mode** — scope HOL-7 from the Linear ticket; surface which files in
+   this codebase will need to change.
+2. **Plan mode (Opus)** — generate a structured `plan.md` for the Brand Palette
+   Extractor feature.
+3. **Edit `plan.md`** — add a constraint by hand (e.g. perf budget), sign off.
 4. **Build mode (Composer)** — execute the plan in the IDE.
-5. **Cloud Agent (from Slack)** — fan out a separate task in parallel
-   (e.g. "add Playwright e2e tests for the colors page").
-6. **Bugbot** — review the resulting PR.
+5. **Cloud Agent (from Slack)** — separate task already shipped in parallel:
+   Playwright e2e tests for the Gallery page (HOL-6, PR #3).
+6. **Bugbot** — review PR #3, catch an accessibility bug, dispatch an autofix
+   Cloud Agent (PR #4).
 7. **Rules + Skills** — capture the workflow as a reusable Skill for the team.
+
+See `demo-prep/README.md` for the full runbook with timing, prompts, and narration.
 
 ## Intentional rough edges
 
-One thing remains deliberately unfinished so it can be fixed live:
+Two things remain deliberately unfinished so they can be addressed live:
 
+- Parameter panel updates the Zustand store but doesn't feed `handleGenerate`.
 - Favorites don't persist across reloads.
 
-This is documented in `AGENTS.md`.
+The third "rough edge" is by design: the Brand Palette Extractor (HOL-7) is
+specified in Linear but not yet built — it's the live-demo target.
+
+These are documented in `AGENTS.md`.
