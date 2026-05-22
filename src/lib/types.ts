@@ -51,6 +51,13 @@ export interface StudioStyle {
   parameters: GenerationParameters;
   createdAt: string;
   updatedAt: string;
+  /**
+   * Optional palette of arbitrary hex strings, populated when the style was
+   * built from the Brand Palette Extractor. Curated `paletteId` swatches are
+   * the source of truth for legacy styles; `customPalette` augments them when
+   * present.
+   */
+  customPalette?: string[];
 }
 
 export interface Asset {

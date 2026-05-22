@@ -455,6 +455,8 @@ function StyleCard({
 }) {
   const palette = getStylePalette(style.paletteId);
   const typography = getTypographyPair(style.typographyId);
+  const hasCustomPalette =
+    style.customPalette !== undefined && style.customPalette.length > 0;
 
   return (
     <div
@@ -469,19 +471,28 @@ function StyleCard({
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-semibold">{style.name}</h3>
               {applied && <Badge variant="muted">Applied</Badge>}
+              {hasCustomPalette && <Badge variant="muted">Extracted</Badge>}
             </div>
             <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
               {style.description || "No description"}
             </p>
           </div>
           <div className="flex shrink-0 overflow-hidden rounded-full border border-border">
-            {palette.swatchClasses.map((swatch) => (
-              <span key={swatch} className={cn("h-5 w-5", swatch)} />
-            ))}
+            {hasCustomPalette
+              ? style.customPalette!.map((hex, index) => (
+                  <span
+                    key={`${hex}-${index}`}
+                    className="h-5 w-5"
+                    style={{ backgroundColor: hex }}
+                  />
+                ))
+              : palette.swatchClasses.map((swatch) => (
+                  <span key={swatch} className={cn("h-5 w-5", swatch)} />
+                ))}
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] text-muted-foreground">
-          <span>{palette.name}</span>
+          <span>{hasCustomPalette ? "Custom palette" : palette.name}</span>
           <span>/</span>
           <span>{typography.name}</span>
           <span>/</span>

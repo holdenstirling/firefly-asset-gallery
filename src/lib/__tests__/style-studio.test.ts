@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildStudioStyle,
+  buildStudioStyleFromPalette,
   createGeneratedAsset,
   DEFAULT_GENERATION_PARAMETERS,
   styleToCssTokens,
@@ -41,6 +42,45 @@ describe("style studio helpers", () => {
     expect(styleToCssTokens(style)).toContain(
       "--style-launch-kit-color-primary"
     );
+  });
+
+  it("round-trips a custom palette onto the stored style", () => {
+    const style = buildStudioStyle({
+      name: "Extracted Hero",
+      description: "From a reference image",
+      paletteId: "firefly",
+      typographyId: "product",
+      parameters: DEFAULT_GENERATION_PARAMETERS,
+      customPalette: ["#101010", "#aa3322", "#f0e0d0"],
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(style.customPalette).toEqual(["#101010", "#aa3322", "#f0e0d0"]);
+  });
+
+  it("omits customPalette when none is supplied", () => {
+    const style = buildStudioStyle({
+      name: "Launch Kit",
+      description: "",
+      paletteId: "firefly",
+      typographyId: "product",
+      parameters: DEFAULT_GENERATION_PARAMETERS,
+      now: "2026-05-20T12:00:00.000Z",
+    });
+    expect(style.customPalette).toBeUndefined();
+  });
+
+  it("builds a studio style from an extracted palette", () => {
+    const style = buildStudioStyleFromPalette({
+      name: "Sunset Brand",
+      palette: ["#ff7755", "#221133", "#fff8e0"],
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(style.name).toBe("Sunset Brand");
+    expect(style.customPalette).toEqual(["#ff7755", "#221133", "#fff8e0"]);
+    expect(style.description).toBe("Extracted palette — 3 swatches");
+    expect(style.parameters).toEqual(DEFAULT_GENERATION_PARAMETERS);
   });
 
   it("creates generated assets from prompt and parameters", () => {

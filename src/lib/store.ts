@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
+  buildStudioStyleFromPalette,
   createGeneratedAsset,
   DEFAULT_GENERATION_PARAMETERS,
   INITIAL_STUDIO_STYLES,
@@ -85,6 +86,8 @@ interface StyleStudioState {
   saveStyle: (style: StudioStyle) => void;
   deleteStyle: (id: string) => void;
   setActiveStyleId: (id: string | null) => void;
+  addStyleFromPalette: (input: { name: string; palette: string[] }) =>
+    StudioStyle;
 }
 
 export const useStyleStudioStore = create<StyleStudioState>()(
@@ -120,6 +123,14 @@ export const useStyleStudioStore = create<StyleStudioState>()(
           };
         }),
       setActiveStyleId: (id) => set({ activeStyleId: id }),
+      addStyleFromPalette: ({ name, palette }) => {
+        const style = buildStudioStyleFromPalette({ name, palette });
+        set((state) => ({
+          styles: [style, ...state.styles],
+          activeStyleId: style.id,
+        }));
+        return style;
+      },
     }),
     {
       name: "firefly-style-studio",
