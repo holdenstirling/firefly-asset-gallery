@@ -77,8 +77,18 @@ Spoken intro:
 > *"Hi, I'm Holden. Over the next 17 minutes I'll walk you through three things: where Cursor lives — it's not just an editor anymore; the workflow engineering teams run today — read a ticket, plan with Opus, build with Composer, fan out async work to Cloud Agents; and how this scales beyond one engineer with rules, skills, and Bugbot. I'll keep slides minimal — most of this is in a real codebase. Jump in with questions any time."*
 
 ### 1. Where Cursor lives — cursor.com/agents (~1 min)
-Pre-stage 1–2 completed runs (HOL-5 already shipped, HOL-6 PR #3 still open). Show the dashboard.
-> *"This is cursor.com/agents — Cursor isn't just an editor, it's a surface area. Same agents from anywhere: web, Slack, IDE."*
+
+The dashboard already has visible Cloud Agent activity from this repo:
+- PR #7 (Slack-fired JSDoc smoke test, merged)
+- PR #4 (Bugbot autofix Cloud Agent, open)
+- PR #3 (HOL-6 Playwright tests, open)
+- PR #2 (HOL-5 Style Studio, merged — may be below the fold)
+
+Show the dashboard. Narrate (this version is agnostic to which specific runs are at the top of the list):
+
+> *"This is cursor.com/agents — Cursor isn't just an editor, it's a surface area. Same agents from anywhere: web, Slack, IDE. You can see runs from this repo — features shipped, tests in flight, autofixes from Bugbot. We'll come back to this dashboard later."*
+
+**Optional pre-show staging (90 sec, only if you want a guaranteed-fresh run at the top of the dashboard):** fire `@Cursor in firefly-asset-gallery add a JSDoc comment to the cn helper in src/lib/utils.ts` in Slack ~5 minutes before showtime. The completed/streaming run will sit at the top of the dashboard during Section 1.
 
 ### 2. Where work actually starts: a Linear ticket (~30 sec)
 Open Linear, show HOL-7.
@@ -322,3 +332,62 @@ If you want to recover ~90 seconds of wall-clock and you're feeling confident, r
 **Why this saves time:** Section 4 (90 sec) overlaps with Composer's first 90 sec instead of adding to wall-clock. Total drops from ~16:50 to ~15:20.
 
 **Recommendation:** Default to sequential. Switch to concurrent only if you've rehearsed it twice and the dry-run timing left you under-budget.
+
+---
+
+## Friday cheat sheet (read this on stage)
+
+The runbook above is the canonical script. This appendix is the at-a-glance setup, checklist, and recovery sheet you can keep open in a side window during the demo.
+
+### Pre-show setup — T-30 min
+
+**Browser tabs (left to right, in this order):**
+1. `https://cursor.com/agents` — dashboard, signed in, scrolled to top
+2. Slack `holdenstirling` — DM with `@Cursor`, scrolled to bottom, cursor in the input box
+3. `https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971` — auto-anchored to Bugbot's a11y comment
+4. `https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files` — PR #4 Files Changed
+5. Linear HOL-7 — for Section 2
+
+**IDE state:**
+- Cursor open on `firefly-asset-gallery`
+- Branch: `main`, clean working tree
+- One terminal pane open in the project root
+- Dev server **off** (you'll start it during Section 6, not before)
+- `plan.md` is the empty placeholder
+
+**Slides 1–4** open in presenter mode on the second monitor.
+
+### Friday-morning checklist — T-30 min
+
+- [ ] `git status` on `firefly-asset-gallery` clean, on `main`
+- [ ] `plan.md` is the empty placeholder
+- [ ] All 5 browser tabs loaded in order, scroll positions verified
+- [ ] **Slack smoke test:** fire `@Cursor what version of Next.js does firefly-asset-gallery use?` — acknowledgment <15 sec
+- [ ] Linear HOL-7 ACs all unchecked (Cmd+K → `HOL-7` to verify)
+- [ ] Slides 1–4 open on second monitor
+- [ ] Dev server **not** running yet
+- [ ] One terminal open in project root
+- [ ] Cursor signed in, Opus (`claude-opus-4-7-thinking-xhigh`) + Composer (`composer-1`) both available in model picker
+- [ ] Phone on Do Not Disturb, Slack notifications muted on the main monitor
+- [ ] Water, deep breath, go
+
+### Universal recovery moves
+
+| What goes wrong | Verbal cover | Action |
+|---|---|---|
+| `@Cursor` slow in Section 4 (>20s) | *"Sometimes the agent takes a moment — let me show you a run from yesterday while we wait."* | Skip to Tab 3 (PR #3) immediately. Return to Tab 1 if ack arrives later. |
+| Composer stalls or self-corrects badly in Section 5 | *"This is the kind of thing rules normally catch — let me show you what the finished diff looks like."* | `git checkout dry-run/hol-7-prebuilt` and walk the diff |
+| Dev server won't start in Section 6 | *"Port conflict — happens."* | `lsof -ti:3030 \| xargs kill -9 && PORT=3030 npm run dev` |
+| Plan-mode Opus drifts from the skill's Phase 3 template | *"Let me edit this directly — the plan is a file."* | Hand-edit `plan.md` yourself. The hand-edit beat (3c) already covers this. |
+| Bugbot's PR #3 comment won't load (GitHub flake) | *"Refresh."* | If GitHub is down, narrate from memory using qa-cards.md as backup |
+| Network drops entirely | *"Looks like the network just dropped — let me switch to local."* | IDE + dev server work offline. Skip Section 4 entirely, lean into Section 7 (rules/skills) which is offline-safe. |
+| Question you can't answer | *"I'd want to confirm that with the customer success team before I commit to a number."* | Don't fabricate. See qa-cards.md "Universal curveball recovery" for more language. |
+| Linear MCP fails inside Cursor | *"MCP server hiccup — let me paste the ticket text directly."* | Have HOL-7's description copied to clipboard as fallback |
+| Slack workspace logged out | n/a — silent pivot | Same `@Cursor` mention works from the web UI; or skip Section 4 Tab 1, narrate from Tab 2 |
+
+### Pre-Friday rehearsal targets
+
+1. **Full timed read-through end-to-end** — out loud, against a stopwatch. Confirm 17:10 wall-clock.
+2. **Four high-leverage moments rehearsed twice each:** Adobe framing (0a), plan-mode hand-edit narration (3c), enterprise controls beat (7.5), closing recap (8).
+3. **Skim a recent Cursor customer story** for a name-drop ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)).
+4. **Skim `qa-cards.md`** for the 10 prepared answers + universal curveball moves.
