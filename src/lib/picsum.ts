@@ -18,12 +18,14 @@ export interface PicsumOptions {
 /**
  * Builds a deterministic Lorem Picsum image URL.
  *
- * @param seed - Stable image identifier; the same seed returns the same image.
+ * @param seed - Stable seed segment for the URL; the same seed returns the
+ * same image.
  * @param width - Requested image width in pixels.
  * @param height - Requested image height in pixels.
- * @param blur - Optional blur strength from 1 to 10. Values outside that range
- * are ignored.
- * @param grayscale - When true, requests a grayscale version of the image.
+ * @param blur - Optional blur query parameter from 1 to 10. Missing, zero, or
+ * out-of-range values are omitted.
+ * @param grayscale - When true, adds the grayscale query parameter to request
+ * a black-and-white image.
  */
 export function picsumUrl({
   seed,
