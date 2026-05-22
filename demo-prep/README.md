@@ -29,7 +29,7 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 
 ---
 
-## Live-demo runbook (15-18 min target, ~14 min script + Q&A buffer)
+## Live-demo runbook (17-20 min target, ~17 min script + ~3 min Q&A buffer)
 
 **Time budget** (revised after 0a + 7.5 inserts):
 
