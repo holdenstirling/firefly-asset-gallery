@@ -144,6 +144,27 @@ test.describe("gallery page", () => {
     await expect(trigger).toBeFocused();
   });
 
+  test("nested card action keyboard events do not open the detail modal", async ({
+    page,
+  }) => {
+    const trigger = page
+      .getByRole("button", {
+        name: /open details for a futuristic cityscape at golden hour/i,
+      })
+      .first();
+    const favorite = trigger.getByRole("button", { name: "Favorite" });
+
+    await favorite.focus();
+    await favorite.press("Enter");
+
+    await expect(favorite).toHaveAccessibleName("Unfavorite");
+    await expect(
+      page.getByRole("dialog", {
+        name: /a futuristic cityscape at golden hour/i,
+      })
+    ).toBeHidden();
+  });
+
   test("recent prompts render deterministic relative timestamps", async ({
     page,
   }) => {
