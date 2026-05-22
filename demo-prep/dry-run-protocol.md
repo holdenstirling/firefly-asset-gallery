@@ -45,83 +45,194 @@ By the end, you should also have:
 
 ## The three prompts (paste verbatim)
 
+Stage-direction key (used in Phases 1–3 below):
+
+- **DO** — physical actions (clicks, typing, paste). Audience sees your hands.
+- **SAY** — spoken lines, verbatim. Use exactly the phrasing shown.
+- **SHOW** — what the audience should see on screen at this moment.
+- **WATCH** — what you're silently checking for. Don't narrate every step.
+
+The runbook's Section 3 in [`README.md`](./README.md) carries the same stage-direction structure; this file adds rehearsal-only material (timing template, red flags, fallback procedure).
+
 ### Phase 1 — Ask mode (target ~90 sec)
 
-Switch to Ask mode. Make sure the model is set to something fast for reading (Composer or GPT-5.5). Paste:
+**Beat 1 — Confirm Ask mode + Composer (~5s)**
 
-```
-Read HOL-7 from Linear. Walk me through:
-1. What's being asked (one paragraph)
-2. What's already in this codebase that supports it
-3. Which files will likely need to change
+- **DO:** Open the chat composer. Verify mode is `Ask` and model is `Composer` (NOT Opus — Opus is overkill for reading and will blow the 90s target; Composer or GPT-5.5 is what the runbook calls for).
+- **SHOW:** Composer header reads `Ask`; model picker reads `Composer`.
 
-Don't write code or open the plan file. I want to scope first.
-```
+**Beat 2 — Paste the scoping prompt (~5s)**
 
-**What to watch for:** The agent should identify Style Studio as the existing dependency, surface `src/lib/store.ts` and `/style-studio` page, and not start writing code.
+- **DO:** Paste the prompt below. Hit Enter. **Start clock on paste.**
+- **PASTE VERBATIM:**
 
-**Timing:** Start clock on paste, stop when agent finishes the summary.
+  ```
+  Read HOL-7 from Linear. Walk me through:
+  1. What's being asked (one paragraph)
+  2. What's already in this codebase that supports it
+  3. Which files will likely need to change
+
+  Don't write code or open the plan file. I want to scope first.
+  ```
+
+**Beat 3 — Let the agent scope (~70s, light narration)**
+
+- **DO:** Hands off keyboard. Let the agent read the ticket and skim the codebase.
+- **WATCH FOR:**
+  - Agent reads HOL-7 from Linear (= Linear MCP is wired)
+  - Agent identifies Style Studio (HOL-5) as the existing dependency
+  - Agent surfaces `src/lib/store.ts` and `src/app/style-studio/page.tsx` as likely-touched
+  - Agent does NOT start writing code
+- **SAY (after the summary lands, ~10s):** *"Style Studio just shipped — HOL-7 is the natural follow-on. That's what I want to plan next."*
+
+**Stop clock:** when agent finishes the summary.
 
 ---
 
 ### Phase 2 — Plan mode with Opus (target ~3 min)
 
-Switch to **Plan mode**, switch model to **Opus**. Narrate the model switch on screen. Paste:
+**Beat 1 — Switch to Plan mode (~5s)**
 
-```
-Implement HOL-7 using the linear-feature-flow workflow. Read AGENTS.md, the rules in .cursor/rules/, and src/lib/store.ts before planning. Generate a structured implementation plan into plan.md following the skill's Phase 3 template. Stop after writing plan.md — do not start implementation.
-```
+- **DO:** Click the mode toggle in the chat composer. Select `Plan`.
+- **SHOW:** Composer header reads `Plan`. Send button is greyed-out for write tools — that's the read-only state cue you want visible.
+- **SAY:** *(nothing yet — the model switch is the headline line)*
 
-**Why this prompt:** The phrase "Implement HOL-7" should trigger the `linear-feature-flow` skill. The explicit reference to Phase 3 anchors the output format. The "stop" instruction enforces the human-in-the-loop gate.
+**Beat 2 — Switch model to Opus (~10s)**
 
-**What to watch for:**
-- Agent reads the listed files first
-- `plan.md` gets populated with the skill's template (Goal / Files to change / Files to create / Implementation steps / Tests / AC check)
-- Agent stops and waits for sign-off
+- **DO:** Click the model picker. Select `Opus`.
+- **SHOW:** Model picker now displays `Opus` (the audience needs to see this label change — it's the differentiation moment).
+- **SAY (verbatim):**
+  > *"Now I'm switching to Plan mode and to Opus. Plan mode is read-only — it reasons about my codebase, it doesn't touch it. Opus is what I reach for when the planning surface is wide. And this — this is one of the biggest differences from Claude Code. Cursor isn't locked to one lab. Opus for planning, Composer for execution, GPT-5.5 for spec writing. Same agent, your choice of model."*
 
-**Timing:** Start clock on paste, stop when `plan.md` is populated and agent yields.
+**Beat 3 — Paste the prompt (~15s)**
 
-**Red flag:** Agent starts writing code anywhere outside `plan.md`. Stop it immediately, reissue with stronger "READ-ONLY" language.
+- **DO:** Paste the prompt below. Hit Enter. **Start clock on paste.**
+- **SAY (light, while pasting — optional):** *"Here's the brief — Linear ticket plus two architectural decisions I've already made."*
+- **PASTE VERBATIM** (this is the dry-run-validated prompt — the two baked-in decisions save ~60s of on-stage architectural relitigation):
+
+  ```
+  Implement HOL-7 using the linear-feature-flow workflow. Read AGENTS.md,
+  the rules in .cursor/rules/, src/lib/store.ts, and src/lib/style-studio.ts
+  before planning. Generate a structured implementation plan into plan.md
+  following the skill's Phase 3 template.
+
+  Two decisions are already made — bake them into the plan:
+
+  1. Type extension: add an optional customPalette: { swatches: string[] }
+     field on StudioStyle. StyleCard branches on its presence to render
+     inline-style hex swatches.
+
+  2. Out of scope for HOL-7: Style picker in PromptBar. Saved palettes apply
+     through the existing Style Studio "Apply" path only. Note this in the
+     plan's "Out of scope" section.
+
+  Stop after writing plan.md — do not start implementation.
+  ```
+
+**Why this prompt:** The phrase "Implement HOL-7" should trigger the `linear-feature-flow` skill. The explicit reference to Phase 3 anchors the output format. The "stop" instruction enforces the human-in-the-loop gate. The two baked-in decisions resolve real architectural questions (closed-union `paletteId` vs arbitrary hex; prompt-bar picker scope) up front so Opus doesn't relitigate them on stage.
+
+**Beat 4 — Let Opus work (~2:00–2:30, mostly silent for you)**
+
+- **DO:** Hands off keyboard. Step back from the desk if helpful — body language sells the "the agent is doing the work" beat.
+- **SHOW:** Right panel streams Opus's reasoning, then `read_file` calls against AGENTS.md → `.cursor/rules/*` → `src/lib/store.ts` → `src/lib/style-studio.ts`, then a `write` to `plan.md`.
+- **WATCH FOR (silent checks — DO NOT narrate every step):**
+  - Opus reads the four listed files (= skill fired correctly)
+  - `plan.md` populates with the Phase 3 template (Goal / Files to change / Files to create / Implementation steps / Tests / AC check)
+  - Opus stops after writing — does NOT touch any source file
+- **SAY (sparse, only if there's awkward silence):**
+  - When file-reads stream by: *"Plan mode is read-only — watch it reading my codebase, not editing it."*
+  - When `plan.md` appears in the diff view: *"And there's the plan."*
+
+**Stop clock:** when `plan.md` is populated and Opus yields.
+
+**Red flag — Opus starts editing source files:**
+
+- **DO:** Hit `Esc` to interrupt. Don't panic-narrate; the audience won't notice a 2-second pause.
+- **SAY:** *"Let me re-scope that — Plan mode should be read-only."*
+- **DO:** Re-send the prompt with `READ ONLY — only write plan.md, no other files.` appended.
 
 ---
 
 ### Phase 3 — Hand-edit `plan.md` (target ~30 sec, this is the headline beat)
 
-Open `plan.md`. Read the goal aloud. Then add ONE constraint by hand. Pick one of:
+**Beat 1 — Open `plan.md` in the editor (~3s, start clock here)**
 
-- **Performance constraint:** *"Color extraction must run in under 100ms on a 1024×1024 image. Use canvas sampling, not pixel iteration."*
-- **No-deps constraint:** *"No new runtime dependencies. Use only Web APIs (`<canvas>`, `getImageData`)."*
-- **Picsum compat:** *"Must work for any `picsum.photos` URL. Handle CORS via `crossOrigin='anonymous'`."*
+- **DO:** Click `plan.md` in the file tree (left sidebar). Open it as a real editor pane, NOT just the chat-preview tile.
+- **SHOW:** `plan.md` is open in a full editor pane, cursor visible.
 
-**Recommendation:** Use the **no-deps constraint** — it's the most demonstrable in Composer's output (the audience can see the lack of `npm install` step), it's the most opinionated, and it's the easiest one-liner to type while narrating.
+**Beat 2 — Read the Goal aloud (~10s)**
 
-**Narration during the edit:**
+- **DO:** Scroll to the `## Goal` section. Hover the cursor there so the audience eye lands on it.
+- **SAY (cold-read from screen — you do NOT know Opus's exact wording in advance):** Read the Goal paragraph as written. One paragraph, maybe two sentences. After reading: *"That's the goal Opus distilled from the ticket."*
 
-> *"This is the moment. The plan is a file. I edit it like code. The agent doesn't get autonomy until I sign off."*
+**Beat 3 — Type the constraint (~12s, headline action)**
 
-**Timing:** Start clock when you open `plan.md`, stop when you say "Execute plan.md" out loud.
+- **DO:** Click at the end of the Goal paragraph. Press Enter twice. **Type** the block below — type it, don't paste. The audience seeing your hands on the keyboard is the visual signal that this is the human-in-the-loop moment.
+
+  ```
+  ## Constraints
+
+  - Color extraction must run in under 100ms on a 1024×1024 image. Downsample to a max of 96×96 with offscreen canvas before histogram bucketing.
+  ```
+- **DO:** `Cmd+S` to save.
+- **SHOW:** `plan.md` now has a `## Constraints` section between `## Goal` and `## Files to change`. The "modified" dot on the file tab disappears on save.
+- **SAY (verbatim, while typing — this is the most important sentence in the IDE block):**
+  > *"This is the moment. The plan is a file. I edit it like code. One line — extraction has to run in under 100ms on a 1024×1024 image. The agent doesn't get autonomy until I sign off."*
+
+**Why this constraint specifically:**
+
+- **ADDS to the ticket, doesn't contradict it.** The Linear ticket says nothing about extraction speed, so Composer has no source-of-truth conflict to rationalize around.
+- **Demonstrable on stage:** audience can verify Composer adds the downsampling step in the generated `palette-extraction.ts`.
+- **Adobe-flavored:** implies "must work for high-res Firefly outputs."
+
+**Avoid:** Constraints that contradict the Linear ticket text. Example anti-pattern from the original dry-run: the ticket specified the `Palette` Lucide icon, so adding "use Droplet icon instead" got ignored because Opus correctly trusts the ticket (see Lesson 1 below).
+
+**Beat 4 — Hand off into Build (~5s, stop clock)**
+
+- **DO:** Take hands off the keyboard. Pause for one beat (a literal one-second silence). The pause is the cue.
+- **SAY:** *"Now I sign off — execute `plan.md`."*  ← this line is the verbal handoff into Phase 4 (Build). **Stop clock** on this sentence.
+- **DO:** Switch mode toggle to `Build` and model to `Composer` in one continuous motion (technically the start of Phase 4 but lands cleanest folded into the handoff).
 
 ---
 
 ### Phase 4 — Build mode with Composer (target ~4 min)
 
-Switch to **Build mode**, switch model to **Composer**. Narrate the model switch. Paste:
+You're already in Build mode + Composer — that switch happened at the end of Phase 3 Beat 4 as part of the "execute plan.md" verbal handoff. Don't redo it.
 
-```
-Execute plan.md. Follow the linear-feature-flow Phase 5 protocol: run lint and tests after each meaningful step. Open the result as a draft PR when done.
-```
+**Beat 1 — Frame the model change (~5s)**
 
-**What to watch for:**
-- File tree updating in real-time (right-side panel)
-- Test runs firing automatically (from the `testing-conventions.mdc` rule)
-- New files appearing: likely `src/lib/palette.ts`, `src/components/palette/...`, `src/app/palette-extractor/page.tsx` (or similar)
-- Composer self-corrects if a test fails — let it try once
-- Final state: PR draft opened (if Linear/GitHub MCP write works) or branch ready to push
+- **SAY (as the chat composer's model picker UI lands on Composer):**
+  > *"For Build, I'm in Composer-1 — Cursor's own model, optimized for tool-using speed inside the IDE. Plan mode used Opus for breadth. Build phase wants speed."*
 
-**Timing:** Start clock on paste, stop when agent yields control with the feature working.
+**Beat 2 — Paste the execute prompt (~5s, start clock on paste)**
+
+- **DO:** Paste the prompt below. Hit Enter.
+- **PASTE VERBATIM:**
+
+  ```
+  Execute plan.md. Follow the linear-feature-flow Phase 5 protocol: run lint
+  and tests after each meaningful step. Open the result as a draft PR when
+  done.
+  ```
+
+**Beat 3 — Let Composer work (~3:30, mostly silent for you)**
+
+- **DO:** Hands off keyboard. Watch the file tree.
+- **WATCH FOR:**
+  - File tree updates in real-time (right-side panel)
+  - `npm test` fires automatically after `src/lib/` edits (= `testing-conventions.mdc` rule firing — narratable moment)
+  - New files appearing: likely `src/lib/palette-extraction.ts`, `src/lib/__tests__/palette-extraction.test.ts`, `src/app/palette-extractor/page.tsx`, plus sidebar / store / style-studio edits
+  - Composer self-corrects if a test fails — let it try once before intervening
+  - Final state: PR draft opened (if Linear/GitHub MCP write works) or branch ready to push
+- **SAY (sparse — pick at most two callouts):**
+  - When tests fire on their own: *"Notice it didn't ask permission to run tests. The rule fires automatically when it touches `src/lib`."*
+  - When a test fails and Composer fixes it: *"And it just self-corrected the assertion — same loop a human engineer runs."*
+
+**Stop clock:** when agent yields control with the feature working.
 
 **Red flag escalation order:**
-1. **Composer stalls or visibly loops** — interrupt, ask: "What blocked you?" — if recoverable, let it continue. If not, see "Fallback procedure" below.
+
+1. **Composer stalls or visibly loops** — interrupt, ask: *"What blocked you?"* — if recoverable, let it continue. If not, see "Fallback procedure" below.
 2. **Test failures Composer can't fix** — see "Fallback procedure" below.
 3. **Type errors / import errors** — likely a Next 16 surprise. AGENTS.md tells the agent to read `node_modules/next/dist/docs/` — if it didn't, remind it.
 
@@ -253,5 +364,6 @@ The `linear-feature-flow` Phase 5 instruction "Open a draft PR" worked first try
 3. **Adobe problem framing (Section 0a)** — still pending insert.
 4. **Enterprise security beat (Section 7.5)** — still pending insert.
 5. **`demo-prep/qa-cards.md`** — five prepared Q&A answers.
-6. **Screencast capture** — 15-20s of cursor.com/agents streaming a Cloud Agent run.
-7. **cursor.com/learn homework** — watch a few videos and skim a customer story.
+6. **cursor.com/learn homework** — watch a few videos and skim a customer story.
+
+**Removed from this list:** Screencast capture. Section 4 Tab 1–2 now fires a live Cloud Agent task on stage instead of playing a pre-recorded clip. See the README Section 4 stage directions for the live fire-off and the dashboard-fallback procedure.

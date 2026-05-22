@@ -80,8 +80,8 @@ Standalone audit of the demo against your original notes. Read this Friday morni
 | Build mode w/ Composer | DONE | Section 5 |
 | Model agnostic | **NOW IN NARRATION** | Section 3b at model switch |
 | 10 minutes total | TIGHT | IDE block ~10 min nominal |
-| Video of agent reviewing | RESHAPED + screencast | Tab 2 has 15-20s screencast (production TODO); Tab 4 has Bugbot review of PR #3 |
-| Kick off and step away | DONE | Tab 2 screencast captures the "step away" feel |
+| Video of agent reviewing | RESHAPED + live demo | Tab 1–2 fire a live `@Cursor` Slack task and watch the run stream in real time on `cursor.com/agents`; Tab 4 has Bugbot review of PR #3 |
+| Kick off and step away | DONE | Tab 1–2 live fire-off + watching the stream captures the "step away" feel — actually live, not recorded |
 | Riding shotgun | DONE | Section 3 + Diagram 2 |
 | Places to use Cursor | DONE | Diagram 1 |
 | Models so good to run async | **NOW IN NARRATION** | Section 4 Tab 1 opening line |
@@ -138,8 +138,9 @@ From your notes that aren't yet covered by structural artifacts:
 1. **Security beat (Section 7.5)** — still pending in the plan. Covers SOC 2, zero data retention, SSO/SCIM, model controls. ~20 seconds.
 2. **Adobe problem framing (Section 0a)** — still pending in the plan. Names Adobe's constraints (Creative Cloud scale, a11y, IP) before the surface-area diagram. ~30 seconds.
 3. **Cursor employee homework** — watch [cursor.com/learn](https://cursor.com/learn) videos, skim a recent customer story ([PayPal](https://cursor.com/blog/paypal), [NAB](https://cursor.com/blog/nab), [Amplitude](https://cursor.com/blog/amplitude)). 30 minutes total. Look for: language they use, what they emphasize, any new feature you can name-drop.
-4. **15-20s screencast capture** — see Section 4 Tab 2 instructions in the runbook. ~10 minutes.
-5. **IDE dry-run on HOL-7** — single highest-priority remaining task.
+4. **IDE dry-run on HOL-7** — single highest-priority remaining task.
+
+**Removed from this list:** screencast capture. Section 4 Tab 2 now runs a live `@Cursor` Slack fire-off instead of playing a pre-recorded clip. See the README Section 4 stage directions for the live fire-off and the dashboard-fallback procedure.
 
 ---
 
