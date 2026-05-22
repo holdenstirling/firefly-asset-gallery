@@ -77,12 +77,51 @@ Spoken intro:
 > *"Hi, I'm Holden. Over the next 17 minutes I'll walk you through three things: where Cursor lives — it's not just an editor anymore; the workflow engineering teams run today — read a ticket, plan with Opus, build with Composer, fan out async work to Cloud Agents; and how this scales beyond one engineer with rules, skills, and Bugbot. I'll keep slides minimal — most of this is in a real codebase. Jump in with questions any time."*
 
 ### 1. Where Cursor lives — cursor.com/agents (~1 min)
-Pre-stage 1–2 completed runs (HOL-5 already shipped, HOL-6 PR #3 still open). Show the dashboard.
-> *"This is cursor.com/agents — Cursor isn't just an editor, it's a surface area. Same agents from anywhere: web, Slack, IDE."*
+
+**Pre-stage:** dashboard already open in the leftmost tab with HOL-5 and HOL-6 runs visible. Don't navigate cold on stage.
+
+**Beat 1 — Open the dashboard tab (~5s)**
+
+- **DO:** Cmd+1 to the cursor.com/agents tab. Window should fill the screen.
+- **SHOW:** Dashboard with recent agent runs. Audience sees a Cursor product UI that is *not* the IDE.
+
+**Beat 2 — Surface-area framing (~20s)**
+
+- **SAY (verbatim):**
+  > *"This is cursor.com/agents. Two years ago Cursor was an editor — that was it. Today Cursor is a surface area. The same agent runs from the IDE, from this web dashboard, from Slack, from the CLI, and from Bugbot on a pull request. Same agent, same model picker, same rules, same skills — meets you wherever the work is."*
+
+**Beat 3 — Point at the runs (~25s)**
+
+- **DO:** Hover (don't click) the row for the HOL-5 run, then the HOL-6 run.
+- **SAY (verbatim, while hovering):**
+  > *"These two rows are real. HOL-5 — Style Studio — was a Cloud Agent run that landed as a merged PR yesterday. HOL-6 is the Playwright e2e tests for that work; the PR is still open with review comments. Both fired from a `@Cursor` ping in Slack. I never opened the IDE for either one. We'll see the artifacts they produced in a few minutes."*
+
+**Beat 4 — Handoff to Linear (~10s)**
+
+- **DO:** Cmd+Tab toward the Linear tab (don't click yet — the line below is the cue).
+- **SAY (verbatim):**
+  > *"But for the live build today, I want to ride shotgun with the agent in the IDE. So let's start where engineering work actually starts — a Linear ticket."*
 
 ### 2. Where work actually starts: a Linear ticket (~30 sec)
-Open Linear, show HOL-7.
-> *"Real engineering work starts with a ticket. Watch what happens when Cursor reads one."*
+
+**Pre-stage:** HOL-7 already loaded in the Linear tab, scrolled to the top.
+
+**Beat 1 — Open HOL-7 (~5s)**
+
+- **DO:** Switch to the Linear tab. Ticket header visible.
+- **SHOW:** HOL-7 "Build Brand Palette Extractor" with the Problem statement and Acceptance Criteria checklist visible.
+
+**Beat 2 — Frame the ticket (~15s)**
+
+- **DO:** Mouse over the ticket title, then scroll-hover the acceptance-criteria checklist.
+- **SAY (verbatim):**
+  > *"HOL-7. Brand Palette Extractor. Paste an image URL, extract dominant colors with a canvas, save them as a Style preset that hooks into Style Studio — the feature we just shipped. Eleven acceptance criteria, all unchecked. Normal Linear ticket — same one any engineer would see in standup."*
+
+**Beat 3 — Handoff to the IDE (~10s)**
+
+- **DO:** Cmd+Tab to the Cursor IDE. The window should already be on `firefly-asset-gallery`, branch `feat/hol-7`, and `plan.md` should NOT be open in any pane.
+- **SAY (verbatim):**
+  > *"I'm not going to read this whole ticket out loud. Watch what happens when Cursor reads it for me."*
 
 ### 3. THE PLAN MOMENT — switch to IDE on `firefly-asset-gallery`, branch `main`
 
@@ -231,19 +270,31 @@ Stage-direction key (used throughout the IDE block):
 
 **Avoid:** Constraints that contradict the Linear ticket text. Example anti-pattern from the dry-run: the ticket specified the `Palette` Lucide icon, so adding "use Droplet icon instead" gets ignored because Opus correctly trusts the ticket.
 
-### 4. Fan out async work — Cloud Agent recap (~80 sec, ALL LIVE)
+### 4. Fan out async work — Cloud Agent recap (~90 sec, ALL LIVE)
 
-**No pre-recorded video.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play.
+**No pre-recorded video for the 4-tab walkthrough itself.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play. (Tab 2 *does* include a 15-20s screencast; that's the one pre-recorded asset.)
 
-**Tab 1 — Slack thread (~15 sec):**
-Open the holdenstirling Slack workspace, navigate to the channel with the original `@Cursor pick up HOL-6` ping.
-> *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket."*
+**Bridge from Section 3c** (~5s, said as Composer starts working in Section 5 — your eyes are on the IDE but you talk over it):
 
-**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25 sec, includes 15-20s screencast):**
+- **SAY (verbatim):**
+  > *"While Composer builds this, let me show you what happened in parallel yesterday — same workflow, different surface."*
 
-Open the dashboard for HOL-6. Play the pre-recorded screencast inline (see capture instructions below).
+**Tab 1 — Slack thread (~15s)**
 
-> *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop. Here's what it looked like when it ran [play 15-20s screencast]. Streams its work as it goes. Engineer goes to a meeting, comes back, the PR is open."*
+- **DO:** Cmd+Tab to the Slack workspace `holdenstirling`. Channel should already be on the `@Cursor pick up HOL-6` thread.
+- **SHOW:** Slack message visible: *"@Cursor pick up HOL-6"* with a Linear link.
+- **SAY (verbatim):**
+  > *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket. That's the whole message. No prompt engineering."*
+
+**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25s, includes 15-20s screencast)**
+
+- **DO:** Cmd+Tab to `cursor.com/agents`. Click into the HOL-6 run. Trigger the 15-20s screencast inline (or play full-screen via QuickTime).
+- **SHOW:** Dashboard run detail with the agent's activity stream.
+- **SAY (verbatim — start before the clip rolls):**
+  > *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop."*
+- **DO:** Start the screencast.
+- **SAY (verbatim — over the clip):**
+  > *"Streams its work as it goes — file reads, tool calls, test runs, edits. Engineer goes to a meeting, comes back, the PR is open. That's the surface-area story: same agent, no laptop, no IDE open."*
 
 **Screencast capture — DO THIS BEFORE FRIDAY (~10 min, Option B from plan):**
 
@@ -259,19 +310,35 @@ Open the dashboard for HOL-6. Play the pre-recorded screencast inline (see captu
 
 Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen via QuickTime during the demo.
 
-**Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30 sec):**
-> *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
+**Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30s)**
 
-**Tab 4 — PR #4, show the 2-line diff and the `cursoragent@cursor.com` author (~25 sec):**
-> *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. This is one of Cursor's newer capabilities — Bugbot doesn't just review, it can dispatch the fix to a Cloud Agent in one click. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams."*
+- **DO:** Cmd+Tab to the GitHub PR #3 tab. Page should auto-scroll to Bugbot's comment thread.
+- **SHOW:** Inline review comment from `bugbot` on line 44 of `asset-card.tsx`, calling out the keyboard-event-bubbling bug.
+- **SAY (verbatim):**
+  > *"It opened PR #3 with Playwright e2e tests. But — and this is the part that punches above its weight — Bugbot, Cursor's automated reviewer, caught something the agent introduced that I would've shipped: keyboard events from the nested favorite button bubble up to the card's `onKeyDown`, so a keyboard user pressing Enter on the favorite accidentally opens the detail modal too. That's an a11y bug. The kind of thing that fails an Adobe accessibility review."*
+
+**Tab 4 — PR #4, the 2-line autofix diff (~25s)**
+
+- **DO:** Cmd+Tab to GitHub PR #4 Files Changed view.
+- **SHOW:** Two-line diff adding `event.stopPropagation()` (or equivalent). PR author reads `cursoragent@cursor.com`.
+- **SAY (verbatim):**
+  > *"And here's the closer. Bugbot ships a one-click 'Fix in Cursor' or 'Fix in Web' button. I clicked Fix in Web — that fired a second Cloud Agent that produced this 2-line fix and opened PR #4. Author: `cursoragent@cursor.com`. This is one of Cursor's newer capabilities — Bugbot doesn't just review, it can dispatch the fix to a Cloud Agent in one click. PR #4 didn't exist 20 minutes after PR #3. The entire loop ran without me opening the IDE: Linear → Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR. That's the second half of the development lifecycle — compliance, governance, security — the part that used to bottleneck even great engineering teams."*
+
+**Beat 5 — Pivot back to Composer (~5s)**
+
+- **DO:** Cmd+Tab back to the Cursor IDE. Composer should still be working.
+- **SAY (verbatim):**
+  > *"Meanwhile Composer's been building. Let's check in."*
 
 **Pre-demo tab order (left to right in the browser):**
+
 1. https://cursor.com/agents — dashboard, HOL-6 run open
 2. Slack workspace `holdenstirling`, channel with the `@Cursor` thread
 3. https://github.com/holdenstirling/firefly-asset-gallery/pull/3#discussion_r3278539971 — auto-scrolls to Bugbot's comment
 4. https://github.com/holdenstirling/firefly-asset-gallery/pull/4/files — PR #4 Files Changed view
 
 **Friday morning sanity check (2 min):**
+
 - Open all 4 tabs cold, in order, and click through them once with the narration cues. If any tab fails to load or scroll to the right place, you'll catch it before the meeting starts, not during.
 
 ### 5. Build mode with Composer (~4 min)
@@ -309,12 +376,63 @@ You're already in Build mode + Composer — the switch happened as part of Secti
 - See [`dry-run-protocol.md`](./dry-run-protocol.md) "Fallback procedure" — `git checkout dry-run/hol-7-prebuilt` and resume at Section 6.
 
 ### 6. Review the result (~1 min)
-- Open the new `/palette-extractor` page in the browser
-- Run `npm test` to show tests still pass
-- (If Bugbot is wired up by Friday, open the PR and show Bugbot's comments)
+
+This is the visual-demo beat — the only place the actual built feature shows up live in a browser. Make it count.
+
+**Pre-stage:** dev server already running on `localhost:3000` in a terminal tmux pane. Chrome browser tab open on `localhost:3000`. Composer has just yielded; `plan.md` and the file diffs are visible in the IDE.
+
+**Beat 1 — Navigate to `/palette-extractor` (~15s)**
+
+- **DO:** Cmd+Tab to Chrome. Click `Palette Extractor` in the left sidebar — the entry with the gradient `New` badge that Composer just added.
+- **SHOW:** `/palette-extractor` page loads. After ~1s the loading skeleton resolves into a Picsum source image and a 5-swatch palette next to it.
+- **SAY (verbatim — start as the page is loading):**
+  > *"Here it is. Composer built this in the last three minutes — new route, new sidebar entry, fresh palette extractor reading dominant colors out of a canvas. Five swatches by default. Hex values inline."*
+
+**Beat 2 — Change swatch count to demonstrate re-extraction (~15s)**
+
+- **DO:** Click the `Swatches` dropdown. Pick `7`. Wait one beat for the re-extract. Then pick `3`.
+- **SHOW:** Palette card re-renders with 7 swatches, then 3 swatches. Re-extraction is visibly under a second.
+- **SAY (verbatim, while clicking):**
+  > *"3, 5, 7 swatches. Re-extracts client-side, every time. That's the perf constraint I hand-edited into `plan.md` — under 100 milliseconds on a 1024-by-1024 image. Composer added a downsample-to-96-by-96 step inside the extractor to honor it. No new dependencies. Standard Web APIs only."*
+
+**Beat 3 — Save as a Style and confirm it lands in Style Studio (~15s)**
+
+- **DO:** Click `Save as Style`. Type a name in the dialog: `Adobe Brand`. Click the dialog's Save button. Wait for the success banner. Click `Open Style Studio` in the banner.
+- **SHOW:** Style Studio page. New `Adobe Brand` style at the top of the saved-styles list with an `Extracted` badge and the real hex swatches you just extracted.
+- **SAY (verbatim):**
+  > *"And it doesn't live in isolation — it plugs into Style Studio, the feature we shipped yesterday. Save-as-Style takes the extracted palette, names it, and hands it to the existing Zustand store. Same Apply path, no special-case wiring. Two features chained into one workflow."*
+
+**Beat 4 — Show tests pass in the terminal (~15s)**
+
+- **DO:** Cmd+Tab to the IDE. Open the integrated terminal (Ctrl+\`). Type `npm test` and hit Enter.
+- **SHOW:** Vitest run completes in ~1.5s. `Test Files  4 passed (4)` / `Tests  30 passed (30)` lands at the bottom of the terminal.
+- **SAY (verbatim, while waiting for the test run):**
+  > *"And the contract — 30 tests passing, up from 18 on `main`. Composer ran these on its own every time it touched `src/lib`. Same tests you'd see in CI. Green."*
+
+**Compression option (if you're behind on time):**
+
+- Drop Beat 4. The visual proof of Beats 1–3 is enough. Composer was running `npm test` on its own during Build, so the audience already saw tests fire green; re-running in the terminal is reinforcement, not new information.
+
+**Expansion option (if you're ahead on time):**
+
+- Insert a 10s error-state beat between Beats 3 and 4: paste `https://example.com/does-not-exist.png` into the URL input, click `Extract palette`, show the error card with the `Try again` button. Narration: *"And it handles failures gracefully — bad URL, CORS block, fetch error all land here. Not great-not-terrible code, real edge-case handling."*
 
 ### 7. Rules + Skills wrap (~2 min)
-See "Live-demo creation beats" below.
+
+This section pivots the demo from "what one engineer can do" to "how this scales across a team." Run the two creation beats from the "Live-demo creation beats" block below (Beat 1 = rule, Beat 2 = skill), but bracket them with the intro and closing narration here.
+
+**Bridge from Section 6 (~10s)**
+
+- **DO:** Cmd+Tab to the IDE. File tree visible on the left.
+- **SAY (verbatim):**
+  > *"OK — one engineer, one ticket, one feature in twelve minutes. The question Adobe is actually asking is: what happens when this is a thousand engineers and a hundred repos? The answer is rules and skills. Watch."*
+
+**Now run Beat 1 (rule) and Beat 2 (skill) from "Live-demo creation beats" below.** Each has its own stage-direction script.
+
+**Closing of Section 7 (~10s, after Beat 2 finishes)**
+
+- **SAY (verbatim):**
+  > *"That's the multiplier. Every engineer who pulls this repo tomorrow inherits both — the rule fires automatically, the skill is one slash command away. That's how Cursor goes from a single-engineer tool to team infrastructure."*
 
 ### 7.5. Enterprise controls beat (~25 sec)
 
@@ -337,43 +455,98 @@ Narrate:
 
 ---
 
-### 8. Trial success plan + Q&A (~1.5 min)
-Two closing slides:
-1. **"Two-track workflow"** diagram (see [diagrams.md](./diagrams.md) — Diagram 2). "Here's what you just saw."
-2. Trial plan:
-   - Week 1: install + 5 power-user pilots + `.cursor/rules` setup
-   - Week 2: Bugbot wired on 2–3 active repos + first Cloud Agent migrations
-   - Weeks 3–4: measure (Tab acceptance, time-to-first-PR for new starters, PR cycle time, NPS)
-   - Throughout: weekly office hours + shared Slack channel
+### 8. Two-track recap + trial plan + Q&A (~60s + Q&A)
+
+Two closing slides. The diagram does most of the work; you provide the through-line.
+
+**Beat 1 — Two-track workflow diagram (~30s)**
+
+- **DO:** Switch to Keynote / slide deck. Land on the "Two-track workflow" diagram (see [`diagrams.md`](./diagrams.md) — Diagram 2).
+- **SHOW:** Mermaid diagram with two parallel tracks from a single Linear ticket — the local "ride shotgun" track (Ask → Plan → Build) and the async Cloud Agent track (Slack → Cloud Agent → PR → Bugbot → autofix Cloud Agent → PR).
+- **SAY (verbatim — this is the headline recap line from your original notes):**
+  > *"That's the picture. One Linear ticket — two parallel tracks. Locally I rode shotgun with the agent: Ask scoped it, Plan with Opus reasoned about the codebase and wrote a plan I could edit by hand, Build with Composer executed it. In parallel, a Cloud Agent fired from Slack delivered Playwright tests, Bugbot caught an accessibility bug the agent introduced, and a second Cloud Agent produced the fix. Two PRs, one engineer, ten minutes. That's the lift a small team gets — without giving up code review or governance. The bigger story is what this unlocks: projects that wouldn't have gotten started before, getting shipped. That doesn't show up in any dashboard."*
+
+**Beat 2 — Trial plan slide (~25s)**
+
+- **DO:** Advance to the trial-plan slide.
+- **SHOW:** Bulleted four-week trial plan.
+  - Week 1: install + 5 power-user pilots + `.cursor/rules` setup
+  - Week 2: Bugbot wired on 2–3 active repos + first Cloud Agent migrations
+  - Weeks 3–4: measure (Tab acceptance, time-to-first-PR for new starters, PR cycle time, NPS)
+  - Throughout: weekly office hours + shared Slack channel
+- **SAY (verbatim):**
+  > *"Here's what a four-week trial looks like at Adobe. Week one: install and five power-user pilots on `.cursor/rules` for your largest Creative Cloud repo. Week two: Bugbot wired on two or three active repos plus the first Cloud Agent migrations. Weeks three and four: measure — Tab acceptance, time-to-first-PR for new starters, PR cycle time, NPS. Throughout, weekly office hours and a shared Slack channel with our team. The goal isn't a pilot success story — it's the data you'd need to roll this out to all of Adobe."*
+
+**Beat 3 — Open Q&A (~5s)**
+
+- **SAY (verbatim):**
+  > *"That's the demo. Happy to go deeper on any of it — what would be most useful to dig into?"*
+- **DO:** Stop sharing the slide deck. Open your Q&A prep ([`qa-cards.md`](./qa-cards.md)) on a second monitor if you have one.
 
 ---
 
 ## Live-demo creation beats (Layer 2)
 
-These files are **not** loaded by Cursor automatically. They live here so you can paste their contents during the live demo as the "creating a rule live" / "encoding a workflow as a skill" moments.
+These files are **not** loaded by Cursor automatically. They live here so you can paste their contents during the live demo as the "creating a rule live" / "encoding a workflow as a skill" moments. Both beats run inside Section 7; their stage directions are below.
 
-## How to use during the demo
+### Beat 1 — Create a file-pattern rule live (~50s)
 
-### Beat 1 — Create a file-pattern rule live (~30 seconds)
+**Beat 1.1 — Frame the rule (~10s)**
 
-> *"Rules can apply globally — like the testing one — or scoped to specific files. Watch."*
+- **SAY (verbatim):**
+  > *"Rules govern how the agent behaves. The repo already has a testing-conventions rule that fired during Build — that's why Composer ran `npm test` without me asking. Rules can apply globally, like that one, or scoped to specific files. Watch — I'll add a scoped one live."*
 
-1. In the Cursor command palette, run **`/Cursor add new rule`** (or open `.cursor/rules/` and create a new file).
-2. Name it `test-files.mdc`.
-3. Paste the contents of `test-files.mdc` from this folder.
-4. Show the frontmatter — `globs: **/*.test.{ts,tsx}` — and explain: *"this rule only loads when the agent touches a test file. Saves context for the rest of the time."*
+**Beat 1.2 — Create the rule via command palette (~15s)**
 
-### Beat 2 — Encode the workflow you just demonstrated as a personal skill (~45 seconds)
+- **DO:** Cmd+Shift+P to open the command palette. Type `Cursor add new rule`. Hit Enter.
+- **SHOW:** Cursor's "new rule" dialog (or `.cursor/rules/` opening with a new file scaffolded — exact UX depends on Cursor version).
+- **DO:** Name it `test-files.mdc`.
+- **SAY (verbatim, while typing the name):**
+  > *"`test-files.mdc`. This rule will only fire when the agent touches a Vitest test file."*
 
-> *"I just walked you through Ask → Plan → Build with hand-editing `plan.md`. I'm going to capture that entire flow as a personal Skill. The next engineer on my team doesn't have to learn this from scratch — they just type the slash command. This is how Cursor turns institutional knowledge into infrastructure."*
+**Beat 1.3 — Paste the rule body (~15s)**
 
-1. Open the command palette → **`/Cursor create skill`**.
-2. Choose **Personal** (`~/.cursor/skills/`).
-3. Name it `pr-summary`.
-4. Paste the contents of `pr-summary.md` from this folder into the resulting `SKILL.md`.
-5. Show that it's now usable across all projects, not just this one.
+- **DO:** Paste the contents of `demo-prep/test-files.mdc` into the new file. Cmd+S to save.
+- **SHOW:** `.cursor/rules/test-files.mdc` open in the editor with frontmatter and body visible.
+- **SAY (verbatim, while pointing at the frontmatter):**
+  > *"See the `globs` line — `**/*.test.{ts,tsx}`. This rule only loads when the agent is working on a test file. Stays out of context the rest of the time, which means it doesn't burn tokens on irrelevant work. Globally-applied rules can do the same thing for guardrails you always want on — strict mode, style guides, security patterns."*
 
-Optional follow-up beat: *"And that's the Cursor Team Kit story — 17 official skills published, plus everything any team has shared internally. Skills are how Cursor goes from a single-engineer tool to a team multiplier."*
+**Beat 1.4 — Hand off to Beat 2 (~10s)**
+
+- **SAY (verbatim):**
+  > *"That's a rule. Five seconds to write, lives in the repo, every agent that touches this codebase inherits it. Now let's do skills."*
+
+### Beat 2 — Encode the workflow you just demonstrated as a personal skill (~60s)
+
+**Beat 2.1 — Frame the skill (~15s)**
+
+- **SAY (verbatim — this is one of the five baked-in narration tweaks):**
+  > *"I just walked you through Ask → Plan → Build with hand-editing `plan.md`. I'm going to capture that entire flow as a personal Skill. The next engineer on my team doesn't have to learn this workflow from scratch — they just type the slash command. This is how Cursor turns institutional knowledge into infrastructure."*
+
+**Beat 2.2 — Create the skill via command palette (~15s)**
+
+- **DO:** Cmd+Shift+P to open the command palette. Type `Cursor create skill`. Hit Enter.
+- **SHOW:** Skill-creation dialog.
+- **DO:** Choose `Personal` (saves to `~/.cursor/skills/`). Name it `pr-summary`.
+- **SAY (verbatim, while clicking Personal):**
+  > *"Personal — not repo-scoped. This means it follows me across every project I open in Cursor. Could also be Team-scoped if I wanted it published to my org."*
+
+**Beat 2.3 — Paste the skill body (~15s)**
+
+- **DO:** Paste the contents of `demo-prep/pr-summary.md` into the resulting `SKILL.md`. Cmd+S to save.
+- **SHOW:** `~/.cursor/skills/pr-summary/SKILL.md` open in the editor with the frontmatter description and full body.
+- **SAY (verbatim, while the file is on screen):**
+  > *"The frontmatter description tells Cursor when this skill should fire. The body is just markdown — it's the SOP I follow when I write a PR description. Now any time I ask the agent to open a PR, it'll consult this skill and follow my house style. Twenty seconds of work, lasts the rest of my career."*
+
+**Beat 2.4 — Team Kit hook (~10s, optional but recommended)**
+
+- **SAY (verbatim):**
+  > *"And that's the Cursor Team Kit story — 17 official skills published by the Cursor team, plus everything any team has shared internally. Skills are how Cursor goes from a single-engineer tool to a team multiplier. Adobe shows up on day one with that whole library."*
+
+**Beat 2.5 — Hand back to Section 7 closing (~5s)**
+
+- **DO:** Close the file. Cmd+W to clean up the editor.
+- (Section 7's closing line — *"That's the multiplier..."* — runs next.)
 
 ## Files in this folder
 
