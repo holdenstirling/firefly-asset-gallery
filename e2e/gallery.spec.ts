@@ -10,8 +10,12 @@ test.describe("gallery page", () => {
     await expect(page.getByTestId("asset-card")).toHaveCount(TOTAL_ASSETS);
   });
 
-  test("typing in the search box filters the asset grid", async ({ page }) => {
-    await page.getByRole("textbox", { name: /search assets/i }).fill("hummingbird");
+  test("search filters the grid and clearing restores every asset", async ({
+    page,
+  }) => {
+    const search = page.getByRole("textbox", { name: /search assets/i });
+
+    await search.fill("hummingbird");
 
     await expect(page.getByTestId("asset-card")).toHaveCount(3);
     await expect(
@@ -19,9 +23,13 @@ test.describe("gallery page", () => {
         name: /open details for photorealistic close-up of a hummingbird/i,
       })
     ).toHaveCount(3);
+
+    await search.clear();
+
+    await expect(page.getByTestId("asset-card")).toHaveCount(TOTAL_ASSETS);
   });
 
-  test("clicking a style filter chip narrows results and clear resets them", async ({
+  test("style filter chips compose and clear resets them", async ({
     page,
   }) => {
     const watercolorChip = page.getByRole("button", {
@@ -39,13 +47,34 @@ test.describe("gallery page", () => {
       })
     ).toHaveCount(3);
 
+    await page
+      .getByRole("button", {
+        name: "cinematic",
+        exact: true,
+      })
+      .click();
+
+    await expect(page.getByTestId("asset-card")).toHaveCount(9);
+    await expect(
+      page.getByRole("button", {
+        name: /open details for a futuristic cityscape at golden hour/i,
+      })
+    ).toHaveCount(3);
+    await expect(
+      page.getByRole("button", {
+        name: /open details for cinematic shot of a snow-covered nordic cabin/i,
+      })
+    ).toHaveCount(3);
+
     await page.getByRole("button", { name: "clear", exact: true }).click();
 
     await expect(watercolorChip).toHaveAttribute("aria-pressed", "false");
     await expect(page.getByTestId("asset-card")).toHaveCount(TOTAL_ASSETS);
   });
 
-  test("clicking an asset card opens the detail modal", async ({ page }) => {
+  test("clicking an asset card opens the detail modal with asset metadata", async ({
+    page,
+  }) => {
     await page
       .getByRole("button", {
         name: /open details for a futuristic cityscape at golden hour/i,
@@ -63,9 +92,17 @@ test.describe("gallery page", () => {
         name: /a futuristic cityscape at golden hour/i,
       })
     ).toBeVisible();
+    await expect(dialog.getByText("Generated 18m ago · seed 1000")).toBeVisible();
+    await expect(dialog.getByText("by Maya Chen")).toBeVisible();
+    await expect(dialog.getByText("firefly-image-3")).toBeVisible();
+    await expect(dialog.getByText("1:1")).toBeVisible();
+    await expect(dialog.getByText("cinematic")).toBeVisible();
+    await expect(dialog.getByText("image")).toBeVisible();
+    await expect(dialog.getByText("7.5")).toBeVisible();
+    await expect(dialog.getByText("32")).toBeVisible();
   });
 
-  test("the detail modal close button returns focus to the trigger", async ({
+  test("the detail modal close button and Escape return focus to the trigger", async ({
     page,
   }) => {
     const trigger = page
@@ -89,5 +126,39 @@ test.describe("gallery page", () => {
       })
     ).toBeHidden();
     await expect(trigger).toBeFocused();
+
+    await trigger.press("Enter");
+    await expect(
+      page.getByRole("dialog", {
+        name: /a futuristic cityscape at golden hour/i,
+      })
+    ).toBeVisible();
+
+    await page.keyboard.press("Escape");
+
+    await expect(
+      page.getByRole("dialog", {
+        name: /a futuristic cityscape at golden hour/i,
+      })
+    ).toBeHidden();
+    await expect(trigger).toBeFocused();
+  });
+
+  test("recent prompts render deterministic relative timestamps", async ({
+    page,
+  }) => {
+    await expect(
+      page.getByRole("heading", { name: /recent prompts/i })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: /a futuristic cityscape at golden hour.*3 assets.*18m ago/i,
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: /studio product photo of a ceramic mug.*3 assets.*1h ago/i,
+      })
+    ).toBeVisible();
   });
 });
