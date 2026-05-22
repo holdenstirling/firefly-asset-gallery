@@ -364,5 +364,6 @@ The `linear-feature-flow` Phase 5 instruction "Open a draft PR" worked first try
 3. **Adobe problem framing (Section 0a)** — still pending insert.
 4. **Enterprise security beat (Section 7.5)** — still pending insert.
 5. **`demo-prep/qa-cards.md`** — five prepared Q&A answers.
-6. **Screencast capture** — 15-20s of cursor.com/agents streaming a Cloud Agent run.
-7. **cursor.com/learn homework** — watch a few videos and skim a customer story.
+6. **cursor.com/learn homework** — watch a few videos and skim a customer story.
+
+**Removed from this list:** Screencast capture. Section 4 Tab 1–2 now fires a live Cloud Agent task on stage instead of playing a pre-recorded clip. See the README Section 4 stage directions for the live fire-off and the dashboard-fallback procedure.

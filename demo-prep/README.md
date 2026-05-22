@@ -40,15 +40,17 @@ This chains naturally off Style Studio (which just shipped) and is unmistakably 
 | 1 · cursor.com/agents | 60s | 1:55 |
 | 2 · Linear ticket | 30s | 2:25 |
 | 3 · Ask → Plan → hand-edit | 5:00 | 7:25 |
-| 4 · Cloud Agent + Bugbot 4-tab walkthrough (incl. 15-20s screencast) | 90s | 8:55 |
-| 5 · Build mode | 3:30 | 12:25 |
-| 6 · Review the result | 60s | 13:25 |
-| 7 · Rules + Skills live creation | 2:00 | 15:25 |
-| 7.5 · Enterprise controls | 25s | 15:50 |
-| 8 · Two-track recap + trial plan | 60s | 16:50 |
+| 4 · Cloud Agent + Bugbot 4-tab walkthrough (live `@Cursor` fire-off in Tabs 1–2) | 110s | 9:15 |
+| 5 · Build mode | 3:30 | 12:45 |
+| 6 · Review the result | 60s | 13:45 |
+| 7 · Rules + Skills live creation | 2:00 | 15:45 |
+| 7.5 · Enterprise controls | 25s | 16:10 |
+| 8 · Two-track recap + trial plan | 60s | 17:10 |
 | Q&A buffer | 1-3 min | within 20 min |
 
-Total script: ~17 min. Allows 3 min for organic Q&A inside a 20-min slot. Tight but achievable.
+Total script: ~17 min. Allows ~3 min for organic Q&A inside a 20-min slot. Tight but achievable.
+
+**Section 4 / 5 parallelism note:** Section 5 (Composer in Build mode) is a *background* task that you kick off at the very start of Section 5, then leave running while you do Section 4 in the foreground. If you treat them as overlapping in the actual demo (which you can — Composer doesn't need you to stare at it), you reclaim ~90 seconds and the total drops back to ~15:40. The cumulative numbers in the table treat them as serial for safety; treat that as the upper bound, not the target.
 
 ### 0a. Adobe problem framing (~25 sec)
 
@@ -270,45 +272,75 @@ Stage-direction key (used throughout the IDE block):
 
 **Avoid:** Constraints that contradict the Linear ticket text. Example anti-pattern from the dry-run: the ticket specified the `Palette` Lucide icon, so adding "use Droplet icon instead" gets ignored because Opus correctly trusts the ticket.
 
-### 4. Fan out async work — Cloud Agent recap (~90 sec, ALL LIVE)
+### 4. Fan out async work — Cloud Agent + Bugbot 4-tab walkthrough (~110 sec, ALL LIVE)
 
-**No pre-recorded video for the 4-tab walkthrough itself.** Walk through 4 pre-staged browser tabs in this exact order. Every artifact is real and was produced yesterday — that's the credibility play. (Tab 2 *does* include a 15-20s screencast; that's the one pre-recorded asset.)
+**Nothing is pre-recorded.** All four tabs run live on stage. Tabs 1 and 2 fire a brand-new Cloud Agent task in front of the audience and watch the run stream in real time on `cursor.com/agents`. Tabs 3 and 4 are yesterday's PR artifacts (the Bugbot review and the autofix Cloud Agent PR) — those are real but already-landed.
+
+Why live for Tabs 1–2: the audience seeing a real `@Cursor` Slack message produce a real streaming run in 20 seconds is dramatically stronger than playing a pre-recorded clip. It also matches your original notes ("fire off a Cursor agent from Slack" live). The fallback procedure at the end of Tab 2 covers the rare case where the live agent stalls.
 
 **Bridge from Section 3c** (~5s, said as Composer starts working in Section 5 — your eyes are on the IDE but you talk over it):
 
 - **SAY (verbatim):**
-  > *"While Composer builds this, let me show you what happened in parallel yesterday — same workflow, different surface."*
+  > *"While Composer builds this, let me show you the other surface — same workflow fired from Slack, running async in Cursor's infrastructure."*
 
-**Tab 1 — Slack thread (~15s)**
+**Tab 1 — Slack: fire a live Cloud Agent task (~25s)**
 
-- **DO:** Cmd+Tab to the Slack workspace `holdenstirling`. Channel should already be on the `@Cursor pick up HOL-6` thread.
-- **SHOW:** Slack message visible: *"@Cursor pick up HOL-6"* with a Linear link.
+This is now a **live fire-off**, not a yesterday-recap. Audience sees you type the Slack message and the Cursor bot acknowledge it.
+
+**Beat 1.1 — Open Slack and point at yesterday's ping (~5s)**
+
+- **DO:** Cmd+Tab to the Slack workspace `holdenstirling`. Channel should already be scrolled to the `@Cursor pick up HOL-6` thread from yesterday.
+- **SHOW:** Yesterday's `@Cursor pick up HOL-6` message visible above the composer.
 - **SAY (verbatim):**
-  > *"Models are good enough now that they can run asynchronously. While I plan locally, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. I sent this yesterday from Slack — `@Cursor`, here's the Linear ticket. That's the whole message. No prompt engineering."*
+  > *"Yesterday I sent this from Slack — `@Cursor pick up HOL-6`. That one message is what produced everything we'll see in Tabs 3 and 4. Today, same thing, new task, live — watch."*
 
-**Tab 2 — `cursor.com/agents` run detail for HOL-6 (~25s, includes 15-20s screencast)**
+**Beat 1.2 — Type and send a new `@Cursor` task (~15s)**
 
-- **DO:** Cmd+Tab to `cursor.com/agents`. Click into the HOL-6 run. Trigger the 15-20s screencast inline (or play full-screen via QuickTime).
-- **SHOW:** Dashboard run detail with the agent's activity stream.
-- **SAY (verbatim — start before the clip rolls):**
-  > *"Cursor's web dashboard. This is the Cloud Agent that picked it up — runs in Cursor's infrastructure, not on my laptop."*
-- **DO:** Start the screencast.
-- **SAY (verbatim — over the clip):**
-  > *"Streams its work as it goes — file reads, tool calls, test runs, edits. Engineer goes to a meeting, comes back, the PR is open. That's the surface-area story: same agent, no laptop, no IDE open."*
+- **DO:** Click into the Slack message composer. Type (or paste, but typing reads more authentic) the prompt below. Hit Enter.
+- **LIVE PROMPT (type or paste verbatim):**
 
-**Screencast capture — DO THIS BEFORE FRIDAY (~10 min, Option B from plan):**
+  ```
+  @Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
+  ```
+- **SHOW:** Cursor's Slack bot replies with an acknowledgement (typically *"Agent started"* or a link to the run).
+- **SAY (verbatim, while typing — finish around the time you hit Enter):**
+  > *"Models are good enough now that they can run asynchronously. While Composer's building over there, work with clear scope fans out to Cloud Agents in Cursor's infrastructure. Tiny task — JSDoc comment on the Picsum helper. No prompt engineering."*
 
-1. In Slack `holdenstirling`, fire a small new Cloud Agent task in `firefly-asset-gallery`:
-   ```
-   @Cursor in firefly-asset-gallery add a JSDoc comment to picsumUrl in src/lib/picsum.ts describing the seed/width/height/blur/grayscale params
-   ```
-2. Open `cursor.com/agents`, click into the new run as soon as it shows up.
-3. Start macOS Screen Recording (`Cmd+Shift+5` -> "Record Selected Portion") on the dashboard's activity stream.
-4. Capture 15-20 seconds of the agent streaming its work (file reads, tool calls, edits).
-5. Save the clip to `~/Movies/cloud-agent-stream.mov` (or wherever you keep demo assets).
-6. Close the disposable PR without merging — it was just for the capture.
+**Beat 1.3 — Acknowledge the bot reply, pivot to dashboard (~5s)**
 
-Result: a known-good 15-20s clip you can drop into Keynote, or play full-screen via QuickTime during the demo.
+- **DO:** Wait one beat for the Cursor Slack bot's confirmation. Cmd+Tab to `cursor.com/agents`.
+- **SAY (verbatim):**
+  > *"Confirmation. Run started. Let's see it."*
+
+**Tab 2 — `cursor.com/agents`: watch the LIVE run stream (~30s)**
+
+**Beat 2.1 — Find the new run on the dashboard (~5s)**
+
+- **DO:** Land on the dashboard. The just-fired task should appear at the top of the list, status `Running` (refresh if needed — usually within 1–2 seconds of the Slack confirmation).
+- **SHOW:** Dashboard row for the new run, status `Running` (or `Active`).
+
+**Beat 2.2 — Click into the run detail (~5s)**
+
+- **DO:** Click the new run. Detail page opens with the live activity stream.
+- **SHOW:** Activity stream populating in real-time — file reads, tool calls, edits.
+- **SAY (verbatim):**
+  > *"There it is. Cursor's web dashboard. Same agent, runs in Cursor's infrastructure — not on my laptop. No environment to set up, no laptop to keep awake."*
+
+**Beat 2.3 — Narrate the stream as it plays (~20s)**
+
+- **DO:** Hands off keyboard. Let the audience watch the agent work. Don't talk over the most interesting moments — let them land silently and then narrate them.
+- **SHOW:** Agent reads `src/lib/picsum.ts`, considers the params, drafts the JSDoc, applies the edit. If fast enough, a draft PR appears before you move on.
+- **SAY (verbatim, paced across the ~20s — call out what's actually on screen):**
+  > *"Streams its work as it goes — file reads, tool calls, edits. There — it's reading `picsum.ts`. Now it's applying the edit. Engineer fires a Slack message, goes to a meeting, comes back, the PR is open. Same surface area, no laptop, no IDE open. That's the async story."*
+- **WATCH FOR:** If a draft PR link appears in the activity stream, point at it briefly and say *"And there's the PR — under a minute end-to-end."* If the PR hasn't opened yet by the time you've used your 20s, leave it streaming and move on. Tab 4 will still land the PR-author story.
+
+**Fallback procedure (if the live agent stalls or hasn't started ~10s after Beat 1.3):**
+
+- **DO:** Stay on the dashboard. Scroll one row down — yesterday's HOL-6 run is still listed. Click into it instead of the new one.
+- **SAY (smooth pivot, no apology):**
+  > *"While that one spins up — same flow from yesterday, longer task. Here's HOL-6, the Playwright tests."*
+- Then continue with Beats 2.2 and 2.3 narration but pointing at HOL-6's completed activity log. Audience won't know it's a fallback.
+- **Plan C (very rare):** if both the live run and HOL-6 load slowly (network issue), open the Slack bot reply in Tab 1 — it usually includes a link to the run page. Or skip to Tab 3 and revisit Tab 2 at the end. Don't dwell — better to keep momentum than fight a flaky dashboard.
 
 **Tab 3 — PR #3, scrolled to Bugbot's comment on `asset-card.tsx:44` (~30s)**
 
