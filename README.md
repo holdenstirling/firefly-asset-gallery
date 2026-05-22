@@ -89,6 +89,82 @@ deterministic across reloads.
    This serves the optimized app at [http://localhost:3000](http://localhost:3000).
    Stop the dev server first if it is already using port 3000.
 
+## Full end-to-end practice checklist
+
+Use this when you want to rehearse the full setup and review loop from a clean
+checkout. Keep two terminals open: one for the dev server, and one for commands.
+
+1. **Fresh install**
+
+   ```bash
+   npm install
+   npx playwright install --with-deps chromium
+   ```
+
+2. **Start the site in terminal 1**
+
+   ```bash
+   npm run dev
+   ```
+
+3. **Open the frontend**
+
+   Go to [http://localhost:3000](http://localhost:3000). This is the local
+   frontend showcase. Use it any time you make a UI change so you can confirm
+   the change visually, not just through tests.
+
+4. **Make or inspect a small change**
+
+   For practice, change a small piece of UI copy, adjust a component, or review
+   the current branch changes. Save the file and confirm the browser updates.
+
+5. **Do a manual smoke test in the browser**
+
+   - Gallery loads without errors.
+   - Search filters the grid.
+   - Style filters narrow and clear correctly.
+   - Asset cards open the detail modal.
+   - Closing the modal returns focus to the card.
+   - Any route you changed still renders.
+
+6. **Run checks in terminal 2**
+
+   ```bash
+   npm test
+   npm run lint
+   npm run build
+   npm run test:e2e
+   ```
+
+7. **Review your diff**
+
+   ```bash
+   git status
+   git diff
+   ```
+
+8. **Commit when everything looks good**
+
+   ```bash
+   git add <files you changed>
+   git commit -m "Describe the change"
+   git push -u origin <your-branch-name>
+   ```
+
+## Troubleshooting local setup
+
+- **Port 3000 is already in use:** stop the other dev server, or run
+  `npm run dev -- --port 3001` and open `http://localhost:3001`.
+- **Playwright says Chromium is missing:** run
+  `npx playwright install --with-deps chromium`.
+- **E2E tests fail because the app is not reachable:** make sure nothing else is
+  holding the configured port. Playwright starts the dev server automatically for
+  `npm run test:e2e`, but an unhealthy existing server can still interfere.
+- **Images load slowly:** the app uses Lorem Picsum URLs. Slow external image
+  responses can make the UI feel delayed, but seeded URLs should remain stable.
+- **After changing dependencies:** run `npm install` again and commit both
+  `package.json` and `package-lock.json` if they changed.
+
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack, React 19)
