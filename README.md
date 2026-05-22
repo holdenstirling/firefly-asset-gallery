@@ -16,7 +16,7 @@ This repo doubles as a live-demo vehicle for showcasing Cursor's
 | `/` (Gallery) | working | Masonry asset grid, prompt bar, style filters, asset detail modal |
 | `/collections` | working | Curated asset boards |
 | `/prompts` | working | Recent prompt history |
-| `/style-studio` | **skeleton** | Live-demo target — define reusable Style presets |
+| `/style-studio` | working | Define reusable Style presets with preview, apply, and token export |
 
 ## Quick start
 
@@ -69,10 +69,8 @@ This repo is staged for a Cursor kickoff demo:
 
 ## Intentional rough edges
 
-A few things are deliberately unfinished so they can be fixed live:
+One thing remains deliberately unfinished so it can be fixed live:
 
-- The parameter panel updates state but doesn't feed into the generate flow.
 - Favorites don't persist across reloads.
-- Style Studio is a marketing skeleton — the real feature is the live-build target.
 
-These are documented in `AGENTS.md`.
+This is documented in `AGENTS.md`.
