@@ -97,7 +97,7 @@ test.describe("gallery page", () => {
     await expect(dialog.getByText("firefly-image-3")).toBeVisible();
     await expect(dialog.getByText("1:1")).toBeVisible();
     await expect(dialog.getByText("cinematic")).toBeVisible();
-    await expect(dialog.getByText("image")).toBeVisible();
+    await expect(dialog.getByText("image", { exact: true })).toBeVisible();
     await expect(dialog.getByText("7.5")).toBeVisible();
     await expect(dialog.getByText("32")).toBeVisible();
   });
