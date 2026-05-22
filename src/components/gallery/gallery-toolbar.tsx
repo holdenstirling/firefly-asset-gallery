@@ -39,6 +39,7 @@ export function GalleryToolbar({
         <div className="relative flex-1 max-w-md">
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
+            aria-label="Search assets"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search prompts, tags, authors…"
@@ -63,6 +64,7 @@ export function GalleryToolbar({
             <button
               key={style}
               type="button"
+              aria-pressed={active}
               onClick={() => toggleStyleFilter(style)}
               className={cn(
                 "rounded-full border px-2.5 py-0.5 text-xs transition-colors",

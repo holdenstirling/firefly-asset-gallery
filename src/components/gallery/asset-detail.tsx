@@ -31,11 +31,21 @@ export function AssetDetail({ assets }: AssetDetailProps) {
   const asset = selectedAssetId
     ? assets.find((item) => item.id === selectedAssetId)
     : null;
+  const closeDetail = () => {
+    const trigger = selectedAssetId
+      ? document.querySelector<HTMLElement>(
+          `[data-asset-trigger="${selectedAssetId}"]`
+        )
+      : null;
+
+    setSelectedAssetId(null);
+    window.requestAnimationFrame(() => trigger?.focus());
+  };
 
   return (
     <Dialog
       open={!!asset}
-      onOpenChange={(open) => !open && setSelectedAssetId(null)}
+      onOpenChange={(open) => !open && closeDetail()}
     >
       <DialogContent className="max-h-[90vh] max-w-6xl overflow-hidden p-0 sm:rounded-xl">
         {asset && (
