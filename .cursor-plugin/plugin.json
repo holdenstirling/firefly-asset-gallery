@@ -1,0 +1,30 @@
+{
+  "$schema": "https://cursor.com/schemas/plugin.json",
+  "name": "firefly-asset-gallery-toolkit",
+  "description": "Internal Cursor configuration for the Firefly Asset Gallery team — bundles rules, commands, skills, hooks, and a mock Adobe design-tokens MCP server. Demonstrates how Adobe could distribute a curated agent configuration to every engineer via a single plugin.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Firefly Asset Gallery team"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "adobe",
+    "firefly",
+    "internal",
+    "design-tokens",
+    "demo"
+  ],
+  "rules": [
+    "../.cursor/rules/firefly-conventions.mdc",
+    "../.cursor/rules/testing-conventions.mdc"
+  ],
+  "commands": [
+    "../.cursor/commands"
+  ],
+  "skills": [
+    "../.cursor/skills/linear-feature-flow",
+    "../.cursor/skills/pr-summary"
+  ],
+  "hooks": "../.cursor/hooks.json",
+  "mcpServers": "../.cursor/mcp.json"
+}
