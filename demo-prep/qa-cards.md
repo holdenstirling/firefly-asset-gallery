@@ -196,3 +196,138 @@ These appear across multiple cards. Burn them in.
 8. **NVIDIA, Stripe, Coinbase** as monorepo-scale customers
 9. **trust.cursor.com** for the SOC 2 report
 10. **No on-premises today; AWS-only cloud architecture, full ZDR**
+
+---
+
+# 201-level cards
+
+These cards layer on top of the 10 above and are scoped to the 201 audience
+(smaller, more technical, already saw the 101 demo). Pull these out when
+the question is about advanced primitives — Rules / Commands / Skills /
+Hooks / MCP / Plugins / model routing — rather than enterprise procurement.
+
+## Card 11 — "What's the security model for hooks? Can a hook exfiltrate data?"
+
+**This is the highest-probability 201 question. Adobe will ask it within five minutes of seeing a hook fire on stage. Have it nailed.**
+
+**30-sec answer:**
+
+> *"Three layers. First — code review. Hook scripts live in `.cursor/hooks/*.sh` next to the manifest, in version control, like any other code in the repo. Nothing is hidden; your existing PR review process applies. Second — admin allowlist. Adobe's Cursor admin panel can pin which hooks, plugins, and MCP servers are allowed across the org. You can require all hooks be sourced from an internal registry you control. Third — execution scope. Hooks run as the local user in the local environment — they don't escalate, and they don't carry secrets the agent doesn't have. The security model is 'bring your own trust' — Cursor doesn't pretend hooks are zero-trust by default. For Adobe specifically: maintain an internal plugin registry, require security review on hook scripts, lock to that registry via admin."*
+
+**If they push ("but a malicious plugin could ship a hook that exfiltrates"):**
+
+> *"True for any system that lets you run code. The mitigation is the same as any other code-running system you operate today: registry-based distribution, code review, admin-controlled installation. The difference is hooks make the surface explicit — `.cursor/hooks.json` plus `.cursor/hooks/*.sh` is a small, reviewable set of files. Easier to audit than an opaque IDE plugin binary."*
+
+**Source:** Cursor [Hooks docs](https://cursor.com/docs/hooks.md); Plugins manifest review process documented at [cursor.com/docs/plugins](https://cursor.com/docs/plugins).
+
+---
+
+## Card 12 — "Context window mechanics — what actually gets sent each turn? What gets compacted?"
+
+**The technical-credibility question. Engineers in the room have used 2-3 of these tools and are comparing harness behavior.**
+
+**30-sec answer:**
+
+> *"Cursor's harness tiers context. Pinned and always-included: Rules in Always mode, AGENTS.md, the active Plan if you're in Plan mode, tool definitions for active MCP servers. Summoned on demand: Skills the agent decides to load based on their description, `@`-mentions, file reads mid-turn. Compacted under pressure: older conversation turns and large tool outputs get summarized into shorter forms once the window gets tight. Skills NOT currently relevant don't load at all — that's the whole point of description-routed loading. Net effect: you get more useful context per token than systems that either dump everything or aggressively prune."*
+
+**If they push ("can I control what gets compacted?"):**
+
+> *"Partly. You control what's pinned via Rules application mode. You can `@`-pin specific files for a turn. There's a `preCompact` hook event that fires before compaction runs — you can use that to take a snapshot or run custom logic. But the compaction algorithm itself is part of the harness; you don't tune it directly. The practical lever is upstream: be ruthless about what's in Always mode."*
+
+**Source:** [agent best practices blog](https://cursor.com/blog/agent-best-practices); Hooks reference for `preCompact` event.
+
+---
+
+## Card 13 — "How does the agent decide *when* to fire a Skill vs ignore it?"
+
+**The "Skill confusion" question. Adobe engineers will misunderstand this; you correcting them politely is the leadership beat.**
+
+**30-sec answer:**
+
+> *"Two independent triggers. Path one: the user types `/skill-name`. That's deterministic — the slash invocation forces the skill load. Path two: the agent reads every available SKILL.md's *description* on each turn — just the description, not the body — and decides whether the current task matches. If the description says 'Use when the user asks to ship a hotfix' and the conversation looks like a hotfix request, the agent loads the body. Otherwise it doesn't. Description quality is everything. Write descriptions that explicitly name the trigger condition — 'Use when X' — not generic ones like 'a helpful workflow.'"*
+
+**If they push ("so the model sees all skill descriptions every turn? Doesn't that pollute context?"):**
+
+> *"Yes, descriptions are presented every turn. Bodies are not. A description is one or two sentences, so the per-turn cost of N skills is roughly N short sentences — negligible until you ship hundreds. At very large scale you use plugin scoping so different teams' skill catalogs don't all merge into one pile, and the admin allowlist can disable skills org-wide. Description discipline is the load-bearing piece. Teams that ship Cursor at scale invest in skill-description style guides."*
+
+**Source:** [agent best practices blog](https://cursor.com/blog/agent-best-practices); Plugins reference for marketplace scoping.
+
+---
+
+## Card 14 — "Can MCP servers run inside our VPC? What does the deployment look like?"
+
+**Adobe's IP team will ask. Don't oversell remote-MCP; lead with stdio.**
+
+**30-sec answer:**
+
+> *"Two deployment shapes. Stdio MCP servers run locally — the agent spawns a process, talks JSON-RPC over stdin/stdout. Those are the easiest to keep inside your perimeter because they never leave the engineer's machine. Remote MCP servers run as HTTP endpoints — you'd stand those up inside your VPC, on internal DNS, and declare them in `.cursor/mcp.json` with the internal URL. The agent calls them like any HTTPS service. Authentication is your call — bearer tokens, mTLS, whatever your internal services already use. The key point is Cursor doesn't proxy MCP calls through its cloud; the agent calls the server directly from the developer's environment."*
+
+**If they push ("can we restrict which MCP servers are reachable?"):**
+
+> *"Yes — admin allowlist at the org level. You can ship an internal `mcp.json` configuration that pins exactly which servers engineers can call, and block everything else. Combine with the `beforeMCPExecution` hook for per-call audit and you have both a structural and a behavioral layer of control."*
+
+**Source:** [agent best practices blog](https://cursor.com/blog/agent-best-practices); [Cursor plugins reference](https://cursor.com/docs/reference/plugins).
+
+---
+
+## Card 15 — "We have an Adobe-internal plugin registry. Can we lock Cursor to only that registry?"
+
+**Plugin governance is a procurement-blocking question. Don't be vague.**
+
+**30-sec answer:**
+
+> *"Yes. Adobe's Cursor admin panel can restrict plugin installation to URLs from an allowlist of registries. Engineers can browse the public Marketplace and cursor.directory but installation is gated by admin policy. You'd typically stand up an internal git-based plugin registry — plugins are just git repos with a `.cursor-plugin/plugin.json` manifest, so the registry is whatever git host you already trust. Pin the allowlist to your internal host, audit the manifests on the way in, and you've got a fully governed extension surface."*
+
+**If they push ("can we run our own marketplace UI?"):**
+
+> *"The official Marketplace is Cursor-hosted. Internally Adobe wouldn't replicate the marketplace UI — you'd publish plugin URLs in Confluence or whatever your internal docs surface is, and engineers install by URL. The marketplace UI itself is a discovery convenience; the install path doesn't depend on it."*
+
+**Source:** [Cursor plugins overview](https://cursor.com/docs/plugins); enterprise admin documentation.
+
+---
+
+## Card 16 — "How does Best-of-N actually pick the winning attempt? Is it just diffing?"
+
+**A "future of dev" question. Saying 'vibes' loses the room.**
+
+**30-sec answer:**
+
+> *"Structured human-in-the-loop by default, with optional automated eval. Fire N Cloud Agents on the same task — each runs in an isolated git worktree on its own branch. Default selection is the engineer reviewing the N attempts side-by-side and picking the winner, or merging across them. Where it gets interesting: you can write an eval script — runs on each candidate, scores it on whatever matters to you (tests pass? type-check clean? diff size? perf benchmark? axe-core a11y score?). The eval scores surface the most likely winner first. So the answer is 'human-in-the-loop, with optional automated eval gates.' For Adobe's a11y bar specifically, the eval could be axe-core."*
+
+**If they push ("does Cursor pick automatically with no human if I want?"):**
+
+> *"You can configure a fully-automated eval gate — top-scored candidate auto-merges. Most teams don't want that day one. Start with eval-surfaces-the-winner, human-confirms. Move to eval-gates-auto-merge only on workflows where the eval is genuinely sufficient — codemods, dependency bumps, small refactors."*
+
+**Source:** Subagents v2.4 release; [agent best practices blog](https://cursor.com/blog/agent-best-practices); inferred from `best-of-n-runner` subagent type.
+
+---
+
+## Card 17 — "Cursor CLI in CI — is it production-supported, or beta?"
+
+**Adobe wants to run agents on CI runners. Be honest about maturity.**
+
+**30-sec answer:**
+
+> *"Cursor ships a `cursor agent` CLI that runs the same harness from a terminal — Cursor Cloud Agents already run on the same primitive in Cursor's infrastructure. It's used for nightly codemods, dependency bumps, batch refactors. For Adobe CI, the pattern is: spin up an ephemeral runner with your repo, run `cursor agent` with a scoped prompt, capture the diff, open a PR through your normal PR-bot. It's production-suitable today for batch automation. Real-time interactive use in CI — less of a fit; the CLI is for unattended runs."*
+
+**If they push ("what's the cost model in CI?"):**
+
+> *"Same usage model as the IDE — token consumption against your enterprise allotment. Admin panel shows usage per-team. You'd want to set per-job usage caps so a runaway agent doesn't burn the budget. Same hygiene you'd apply to any LLM-in-CI integration."*
+
+**Source:** Inferred from Cloud Agent infrastructure; verify exact CLI command name in current docs.
+
+---
+
+## Card 18 — "How do you prevent two teams from shipping conflicting custom commands or skills?"
+
+**The plugin-at-scale governance question. Answer = the org pattern, not a technical lock.**
+
+**30-sec answer:**
+
+> *"Three layers. First — naming conventions. Plugins should namespace their commands and skills — `adobe-firefly/review-pr`, not just `review-pr`. Second — admin allowlist. The org pins which plugins are installable; if two collide, only one ships. Third — the Center of Excellence pattern. One small team owns the internal plugin catalog, reviews submissions, runs office hours. That team is the human governance layer that mechanical allowlists can't replace. At the technical layer, slash-command precedence is deterministic — Commands win over Skills on `/`-invocation, and within Commands the project-scope wins over user-scope. So the conflict resolution rules exist, but the org pattern is the right answer."*
+
+**If they push ("what if two plugins both declare a `/review-pr` command?"):**
+
+> *"Last-loaded wins, deterministically — but admin allowlist should prevent that situation from arising. If two installed plugins both declare the same command name, Cursor surfaces a warning. The Center of Excellence catches it in plugin review. The point is the conflict shouldn't reach a developer's machine."*
+
+**Source:** [Cursor plugins reference](https://cursor.com/docs/reference/plugins) (precedence rules); [agent best practices blog](https://cursor.com/blog/agent-best-practices) for the CoE pattern.
