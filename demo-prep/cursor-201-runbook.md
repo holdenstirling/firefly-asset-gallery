@@ -480,3 +480,98 @@ For Friday-morning self-reminder:
 If you have to compress in the moment, lead with **Hooks intercepting
 MCP** and **Plugins as distribution**. Those two are the 201 payload
 the 101 audience didn't get.
+
+---
+
+## Phase C — HOL-8 dry-run and fallback branch
+
+The Cursor 201 live-build target is **HOL-8 — Style preset import/export
+(JSON)**. Full ticket draft lives in [hol-8-ticket.md](./hol-8-ticket.md).
+The dry-run output — what Composer would produce running through the
+new plugin — is captured on a sibling branch as the live-demo fallback.
+
+### Fallback branch
+
+`cursor/hol-8-prebuilt-d329` — branched off
+`cursor/cursor-201-demo-prep-d329` (i.e. it includes every Phase A and
+Phase B artifact, plus the implemented HOL-8 feature on top).
+
+If Composer chokes during the live build (section 5 of the runbook):
+
+1. Pause narration with the line from the 101 fallback: *"Let me
+   speed this up — I ran this same flow yesterday."*
+2. In a new terminal: `git checkout cursor/hol-8-prebuilt-d329`
+3. Restart the dev server: `npm run dev`
+4. Resume the runbook at section 6 (Review the result) — open
+   `/style-studio`, hit Export, drag the file back into the drop zone.
+
+The fallback branch is **never the primary path**. Friday's job is to
+ship HOL-8 live on top of `cursor/cursor-201-demo-prep-d329`. The
+prebuilt branch is insurance.
+
+### What the live dry-run will exercise
+
+Each axis fires explicitly. Watch for these moments during the IDE
+block so you can call them out:
+
+| Beat | What fires | What the audience sees |
+|---|---|---|
+| Start of Ask | `/scope-ticket HOL-8` command resolves | Slash menu shows the command, chat output is the scoping report from [scope-ticket.md](../.cursor/commands/scope-ticket.md) |
+| Plan mode read of AGENTS.md | The `firefly-conventions.mdc` Rule (Always mode) is already in context — Opus knows about CSS variables before it plans the import UI | Generated plan cites the rule by name |
+| Plan mode hand-edit | You insert the constraints from [hol-8-ticket.md](./hol-8-ticket.md) into `## Constraints` | Plan diff shows the added section |
+| Build mode first edit | `afterFileEdit` hook fires on every new file | Hook either passes silently or — if Composer happens to test with a fixture string that looks key-shaped — blocks visibly |
+| Build mode test run | `testing-conventions.mdc` rule (Always mode) caused Composer to write tests alongside the new utility | `src/lib/__tests__/style-preset-io.test.ts` appears in the file tree |
+| Build mode shell call | `beforeShellExecution` hook runs on every `npm test`, `npm run build`, and `git add` | Hook passes silently — nothing in `block-dangerous-shell.sh` matches these |
+| (Optional) MCP call | If Composer asks the design-tokens MCP for a color reference, `beforeMCPExecution` hook logs the call | `tail -f /tmp/cursor-mcp-audit.log` shows a new entry |
+| End of Build | `/review-pr` runs against the diff before the PR opens | Structured review report with the four-axis verdict |
+| PR draft body | `pr-summary` skill is description-routed when Composer says "I'll open the PR now" | Generated body follows the pr-summary template |
+
+### Expected file diff (what Composer should produce)
+
+The implementation Composer should converge on:
+
+| File | Status | Why |
+|---|---|---|
+| `src/lib/style-preset-io.ts` | create | Pure functions for `exportStylePreset(style)` and `importStylePreset(json)` with type guards |
+| `src/lib/__tests__/style-preset-io.test.ts` | create | Round-trip, invalid JSON, missing field, enum violation, name collision |
+| `src/lib/types.ts` | modify | Add `StylePresetExport` / `StylePresetImportError` interfaces |
+| `src/lib/store.ts` | modify | Add `importStudioStyle(style)` action that calls `saveStyle` with a collision-suffixed name |
+| `src/app/style-studio/page.tsx` | modify | Two new buttons (Export, Import) + a file input + an inline error display |
+
+Five files, roughly 250 LOC net. If Composer's output is dramatically
+larger or smaller, narrate the divergence — it's usually a sign the
+hand-edit pushed Composer toward a different decomposition.
+
+### If the dry-run diverges from the prebuilt branch
+
+Acceptable divergences:
+- Different file naming (e.g. `preset-io.ts` instead of
+  `style-preset-io.ts`) — fine, narrate the choice.
+- Different validation library decision (Zod vs hand-rolled type
+  guards) — fine, mention that the constraint didn't lock this.
+- Test count differs by 2-3 from the prebuilt branch — fine.
+
+Unacceptable divergences (recover with fallback):
+- Composer crashes mid-implementation, can't self-correct twice.
+- Tests fail and Composer can't fix them inside one minute of
+  retry budget.
+- Build fails on type errors that look structural, not typo'd.
+
+### What Friday's audience SHOULD remember about the live build
+
+Three things, in order of importance:
+
+1. **Hooks fired without anyone asking them to.** Every test run,
+   every file edit, every MCP call routed through a script in version
+   control. The agent didn't have to opt in; the harness did the
+   routing.
+2. **The Skill was discoverable AND composable.** `linear-feature-flow`
+   loaded because Opus matched its description. `pr-summary` loaded
+   because Composer matched its description. Two independent skills,
+   one cohesive workflow.
+3. **The plugin manifest IS the org-distribution story.** Adobe doesn't
+   need to teach 5,000 engineers about file paths and event names —
+   they install the plugin and get the team's curated configuration.
+
+If any one of those three doesn't land, you've got the wrong primitive
+on screen for that beat. Pause and zoom back out before continuing.
