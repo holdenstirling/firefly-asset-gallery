@@ -53,6 +53,33 @@ export interface StudioStyle {
   updatedAt: string;
 }
 
+export const STYLE_PRESET_SCHEMA_VERSION = "1.0" as const;
+
+export interface StylePresetExport {
+  schemaVersion: typeof STYLE_PRESET_SCHEMA_VERSION;
+  name: string;
+  description: string;
+  paletteId: StylePaletteId;
+  typographyId: TypographyPairId;
+  parameters: GenerationParameters;
+}
+
+export type StylePresetImportErrorCode =
+  | "INVALID_JSON"
+  | "NOT_AN_OBJECT"
+  | "UNSUPPORTED_SCHEMA_VERSION"
+  | "MISSING_FIELD"
+  | "INVALID_FIELD_TYPE"
+  | "INVALID_PALETTE_ID"
+  | "INVALID_TYPOGRAPHY_ID"
+  | "INVALID_PARAMETERS";
+
+export interface StylePresetImportError {
+  code: StylePresetImportErrorCode;
+  message: string;
+  field?: string;
+}
+
 export interface Asset {
   id: string;
   prompt: string;
