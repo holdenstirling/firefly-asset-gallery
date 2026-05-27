@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   Check,
   Copy,
@@ -11,6 +11,7 @@ import {
   Plus,
   Sparkles,
   Trash2,
+  Upload,
   Wand2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +37,11 @@ import {
   styleToJsonTokens,
   TYPOGRAPHY_PAIRS,
 } from "@/lib/style-studio";
+import {
+  exportStylePresetFilename,
+  exportStylePresetToString,
+  importStudioStyleFromString,
+} from "@/lib/style-preset-io";
 import { picsumUrl } from "@/lib/picsum";
 import { cn } from "@/lib/utils";
 import type {
@@ -77,6 +83,9 @@ export default function StyleStudioPage() {
   const saveStyle = useStyleStudioStore((s) => s.saveStyle);
   const deleteStyle = useStyleStudioStore((s) => s.deleteStyle);
   const setActiveStyleId = useStyleStudioStore((s) => s.setActiveStyleId);
+  const importStudioStyle = useStyleStudioStore((s) => s.importStudioStyle);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
 
   const [name, setName] = useState("Campaign Style");
   const [description, setDescription] = useState(
@@ -152,6 +161,51 @@ export default function StyleStudioPage() {
     window.setTimeout(() => setCopied(false), 1500);
   };
 
+  const handleExportPreset = () => {
+    if (!activeStyle) return;
+    const blob = new Blob([exportStylePresetToString(activeStyle)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = exportStylePresetFilename(activeStyle);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const source =
+        typeof reader.result === "string" ? reader.result : "";
+      const existingNames = styles.map((style) => style.name);
+      const result = importStudioStyleFromString(source, existingNames);
+      if (!result.ok) {
+        setImportError(`${result.error.code}: ${result.error.message}`);
+        return;
+      }
+      setImportError(null);
+      importStudioStyle(result.value);
+      setActiveStyleId(result.value.id);
+      handleLoad(result.value);
+    };
+    reader.onerror = () => {
+      setImportError("INVALID_JSON: file could not be read.");
+    };
+    reader.readAsText(file);
+  };
+
+  const handleImportChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) handleImportFile(file);
+    event.target.value = "";
+  };
+
   return (
     <div className="flex h-screen flex-col">
       <header className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
@@ -166,11 +220,53 @@ export default function StyleStudioPage() {
             Define reusable style presets that auto-apply to every generation.
           </p>
         </div>
-        <Button variant="gradient" size="sm" onClick={handleSave}>
-          <Sparkles className="h-4 w-4" />
-          Save and apply
-        </Button>
+        <div className="flex items-center gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={handleImportChange}
+            aria-label="Import preset JSON file"
+          />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Upload className="h-4 w-4" />
+            Import
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportPreset}
+            disabled={!activeStyle}
+          >
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
+          <Button variant="gradient" size="sm" onClick={handleSave}>
+            <Sparkles className="h-4 w-4" />
+            Save and apply
+          </Button>
+        </div>
       </header>
+      {importError ? (
+        <div
+          role="alert"
+          className="border-b border-destructive/40 bg-destructive/10 px-6 py-2 text-xs text-destructive"
+        >
+          Import failed — {importError}
+          <button
+            type="button"
+            className="ml-3 underline underline-offset-2"
+            onClick={() => setImportError(null)}
+          >
+            dismiss
+          </button>
+        </div>
+      ) : null}
 
       <div className="grid flex-1 grid-cols-1 overflow-hidden xl:grid-cols-[22rem_1fr_24rem]">
         <aside className="border-b border-border bg-card/30 p-4 xl:border-b-0 xl:border-r xl:overflow-y-auto xl:scrollbar-thin">
