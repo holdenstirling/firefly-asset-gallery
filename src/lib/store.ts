@@ -85,6 +85,7 @@ interface StyleStudioState {
   saveStyle: (style: StudioStyle) => void;
   deleteStyle: (id: string) => void;
   setActiveStyleId: (id: string | null) => void;
+  importStudioStyle: (style: StudioStyle) => void;
 }
 
 export const useStyleStudioStore = create<StyleStudioState>()(
@@ -120,6 +121,11 @@ export const useStyleStudioStore = create<StyleStudioState>()(
           };
         }),
       setActiveStyleId: (id) => set({ activeStyleId: id }),
+      importStudioStyle: (style) =>
+        set((state) => ({
+          styles: [style, ...state.styles],
+          activeStyleId: style.id,
+        })),
     }),
     {
       name: "firefly-style-studio",
