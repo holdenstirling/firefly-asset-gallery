@@ -190,16 +190,49 @@ export function buildStudioStyle({
   };
 }
 
+interface BuildStyleFromExtractedPaletteInput {
+  name: string;
+  palette: string[];
+  now?: string;
+}
+
+export function buildStyleFromExtractedPalette({
+  name,
+  palette,
+  now = new Date().toISOString(),
+}: BuildStyleFromExtractedPaletteInput): StudioStyle {
+  const trimmedName = name.trim() || "Untitled Style";
+  const normalizedPalette = palette
+    .map((color) => color.trim().toUpperCase())
+    .filter((color) => /^#[0-9A-F]{6}$/.test(color));
+
+  return {
+    id: createStyleId(trimmedName, now),
+    name: trimmedName,
+    description: "Palette extracted from a reference image.",
+    paletteId: "earth",
+    typographyId: "product",
+    parameters: { ...DEFAULT_GENERATION_PARAMETERS },
+    customPalette: normalizedPalette.length > 0 ? normalizedPalette : ["#000000"],
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
 export function styleToJsonTokens(style: StudioStyle): string {
   const palette = getStylePalette(style.paletteId);
   const typography = getTypographyPair(style.typographyId);
   const tokens = {
     name: style.name,
-    palette: {
-      primary: palette.tokenValues[0],
-      secondary: palette.tokenValues[1],
-      accent: palette.tokenValues[2],
-    },
+    palette: style.customPalette
+      ? {
+          colors: style.customPalette,
+        }
+      : {
+          primary: palette.tokenValues[0],
+          secondary: palette.tokenValues[1],
+          accent: palette.tokenValues[2],
+        },
     typography: {
       heading: typography.heading,
       body: typography.body,

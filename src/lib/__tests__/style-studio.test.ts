@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildStudioStyle,
+  buildStyleFromExtractedPalette,
   createGeneratedAsset,
   DEFAULT_GENERATION_PARAMETERS,
   styleToCssTokens,
@@ -41,6 +42,34 @@ describe("style studio helpers", () => {
     expect(styleToCssTokens(style)).toContain(
       "--style-launch-kit-color-primary"
     );
+  });
+
+  it("builds a studio style from an extracted palette", () => {
+    const style = buildStyleFromExtractedPalette({
+      name: "  Sunset Moodboard  ",
+      palette: ["#E00020", "#1A2B3C", "#FFFFFF"],
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(style.name).toBe("Sunset Moodboard");
+    expect(style.customPalette).toEqual(["#E00020", "#1A2B3C", "#FFFFFF"]);
+    expect(style.paletteId).toBe("earth");
+    expect(style.typographyId).toBe("product");
+  });
+
+  it("exports custom palette colors in JSON tokens", () => {
+    const style = buildStyleFromExtractedPalette({
+      name: "Sunset Moodboard",
+      palette: ["#E00020", "#1A2B3C"],
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(JSON.parse(styleToJsonTokens(style))).toMatchObject({
+      name: "Sunset Moodboard",
+      palette: {
+        colors: ["#E00020", "#1A2B3C"],
+      },
+    });
   });
 
   it("creates generated assets from prompt and parameters", () => {
