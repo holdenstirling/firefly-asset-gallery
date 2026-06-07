@@ -475,9 +475,18 @@ function StyleCard({
             </p>
           </div>
           <div className="flex shrink-0 overflow-hidden rounded-full border border-border">
-            {palette.swatchClasses.map((swatch) => (
-              <span key={swatch} className={cn("h-5 w-5", swatch)} />
-            ))}
+            {style.customPalette
+              ? style.customPalette.slice(0, 3).map((hex) => (
+                  <span
+                    key={hex}
+                    className="h-5 w-5"
+                    style={{ backgroundColor: hex }}
+                    aria-hidden="true"
+                  />
+                ))
+              : palette.swatchClasses.map((swatch) => (
+                  <span key={swatch} className={cn("h-5 w-5", swatch)} />
+                ))}
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] text-muted-foreground">
