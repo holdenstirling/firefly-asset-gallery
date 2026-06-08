@@ -8,6 +8,7 @@ import {
   Layers,
   Palette,
   History,
+  Mic,
   Settings,
   HelpCircle,
 } from "lucide-react";
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/", label: "Gallery", icon: LayoutGrid },
   { href: "/collections", label: "Collections", icon: Layers },
+  { href: "/meetings", label: "Meetings", icon: Mic },
   { href: "/style-studio", label: "Style Studio", icon: Palette, badge: "New" },
   { href: "/prompts", label: "Prompt History", icon: History },
 ];

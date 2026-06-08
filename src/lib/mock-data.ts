@@ -3,6 +3,7 @@ import type {
   Collection,
   ContentType,
   GenerationParameters,
+  Meeting,
   PromptHistoryItem,
   StylePreset,
 } from "./types";
@@ -205,10 +206,47 @@ export const MOCK_COLLECTIONS: Collection[] = [
   },
 ];
 
+export const MOCK_MEETINGS: Meeting[] = [
+  {
+    id: "meeting-1",
+    title: "Design Review — New Recording UI",
+    recordedAt: offsetTime(2),
+    durationSeconds: 2847,
+  },
+  {
+    id: "meeting-2",
+    title: "Q3 Spectrum Migration Kickoff",
+    recordedAt: offsetTime(26),
+    durationSeconds: 3600,
+  },
+  {
+    id: "meeting-3",
+    title: "Weekly Product Sync",
+    recordedAt: offsetTime(50),
+    durationSeconds: 1823,
+  },
+  {
+    id: "meeting-4",
+    title: "Accessibility Audit Walkthrough",
+    recordedAt: offsetTime(72),
+    durationSeconds: 2145,
+  },
+  {
+    id: "meeting-5",
+    title: "Brand Studio Feedback Session",
+    recordedAt: offsetTime(96),
+    durationSeconds: 3021,
+  },
+];
+
 export function findAssetById(id: string): Asset | undefined {
   return MOCK_ASSETS.find((a) => a.id === id);
 }
 
 export function findCollectionById(id: string): Collection | undefined {
   return MOCK_COLLECTIONS.find((c) => c.id === id);
+}
+
+export function findMeetingById(id: string): Meeting | undefined {
+  return MOCK_MEETINGS.find((m) => m.id === id);
 }
