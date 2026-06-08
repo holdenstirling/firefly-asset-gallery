@@ -31,8 +31,13 @@ export function MeetingCard({ meeting, onDelete }: MeetingCardProps) {
   useEffect(() => {
     if (!menuOpen) return;
 
-    const firstItem = menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]');
-    firstItem?.focus();
+    const menuItems =
+      menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+    menuItems?.[activeMenuIndex]?.focus();
+  }, [activeMenuIndex, menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
 
     const handlePointerDown = (event: MouseEvent) => {
       if (!menuRef.current?.contains(event.target as Node)) {

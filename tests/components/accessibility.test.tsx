@@ -1,5 +1,12 @@
-import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MeetingCard } from "@/components/meetings/meeting-card";
 import { RecordingControls } from "@/components/meetings/recording-controls";
@@ -12,6 +19,10 @@ const meeting: Meeting = {
   recordedAt: new Date(Date.now() - 3_600_000).toISOString(),
   durationSeconds: 1200,
 };
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("MeetingCard accessibility", () => {
   describe("ARIA", () => {
@@ -81,10 +92,17 @@ describe("MeetingCard accessibility", () => {
       });
       const items = within(menu).getAllByRole("menuitem");
       expect(items[0]).toHaveAttribute("tabindex", "0");
+      expect(items[0]).toHaveFocus();
 
       await user.keyboard("{ArrowDown}");
       expect(items[1]).toHaveAttribute("tabindex", "0");
       expect(items[0]).toHaveAttribute("tabindex", "-1");
+      expect(items[1]).toHaveFocus();
+
+      await user.keyboard("{ArrowUp}");
+      expect(items[0]).toHaveAttribute("tabindex", "0");
+      expect(items[1]).toHaveAttribute("tabindex", "-1");
+      expect(items[0]).toHaveFocus();
     });
   });
 
@@ -262,6 +280,54 @@ describe("UploadZone accessibility", () => {
       expect(liveRegion).toHaveTextContent(
         "Upload failed. Please choose an audio or video file."
       );
+    });
+  });
+
+  describe("upload lifecycle", () => {
+    it("calls onComplete once for overlapping uploads", () => {
+      vi.useFakeTimers();
+      const onComplete = vi.fn();
+      render(<UploadZone onComplete={onComplete} />);
+      const input = screen.getByLabelText(
+        "Upload meeting recording"
+      ) as HTMLInputElement;
+      const firstFile = new File(["audio"], "first.mp3", {
+        type: "audio/mpeg",
+      });
+      const secondFile = new File(["audio"], "second.mp3", {
+        type: "audio/mpeg",
+      });
+
+      fireEvent.change(input, { target: { files: [firstFile] } });
+      fireEvent.change(input, { target: { files: [secondFile] } });
+
+      act(() => {
+        vi.advanceTimersByTime(300);
+      });
+
+      expect(onComplete).toHaveBeenCalledTimes(1);
+      expect(onComplete).toHaveBeenCalledWith("first.mp3");
+      vi.useRealTimers();
+    });
+
+    it("clears pending upload timers on unmount", () => {
+      vi.useFakeTimers();
+      const onComplete = vi.fn();
+      const { unmount } = render(<UploadZone onComplete={onComplete} />);
+      const input = screen.getByLabelText(
+        "Upload meeting recording"
+      ) as HTMLInputElement;
+      const file = new File(["audio"], "sync.mp3", { type: "audio/mpeg" });
+
+      fireEvent.change(input, { target: { files: [file] } });
+      unmount();
+
+      act(() => {
+        vi.advanceTimersByTime(300);
+      });
+
+      expect(onComplete).not.toHaveBeenCalled();
+      vi.useRealTimers();
     });
   });
 });

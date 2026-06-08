@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Upload } from "lucide-react";
 import type { UploadState } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -32,6 +32,7 @@ export function UploadZone({ onComplete }: UploadZoneProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const dragDepth = useRef(0);
+  const uploadTimeoutRef = useRef<number | null>(null);
   const [state, setState] = useState<UploadState>("idle");
   const [announcement, setAnnouncement] = useState("");
 
@@ -43,8 +44,21 @@ export function UploadZone({ onComplete }: UploadZoneProps) {
     []
   );
 
+  useEffect(() => {
+    return () => {
+      if (uploadTimeoutRef.current !== null) {
+        window.clearTimeout(uploadTimeoutRef.current);
+        uploadTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
   const startUpload = useCallback(
     (file: File) => {
+      if (state === "uploading" || uploadTimeoutRef.current !== null) {
+        return;
+      }
+
       const isAccepted = ACCEPTED_TYPES.some((type) => file.type.startsWith(type));
 
       if (!isAccepted) {
@@ -54,12 +68,13 @@ export function UploadZone({ onComplete }: UploadZoneProps) {
 
       updateState("uploading", file.name);
 
-      window.setTimeout(() => {
+      uploadTimeoutRef.current = window.setTimeout(() => {
+        uploadTimeoutRef.current = null;
         updateState("complete", file.name);
         onComplete?.(file.name);
       }, 300);
     },
-    [onComplete, updateState]
+    [onComplete, state, updateState]
   );
 
   const openFilePicker = () => {
