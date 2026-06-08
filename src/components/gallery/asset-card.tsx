@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Heart, MoreHorizontal } from "lucide-react";
+import { Heart } from "lucide-react";
 import type { Asset } from "@/lib/types";
 import { picsumUrl } from "@/lib/picsum";
 import { cn } from "@/lib/utils";
@@ -28,15 +28,27 @@ export function AssetCard({ asset }: AssetCardProps) {
             ? "aspect-[3/4]"
             : "aspect-square";
 
+  const assetLabel = `Open asset details for ${asset.prompt}`;
+  const favoriteLabel = isFavorited
+    ? `Remove ${asset.prompt} from favorites`
+    : `Add ${asset.prompt} to favorites`;
+
   return (
-    <button
-      type="button"
-      onClick={() => setSelectedAssetId(asset.id)}
+    <article
       className={cn(
-        "group relative w-full overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "group relative w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 hover:shadow-lg focus-within:border-primary/40",
         aspectClass
       )}
     >
+      <button
+        type="button"
+        onClick={() => setSelectedAssetId(asset.id)}
+        className="absolute inset-0 z-10 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        aria-label={assetLabel}
+      >
+        <span className="sr-only">{assetLabel}</span>
+      </button>
+
       <Image
         src={picsumUrl({ seed: asset.seed, width: 800, height: 800 })}
         alt={asset.prompt}
@@ -44,36 +56,31 @@ export function AssetCard({ asset }: AssetCardProps) {
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 25vw"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/0 to-black/0 opacity-0 transition-opacity group-hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/0 to-black/0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100" />
 
       <div
-        className="pointer-events-auto absolute right-2 top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100"
+        className="absolute right-2 top-2 z-20 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={() => toggleFavorite(asset.id)}
           className={cn(
-            "flex h-8 w-8 items-center justify-center rounded-md bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70",
+            "flex h-8 w-8 items-center justify-center rounded-md bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             isFavorited && "text-pink-400"
           )}
-          aria-label={isFavorited ? "Unfavorite" : "Favorite"}
+          aria-label={favoriteLabel}
+          aria-pressed={isFavorited}
         >
           <Heart
             className="h-4 w-4"
             fill={isFavorited ? "currentColor" : "none"}
+            aria-hidden="true"
           />
-        </button>
-        <button
-          type="button"
-          className="flex h-8 w-8 items-center justify-center rounded-md bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70"
-          aria-label="More"
-        >
-          <MoreHorizontal className="h-4 w-4" />
         </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 translate-y-2 p-3 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 translate-y-2 p-3 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
         <p className="line-clamp-2 text-xs leading-snug text-white">
           {asset.prompt}
         </p>
@@ -86,6 +93,6 @@ export function AssetCard({ asset }: AssetCardProps) {
           </span>
         </div>
       </div>
-    </button>
+    </article>
   );
 }

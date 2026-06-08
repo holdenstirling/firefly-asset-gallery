@@ -33,9 +33,10 @@ export function Sidebar() {
       <Link
         href="/"
         className="mb-6 flex items-center gap-2 px-2"
+        aria-label="Firefly Asset Gallery home"
       >
         <div className="firefly-gradient flex h-8 w-8 items-center justify-center rounded-md shadow-md">
-          <Sparkles className="h-4 w-4 text-white" />
+          <Sparkles className="h-4 w-4 text-white" aria-hidden="true" />
         </div>
         <div className="flex flex-col leading-tight">
           <span className="text-sm font-semibold tracking-tight">Firefly</span>
@@ -61,8 +62,9 @@ export function Sidebar() {
                   ? "bg-secondary text-foreground"
                   : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
               )}
+              aria-current={active ? "page" : undefined}
             >
-              <Icon className="h-4 w-4 shrink-0" />
+              <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span className="flex-1">{item.label}</span>
               {item.badge && (
                 <span className="rounded-full firefly-gradient px-1.5 py-0.5 text-[9px] font-semibold text-white">
@@ -83,7 +85,7 @@ export function Sidebar() {
               href={item.href}
               className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground"
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4" aria-hidden="true" />
               <span>{item.label}</span>
             </Link>
           );

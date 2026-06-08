@@ -114,20 +114,20 @@ export function AssetDetail({ assets }: AssetDetailProps) {
 
               <div className="flex flex-col gap-2 p-5">
                 <Button variant="gradient" className="w-full">
-                  <Wand2 className="h-4 w-4" />
+                  <Wand2 className="h-4 w-4" aria-hidden="true" />
                   Remix this prompt
                 </Button>
                 <div className="grid grid-cols-3 gap-2">
                   <Button variant="outline" size="sm">
-                    <Download className="h-4 w-4" />
+                    <Download className="h-4 w-4" aria-hidden="true" />
                     Export
                   </Button>
                   <Button variant="outline" size="sm">
-                    <Copy className="h-4 w-4" />
+                    <Copy className="h-4 w-4" aria-hidden="true" />
                     Copy
                   </Button>
                   <Button variant="outline" size="sm">
-                    <Share2 className="h-4 w-4" />
+                    <Share2 className="h-4 w-4" aria-hidden="true" />
                     Share
                   </Button>
                 </div>
@@ -139,10 +139,17 @@ export function AssetDetail({ assets }: AssetDetailProps) {
                     "mt-1 w-full",
                     isFavorited && "text-pink-400"
                   )}
+                  aria-pressed={isFavorited}
+                  aria-label={
+                    isFavorited
+                      ? `Remove ${asset.prompt} from favorites`
+                      : `Add ${asset.prompt} to favorites`
+                  }
                 >
                   <Heart
                     className="h-4 w-4"
                     fill={isFavorited ? "currentColor" : "none"}
+                    aria-hidden="true"
                   />
                   {isFavorited ? "Favorited" : "Add to favorites"}
                 </Button>
