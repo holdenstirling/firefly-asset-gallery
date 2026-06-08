@@ -87,3 +87,19 @@ export interface Collection {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Meeting {
+  id: string;
+  title: string;
+  recordedAt: string;
+  durationSeconds?: number;
+}
+
+export type RecordingState = "idle" | "recording" | "paused";
+
+export type UploadState =
+  | "idle"
+  | "dragOver"
+  | "uploading"
+  | "complete"
+  | "error";
