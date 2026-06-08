@@ -43,6 +43,27 @@ describe("style studio helpers", () => {
     );
   });
 
+  it("exports custom palette swatches in JSON and CSS token bundles", () => {
+    const style = buildStudioStyle({
+      name: "Extracted Palette",
+      description: "",
+      paletteId: "firefly",
+      typographyId: "product",
+      parameters: DEFAULT_GENERATION_PARAMETERS,
+      customPalette: { swatches: ["#ff0000", "#00ff00", "#0000ff"] },
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(JSON.parse(styleToJsonTokens(style)).palette).toEqual({
+      primary: "#ff0000",
+      secondary: "#00ff00",
+      accent: "#0000ff",
+    });
+    expect(styleToCssTokens(style)).toContain(
+      "--style-extracted-palette-color-primary: #ff0000;"
+    );
+  });
+
   it("creates generated assets from prompt and parameters", () => {
     const asset = createGeneratedAsset({
       prompt: "Cinematic launch hero with glowing product",

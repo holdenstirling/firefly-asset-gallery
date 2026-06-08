@@ -49,6 +49,7 @@ export interface StudioStyle {
   paletteId: StylePaletteId;
   typographyId: TypographyPairId;
   parameters: GenerationParameters;
+  customPalette?: { swatches: string[] };
   createdAt: string;
   updatedAt: string;
 }
