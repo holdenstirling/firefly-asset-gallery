@@ -143,7 +143,46 @@ interface BuildStudioStyleInput {
 }
 
 export function getStylePalette(id: StylePaletteId): StylePalette {
+  if (id === "custom") {
+    return STYLE_PALETTES[0];
+  }
+
   return STYLE_PALETTES.find((palette) => palette.id === id) ?? STYLE_PALETTES[0];
+}
+
+export function getStyleSwatchColors(style: StudioStyle): string[] {
+  if (style.paletteId === "custom" && style.extractedColors?.length) {
+    return style.extractedColors;
+  }
+
+  const palette = getStylePalette(style.paletteId);
+  return [...palette.tokenValues];
+}
+
+function paletteTokensForStyle(style: StudioStyle): {
+  primary: string;
+  secondary: string;
+  accent: string;
+  extended?: string[];
+} {
+  if (style.paletteId === "custom" && style.extractedColors?.length) {
+    const [primary = "#000000", secondary = primary, accent = secondary] =
+      style.extractedColors;
+
+    return {
+      primary,
+      secondary,
+      accent,
+      extended: style.extractedColors.slice(3),
+    };
+  }
+
+  const palette = getStylePalette(style.paletteId);
+  return {
+    primary: palette.tokenValues[0],
+    secondary: palette.tokenValues[1],
+    accent: palette.tokenValues[2],
+  };
 }
 
 export function getTypographyPair(id: TypographyPairId): TypographyPair {
@@ -165,6 +204,31 @@ export function dimensionsForAspectRatio(
     default:
       return { width: 1024, height: 1024 };
   }
+}
+
+export function buildStudioStyleFromPalette({
+  name,
+  palette,
+  now = new Date().toISOString(),
+}: {
+  name: string;
+  palette: string[];
+  now?: string;
+}): StudioStyle {
+  const trimmedName = name.trim() || "Untitled Style";
+  const normalizedPalette = palette.filter(Boolean);
+
+  return {
+    id: createStyleId(trimmedName, now),
+    name: trimmedName,
+    description: "Extracted from reference image",
+    paletteId: "custom",
+    extractedColors: normalizedPalette,
+    typographyId: "product",
+    parameters: { ...DEFAULT_GENERATION_PARAMETERS },
+    createdAt: now,
+    updatedAt: now,
+  };
 }
 
 export function buildStudioStyle({
@@ -191,15 +255,11 @@ export function buildStudioStyle({
 }
 
 export function styleToJsonTokens(style: StudioStyle): string {
-  const palette = getStylePalette(style.paletteId);
+  const paletteTokens = paletteTokensForStyle(style);
   const typography = getTypographyPair(style.typographyId);
   const tokens = {
     name: style.name,
-    palette: {
-      primary: palette.tokenValues[0],
-      secondary: palette.tokenValues[1],
-      accent: palette.tokenValues[2],
-    },
+    palette: paletteTokens,
     typography: {
       heading: typography.heading,
       body: typography.body,
@@ -211,19 +271,28 @@ export function styleToJsonTokens(style: StudioStyle): string {
 }
 
 export function styleToCssTokens(style: StudioStyle): string {
-  const palette = getStylePalette(style.paletteId);
+  const paletteTokens = paletteTokensForStyle(style);
   const typography = getTypographyPair(style.typographyId);
   const tokenPrefix = slugify(style.name);
-
-  return [
+  const lines = [
     `:root {`,
-    `  --style-${tokenPrefix}-color-primary: ${palette.tokenValues[0]};`,
-    `  --style-${tokenPrefix}-color-secondary: ${palette.tokenValues[1]};`,
-    `  --style-${tokenPrefix}-color-accent: ${palette.tokenValues[2]};`,
+    `  --style-${tokenPrefix}-color-primary: ${paletteTokens.primary};`,
+    `  --style-${tokenPrefix}-color-secondary: ${paletteTokens.secondary};`,
+    `  --style-${tokenPrefix}-color-accent: ${paletteTokens.accent};`,
     `  --style-${tokenPrefix}-font-heading: ${typography.heading};`,
     `  --style-${tokenPrefix}-font-body: ${typography.body};`,
-    `}`,
-  ].join("\n");
+  ];
+
+  paletteTokens.extended?.forEach((color, index) => {
+    lines.splice(
+      lines.length - 2,
+      0,
+      `  --style-${tokenPrefix}-color-extended-${index + 1}: ${color};`
+    );
+  });
+
+  lines.push(`}`);
+  return lines.join("\n");
 }
 
 export function createGeneratedAsset({

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildStudioStyle,
+  buildStudioStyleFromPalette,
   createGeneratedAsset,
   DEFAULT_GENERATION_PARAMETERS,
   styleToCssTokens,
@@ -40,6 +41,28 @@ describe("style studio helpers", () => {
     });
     expect(styleToCssTokens(style)).toContain(
       "--style-launch-kit-color-primary"
+    );
+  });
+
+  it("exports custom extracted palettes as JSON tokens", () => {
+    const style = buildStudioStyleFromPalette({
+      name: "Campaign Extract",
+      palette: ["#112233", "#445566", "#778899", "#AABBCC"],
+      now: "2026-05-20T12:00:00.000Z",
+    });
+
+    expect(style.paletteId).toBe("custom");
+    expect(JSON.parse(styleToJsonTokens(style))).toMatchObject({
+      name: "Campaign Extract",
+      palette: {
+        primary: "#112233",
+        secondary: "#445566",
+        accent: "#778899",
+        extended: ["#AABBCC"],
+      },
+    });
+    expect(styleToCssTokens(style)).toContain(
+      "--style-campaign-extract-color-extended-1: #AABBCC;"
     );
   });
 

@@ -22,7 +22,12 @@ export interface GenerationParameters {
   steps: number;
 }
 
-export type StylePaletteId = "firefly" | "earth" | "mono" | "candy";
+export type StylePaletteId =
+  | "firefly"
+  | "earth"
+  | "mono"
+  | "candy"
+  | "custom";
 
 export type TypographyPairId = "editorial" | "product" | "playful" | "technical";
 
@@ -47,6 +52,7 @@ export interface StudioStyle {
   name: string;
   description: string;
   paletteId: StylePaletteId;
+  extractedColors?: string[];
   typographyId: TypographyPairId;
   parameters: GenerationParameters;
   createdAt: string;

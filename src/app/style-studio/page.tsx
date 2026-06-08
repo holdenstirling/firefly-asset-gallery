@@ -30,6 +30,7 @@ import {
   DEFAULT_GENERATION_PARAMETERS,
   dimensionsForAspectRatio,
   getStylePalette,
+  getStyleSwatchColors,
   getTypographyPair,
   STYLE_PALETTES,
   styleToCssTokens,
@@ -245,6 +246,32 @@ export default function StyleStudioPage() {
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {paletteId === "custom" && activeStyle?.extractedColors?.length ? (
+                  <div className="sm:col-span-2 rounded-xl border border-border bg-background/40 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Extracted palette
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Saved from Palette Extractor. Edit presets in the extractor
+                      or pick a built-in palette below.
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {activeStyle.extractedColors.map((color) => (
+                        <div
+                          key={color}
+                          className="flex items-center gap-2 rounded-md border border-border bg-card px-2 py-1.5"
+                        >
+                          <span
+                            aria-label={`Color swatch ${color}`}
+                            className="h-6 w-6 rounded-full border border-border"
+                            style={{ backgroundColor: color }}
+                          />
+                          <span className="font-mono text-xs">{color}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
                 {STYLE_PALETTES.map((option) => (
                   <PaletteOption
                     key={option.id}
@@ -455,6 +482,8 @@ function StyleCard({
 }) {
   const palette = getStylePalette(style.paletteId);
   const typography = getTypographyPair(style.typographyId);
+  const swatchColors = getStyleSwatchColors(style);
+  const isCustomPalette = style.paletteId === "custom";
 
   return (
     <div
@@ -475,13 +504,22 @@ function StyleCard({
             </p>
           </div>
           <div className="flex shrink-0 overflow-hidden rounded-full border border-border">
-            {palette.swatchClasses.map((swatch) => (
-              <span key={swatch} className={cn("h-5 w-5", swatch)} />
-            ))}
+            {isCustomPalette
+              ? swatchColors.slice(0, 3).map((color) => (
+                  <span
+                    key={color}
+                    aria-label={`Color swatch ${color}`}
+                    className="h-5 w-5"
+                    style={{ backgroundColor: color }}
+                  />
+                ))
+              : palette.swatchClasses.map((swatch) => (
+                  <span key={swatch} className={cn("h-5 w-5", swatch)} />
+                ))}
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] text-muted-foreground">
-          <span>{palette.name}</span>
+          <span>{isCustomPalette ? "Extracted palette" : palette.name}</span>
           <span>/</span>
           <span>{typography.name}</span>
           <span>/</span>
