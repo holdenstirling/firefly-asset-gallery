@@ -7,6 +7,7 @@ import {
   LayoutGrid,
   Layers,
   Palette,
+  Pipette,
   History,
   Settings,
   HelpCircle,
@@ -16,7 +17,13 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/", label: "Gallery", icon: LayoutGrid },
   { href: "/collections", label: "Collections", icon: Layers },
-  { href: "/style-studio", label: "Style Studio", icon: Palette, badge: "New" },
+  { href: "/style-studio", label: "Style Studio", icon: Palette },
+  {
+    href: "/palette-extractor",
+    label: "Palette Extractor",
+    icon: Pipette,
+    badge: "New",
+  },
   { href: "/prompts", label: "Prompt History", icon: History },
 ];
 
