@@ -1,0 +1,17 @@
+---
+description: Accessibility patterns for interactive components in the Firefly Asset Gallery
+globs: src/components/**/*.tsx
+alwaysApply: false
+---
+
+# Accessibility — component guidance
+
+- Prefer semantic HTML (`button`, `nav`, `main`, `aside`) before ARIA. Use shadcn primitives from `@/components/ui/*` — Radix handles roles, focus trap, and keyboard behavior for dialogs, selects, and tooltips.
+- Every interactive control needs an accessible name: visible text, `aria-label`, or `aria-labelledby`. Icon-only buttons require `aria-label`; pair decorative icons with `aria-hidden="true"` when a label is present elsewhere.
+- Form fields: associate `<label htmlFor={id}>` with controls, or use `aria-label` on standalone inputs (e.g. search bars). Toggle/filter chips expose state with `aria-pressed`.
+- Images: meaningful `alt` from context (`asset.prompt`); decorative images use `alt=""`.
+- Dialogs: every `DialogContent` includes `DialogTitle`; add `DialogDescription` when extra context helps screen-reader users.
+- Keyboard: nested interactive elements inside clickable containers must not steal or bubble activation. Call `stopPropagation()` on **both** `onClick` and `onKeyDown` for inner controls. Never nest `<button>` inside `<button>` — restructure the card surface instead.
+- Focus: preserve visible focus styles (`focus-visible:ring-*`). Do not remove outlines without a replacement.
+- Motion: respect `prefers-reduced-motion` when adding animations via `motion`.
+- Tests: assert with `getByRole` and `getByLabel`; add `data-testid` only when roles are not unique.
