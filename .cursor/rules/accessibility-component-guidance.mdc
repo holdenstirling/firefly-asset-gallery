@@ -1,0 +1,16 @@
+---
+description: Accessibility nudges for interactive UI — fires on every component or page edit under src/components and src/app. Apply on any change to buttons, forms, dialogs, menus, cards, or custom widgets.
+globs: src/components/**/*.tsx, src/app/**/*.tsx
+alwaysApply: false
+---
+
+# Accessibility — component guidance
+
+Patterns aligned with React Aria and React Spectrum. Consider these on every component change.
+
+- **Semantic HTML first** — `<button>`, `<a>`, `<input>`, `<label>`, `<nav>` before ARIA. Reach for `@/components/ui/*` primitives; they ship sensible defaults.
+- **Keyboard reachable** — every interactive control is focusable and operable without a pointer. Custom widgets need `tabIndex={0}` only when a native element cannot represent the control, plus `onKeyDown` handling **Enter** and **Space** to mirror click.
+- **Accessible names** — every control has a name via visible text, `aria-label`, or `aria-labelledby`. Icon-only buttons require `aria-label` (or `sr-only` text).
+- **No color-only meaning** — pair color with text, icon, or pattern. Do not rely on hue alone for status, selection, or errors.
+- **Announce dynamic state** — use `aria-live="polite"` (or `assertive` for urgent errors) when content updates without focus moving — loading, validation, toasts, async results.
+- **Focus & nesting** — keep visible focus styles (`focus-visible:ring-*`). Nested interactives inside clickable containers must not bubble activation; call `stopPropagation()` on inner click and keydown. Avoid buttons inside buttons.
