@@ -1,0 +1,18 @@
+---
+description: Accessibility checklist for React components — loads when editing files under src/components or src/app
+globs:
+  - src/components/**/*.tsx
+  - src/app/**/*.tsx
+---
+
+# Accessibility on component changes
+
+Before finishing a component edit, verify:
+
+- **Semantic HTML first** — use native elements (`button`, `a`, `input`, `label`) before div/span wrappers. Match React Aria / React Spectrum: reach for the right role via markup, not ARIA alone.
+- **Keyboard reachable** — every interactive control is focusable and operable from the keyboard. Custom widgets need `tabIndex={0}` (or `-1` when roving focus applies) and `onKeyDown` handling for **Enter** and **Space**.
+- **Icon-only controls** — add a concise `aria-label` (or visible text). Decorative icons: `aria-hidden="true"`.
+- **No color-only meaning** — pair color with text, icons, or patterns so state is clear without sight.
+- **Dynamic updates** — use `aria-live="polite"` (or `assertive` for urgent errors) on regions where content changes without focus moving (loading, counts, validation, toasts).
+
+Prefer existing accessible primitives in `@/components/ui/*` over bespoke widgets.
