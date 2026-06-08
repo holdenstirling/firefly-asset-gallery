@@ -32,6 +32,7 @@ export function AssetGrid({ assets }: AssetGridProps) {
   if (filtered.length === 0) {
     return (
       <div
+        id="asset-results"
         className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground"
         role="status"
       >

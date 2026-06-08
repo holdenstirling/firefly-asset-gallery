@@ -49,11 +49,9 @@ export default function GalleryPage() {
             <div className="flex-1 min-w-0">
               <AssetGrid assets={assets} />
             </div>
-            {parametersOpen && (
-              <div className="hidden lg:block">
-                <ParameterPanel />
-              </div>
-            )}
+            <div className={parametersOpen ? "hidden lg:block" : "hidden"}>
+              <ParameterPanel />
+            </div>
           </div>
         </div>
 
