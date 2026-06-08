@@ -31,16 +31,24 @@ export function AssetGrid({ assets }: AssetGridProps) {
 
   if (filtered.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground">
+      <div
+        className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground"
+        role="status"
+      >
         No assets match your filters.
       </div>
     );
   }
 
   return (
-    <div className="columns-1 gap-3 sm:columns-2 md:columns-3 xl:columns-4">
+    <div
+      id="asset-results"
+      className="columns-1 gap-3 sm:columns-2 md:columns-3 xl:columns-4"
+      role="list"
+      aria-label={`${filtered.length} asset results`}
+    >
       {filtered.map((asset) => (
-        <div key={asset.id} className="mb-3 break-inside-avoid">
+        <div key={asset.id} className="mb-3 break-inside-avoid" role="listitem">
           <AssetCard asset={asset} />
         </div>
       ))}

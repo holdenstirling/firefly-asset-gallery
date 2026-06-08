@@ -37,26 +37,39 @@ export function GalleryToolbar({
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-2">
         <div className="relative flex-1 max-w-md">
+          <label htmlFor="asset-search" className="sr-only">
+            Search assets
+          </label>
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
+            id="asset-search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search prompts, tags, authors…"
             className="pl-8"
+            aria-controls="asset-results"
           />
         </div>
         <Button
           variant={parametersOpen ? "default" : "outline"}
           size="sm"
           onClick={onToggleParameters}
+          aria-controls="parameter-panel"
+          aria-expanded={parametersOpen}
         >
-          <SlidersHorizontal className="h-4 w-4" />
+          <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
           Parameters
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-xs text-muted-foreground">Style</span>
+      <div
+        className="flex flex-wrap items-center gap-1.5"
+        role="group"
+        aria-labelledby="style-filter-label"
+      >
+        <span id="style-filter-label" className="text-xs text-muted-foreground">
+          Style
+        </span>
         {STYLES.map((style) => {
           const active = activeStyleFilters.includes(style);
           return (
@@ -65,11 +78,12 @@ export function GalleryToolbar({
               type="button"
               onClick={() => toggleStyleFilter(style)}
               className={cn(
-                "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
+                "rounded-full border px-2.5 py-0.5 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 active
                   ? "border-transparent firefly-gradient text-white"
                   : "border-border bg-background/40 text-muted-foreground hover:border-primary/40 hover:text-foreground"
               )}
+              aria-pressed={active}
             >
               {style}
             </button>
@@ -79,9 +93,10 @@ export function GalleryToolbar({
           <button
             type="button"
             onClick={clearStyleFilters}
-            className="ml-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground"
+            className="ml-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            aria-label="Clear style filters"
           >
-            <X className="h-3 w-3" /> clear
+            <X className="h-3 w-3" aria-hidden="true" /> clear
           </button>
         )}
       </div>
